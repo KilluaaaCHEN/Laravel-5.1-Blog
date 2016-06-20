@@ -1,0 +1,51 @@
+@extends('layouts.master')
+
+@section('content')
+    <title>Larry的博客</title>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h5 class="panel-title">
+                {!!$title!!}
+            </h5>
+        </div>
+        <div class="panel-body">
+            @foreach($posts as $item)
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="blog-title">
+                            <a href="{{route('post.view',['post_id'=>$item->post_id])}}">{{$item->title}}</a>
+                        </h2>
+                        <ul class="list-inline index-desc">
+                            <li><i class="icon-calendar"></i> {{$item->created_at->diffForHumans()}}</li>
+                            <li><i class="icon-eye-open"></i> {{$item->read_count}} Browse</li>
+                            {{--<li><i class="icon-comment"></i>--}}
+                                {{--<a href="{{route('post.view',['post_id'=>$item->post_id]).'#disqus_thread'}}">{{$item->comment_count}} Comments</a>--}}
+                            {{--</li>--}}
+                            <li class="tags">
+                                <i class="icon-tags"></i>
+                                @if($item->tags)
+                                    <?php $tags = explode(",", rtrim($item->tags, ','))?>
+                                    @foreach($tags as $i=>$tag)
+                                        <a href="{{route('search.tag',['tag'=>$tag])}}">{{$tag}}</a>
+                                        @if(count($tags)-1 > $i)
+                                            ,
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </li>
+                        </ul>
+                        <p>{{$item->desc}}</p>
+
+                        <p class="text-right">
+                            <a class="btn btn-success btn-sm" href="{{route('post.view',['post_id'=>$item->post_id])}}">
+                                <i class="glyphicon glyphicon-new-window"></i> Read More
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    {!! $posts->render() !!}
+    <div class="clearfix"></div>
+@endsection
