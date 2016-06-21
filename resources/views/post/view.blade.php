@@ -31,6 +31,10 @@
                 @endif
             </li>
         </ul>
+        <div>
+           {{$post->desc}}
+        </div>
+        <hr/>
     </div>
     <div class="clearfix"></div>
     <div>
