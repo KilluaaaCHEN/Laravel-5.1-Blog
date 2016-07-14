@@ -31,7 +31,7 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="dropdown notifications-menu">
-                        <a href="/">Frontend</a>
+                        <a href="/" target="_blank">Frontend</a>
                     </li>
                     <li class="dropdown notifications-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
