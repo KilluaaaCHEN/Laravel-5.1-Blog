@@ -14,13 +14,13 @@
 Route::get('/', ['as' => 'home', 'uses' => 'PostController@index']);
 Route::get('/tags/{tag}', ['as' => 'search.tag', 'uses' => 'PostController@searchTag']);
 Route::get('/view/{post_id}', ['as' => 'post.view', 'uses' => 'PostController@view']);
-Route::get('/play',['as'=>'play','uses'=>'IndexController@play']);
+Route::get('/play', ['as' => 'play', 'uses' => 'IndexController@play']);
 //后台
 Route::group(['namespace' => 'Backend', 'prefix' => 'admin'], function () {
     //需要登录的Route
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/', ['as' => 'admin.index', 'uses' => 'AdminController@index']);
-        Route::post('upload',['as'=>'admin.upload','uses'=>'AdminController@upload']);
+        Route::post('upload', ['as' => 'admin.upload', 'uses' => 'AdminController@upload']);
         Route::resource('post', 'PostController', ['except' => ['update', 'destroy']]);
         Route::get('post/delete/{post_id}', ['as' => 'admin.post.delete', 'uses' => 'PostController@delete']);
         Route::resource('links', 'LinksController', ['except' => ['update', 'destroy']]);
@@ -29,4 +29,13 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin'], function () {
     });
     Route::get('login', ['as' => 'admin.login', 'uses' => 'AdminController@login']);
     Route::post('login', ['as' => 'admin.login', 'uses' => 'AdminController@postLogin']);
+});
+
+Route::get('/test/{num}', function ($num) {
+    $rst = \App\Models\Test::where(compact('num'))->increment('count');
+    if (!$rst) {
+        $count = 1;
+        \App\Models\Test::create(compact('num', 'count'));
+    }
+    var_dump($rst);
 });
