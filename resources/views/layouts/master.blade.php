@@ -38,7 +38,7 @@
                 <ul id="w1" class="navbar-nav navbar-right nav">
                     <li>
                         <a href="http://gjsq.me/10571644" target="_blank" style="padding:0px 50px 0px 0px">
-                            <img src="https://www.getgreenjsq.com/aff/banners/01.gif" height="50"/>
+                            <img src="https://www.getgreenjsq.org/aff/banners/01.gif" height="50"/>
                         </a>
                     </li>
                     <li class="active"><a href="/">Home</a></li>
