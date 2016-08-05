@@ -10,7 +10,7 @@
 <body>
 
 
-<div style="width:300px; margin: 0 auto">
+<div style="width:300px; margin: 250px auto">
     <br/>
     <div class="form-group">
         <input type="text" class="form-control" id="ts" placeholder="{{$d_ts}}" value="{{$ts}}">
