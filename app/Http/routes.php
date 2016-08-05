@@ -14,7 +14,6 @@
 Route::get('/', ['as' => 'home', 'uses' => 'PostController@index']);
 Route::get('/tags/{tag}', ['as' => 'search.tag', 'uses' => 'PostController@searchTag']);
 Route::get('/view/{post_id}', ['as' => 'post.view', 'uses' => 'PostController@view']);
-Route::get('/play', ['as' => 'play', 'uses' => 'IndexController@play']);
 //后台
 Route::group(['namespace' => 'Backend', 'prefix' => 'admin'], function () {
     //需要登录的Route
@@ -31,11 +30,3 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin'], function () {
     Route::post('login', ['as' => 'admin.login', 'uses' => 'AdminController@postLogin']);
 });
 
-Route::get('/test/{num}', function ($num) {
-    $rst = \App\Models\Test::where(compact('num'))->increment('count');
-    if (!$rst) {
-        $count = 1;
-        \App\Models\Test::create(compact('num', 'count'));
-    }
-    var_dump($rst);
-});
