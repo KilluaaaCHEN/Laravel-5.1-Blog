@@ -30,3 +30,5 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin'], function () {
     Route::post('login', ['as' => 'admin.login', 'uses' => 'AdminController@postLogin']);
 });
 
+
+Route::get('/time-stamp', ['as' => 'ts', 'uses' => 'Tools\TimeStampController@index']);
