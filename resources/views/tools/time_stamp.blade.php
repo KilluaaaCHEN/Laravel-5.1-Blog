@@ -13,20 +13,21 @@
 <div style="width:300px; margin: 0 auto">
     <br/>
     <div class="form-group">
-        <input type="text" class="form-control" id="time" placeholder="{{$d_time}}" value="{{$time}}">
+        <input type="text" class="form-control" id="ts" placeholder="{{$d_ts}}" value="{{$ts}}">
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <button class="btn btn-default pull-right glyphicon glyphicon-arrow-down" onclick="toTs()"></button>
+            <button class="btn btn-default pull-right glyphicon glyphicon-arrow-down" onclick="toTime()"></button>
         </div>
         <div class="col-sm-6">
-            <button class="btn btn-default glyphicon glyphicon-arrow-up" onclick="toTime()"></button>
+            <button class="btn btn-default glyphicon glyphicon-arrow-up " onclick="toTs()"></button>
         </div>
     </div>
     <br/>
     <div class="form-group">
-        <input type="text" class="form-control" id="ts" placeholder="{{$d_ts}}" value="{{$ts}}">
+        <input type="text" class="form-control" id="time" placeholder="{{$d_time}}" value="{{$time}}">
     </div>
+
 </div>
 
 <script>
