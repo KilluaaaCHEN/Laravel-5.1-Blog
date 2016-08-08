@@ -27,7 +27,7 @@ class QrCodeController extends Controller
 
         ];
         $rst = json_decode(Curl::post('http://www.wwei.cn/Qrcode/create.html', $data));
-        return "<div style='width:300px;margin: 100px auto;'><img src='http://www.wwei.cn/$rst->img' /></div>";
+        return "<div style='width:300px;margin: 100px auto;'><img style='width:300px' src='http://www.wwei.cn/$rst->img' /></div>";
     }
 
 
