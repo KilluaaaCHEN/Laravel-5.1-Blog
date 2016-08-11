@@ -15,39 +15,67 @@
     <form method="POST">
         {!! csrf_field() !!}
         <div class="form-group">
+            <label for="exampleInputEmail1">Title</label>
+            <input type="text" class="form-control" name="title" value="{{ $title }}" title=""/>
+        </div>
+        <div class="form-group">
             <label for="exampleInputEmail1">URI</label>
-            <input type="text" class="form-control" name="uri" value="{{ old('uri') }}"/>
+            <input type="text" class="form-control" name="uri" value="{{ $uri }}" title=""/>
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Method</label>
             <div class="radio">
                 <label>
-                    <input type="radio" name="method" value="GET" {{old('method')=='GET'?'checked':''}}>
+                    <input type="radio" name="method" value="GET" {{$method=='GET'?'checked':''}}>
                     GET
                 </label>
                 &nbsp;
                 <label>
                     <input type="radio" name="method" value="POST"
-                            {{(!old('method')||old('method')=='POST')?'checked':''}}>
+                            {{(!$method||$method=='POST')?'checked':''}}>
                     POST
                 </label>
             </div>
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Request Parameter</label>
-            <textarea class="form-control" title="" name="request">{{ old('request') }}</textarea>
+            <textarea class="form-control" rows=3 title="" name="request">{{ $req }}</textarea>
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Response Format</label>
-            <textarea class="form-control" title="" name="response">{{ old('response') }}</textarea>
+            <textarea class="form-control" rows=3 title="" name="response">{{ $res }}</textarea>
         </div>
         <button type="submit" class="btn btn-success">Generate</button>
     </form>
-    <hr/>
-    <p>
-        {!! Session::get('doc') !!}
-    </p>
+    @if($doc)
+        <hr/>
+        <input type="button" class="btn btn-primary" value="Copy To Clipboard" id="copy"/>
+        <br/>
+        <br/>
+        <textarea id="doc" class="form-control" rows=5 onChange="clip.setText(this.value)"
+                  title="">{!! $doc !!}</textarea>
+        <script type="text/javascript" src="{{asset('/plugins/zeroClipboard/ZeroClipboard.js')}}"></script>
+        <script language="JavaScript">
+            var clip = null;
+            init();
+            function init() {
+                clip = new ZeroClipboard.Client();
+                clip.setHandCursor(true);
+
+                clip.addEventListener('mouseOver', my_mouse_over);
+                ZeroClipboard.setMoviePath("{{asset('/plugins/zeroClipboard/ZeroClipboard.swf')}}");
+                clip.glue('copy');
+            }
+
+            function my_mouse_over(client) {
+                clip.setText(document.getElementById('doc').value);
+            }
+        </script>
+    @endif
+
+
 </div>
+
 
 </body>
 </html>

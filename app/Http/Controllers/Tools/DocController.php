@@ -9,48 +9,64 @@ use App\Http\Controllers\Controller;
 
 class DocController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 生成Markdown形式的API文档
+     * @param Request $request
+     * @return mixed
      */
     public function generate(Request $request)
     {
-        if ($request->getMethod() == 'GET') {
-            return view('tools.doc', ['doc' => null]);
-        }
+        $title = $request->get('title');
         $uri = $request->get('uri');
         $method = $request->get('method');
-        $request_str = $request->get('request');
-        $response_str = $request->get('response');
-        $request_list = explode('//', rtrim($request_str, '{{uri}}'));
-        $response_list = json_decode($response_str, true);
+        $req = $request->get('request');
+        $res = $request->get('response');
 
-        $doc = <<<STR
-| URI | $uri  |   |   |   | <br/>
-| ------------ | ------------ | ------------ | ------------ |  ------------ |<br/>
-|  请求方式 | $method  |  |   |   |<br/>
-|  输入参数 |  名称 | 含义  | 示例  | 必填  |<br/>
+        $doc = '';
+        if ($request->getMethod() == 'POST') {
+            $uri = ltrim($uri, '{{domain}}');
+            $req_list = explode('//', $req);
+            $res_list = json_decode($res, true);
+
+            $req_dic = [
+                'page_size' => '页码;每页大小,默认10;',
+                'page_index' => '页索引;从0开始,默认0'
+            ];
+            $res_dic = [
+                'open_id' => '用户唯一标示'
+            ];
+
+            $doc = <<<STR
+### 1.0 $title 
+| URI | $uri  |   |   |   | 
+| ------------ | ------------ | ------------ | ------------ |  ------------ |
+|  请求方式 | $method  |  |   |   |
+|  输入参数 |  名称 | 含义  | 示例  | 必填 |
+
 STR;
-        foreach ($request_list as $item) {
-            if ($item) {
+            foreach ($req_list as $item) {
                 $i = explode(':', $item);
                 if (count($i) > 1) {
-                    $doc .= "|   | `{$i[0]}`  | &nbsp;| {$i[1]} | n | <br/>";
+                    $text = key_exists($i[0], $req_dic) ? $req_dic[$i[0]] : '&nbsp;';
+                    $val = trim($i[1]);
+                    $doc .= "|   | `{$i[0]}`  | $text | $val | n | \n";
+                }
+            }
+            $doc .= '|  输出参数 |  名称 | 含义  | 示例  | 类型 | ';
+            if ($res_list) {
+                foreach ($res_list as $key => $val) {
+                    $val = trim($val);
+                    $type = gettype($val);
+                    if ($type == 'boolean') {
+                        $val = $val ? 'true' : 'false';
+                    }
+                    $text = key_exists($key, $res_dic) ? $res_dic[$key] : '&nbsp;';
+                    $doc .= "|   | `{$key}`  | $text | {$val} | {$type} | \n";
                 }
             }
         }
-        $doc .= '|  输出参数 |  名称 | 含义  | 示例  | 类型 | <br/>';
-        if (is_array($response_list)) {
-            foreach ($response_list as $key => $val) {
-                $type = gettype($val);
-                $doc .= "|   | `{$key}`  | &nbsp;| {$val} | {$type} | <br/>";
-            }
-        }
-        if (strlen($doc) > 279) {
-            \Session::flash('doc', $doc);
-        }
-        return redirect()->back()->withInput();
+        return view('tools.doc', compact('title', 'uri', 'method', 'res', 'req', 'doc'));
     }
 
 }
