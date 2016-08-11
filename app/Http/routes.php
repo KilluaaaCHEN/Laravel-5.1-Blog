@@ -33,3 +33,4 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin'], function () {
 
 Route::get('/time-stamp', ['as' => 'ts', 'uses' => 'Tools\TimeStampController@index']);
 Route::get('/qr-code', ['as' => 'qr_code', 'uses' => 'Tools\QrCodeController@generate']);
+Route::any('/doc', ['as' => 'doc', 'uses' => 'Tools\DocController@generate']);
