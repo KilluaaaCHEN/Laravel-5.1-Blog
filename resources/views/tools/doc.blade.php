@@ -16,8 +16,7 @@
         {!! csrf_field() !!}
         <div class="form-group">
             <label for="exampleInputEmail1">URI</label>
-            <input type="text" class="form-control" name="uri" placeholder="/module/controller/action"
-                   value="{{ old('uri') }}">
+            <input type="text" class="form-control" name="uri" value="{{ old('uri') }}"/>
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Method</label>
