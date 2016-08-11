@@ -23,7 +23,7 @@ class DocController extends Controller
         $method = $request->get('method');
         $request_str = $request->get('request');
         $response_str = $request->get('response');
-        $request_list = explode('//', rtrim($request_str, '{{url}}'));
+        $request_list = explode('//', rtrim($request_str, '{{uri}}'));
         $response_list = json_decode($response_str, true);
 
         $doc = <<<STR
