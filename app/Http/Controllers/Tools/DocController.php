@@ -61,7 +61,7 @@ STR;
                         $val = $val ? 'true' : 'false';
                     }
                     $text = key_exists($key, $res_dic) ? $res_dic[$key] : '&nbsp;';
-                    $doc .= "|   | `{$key}`  | $text | {$val} | {$type} | \n";
+                    $doc .= " \n|   | `{$key}`  | $text | {$val} | {$type} |";
                 }
             }
         }
