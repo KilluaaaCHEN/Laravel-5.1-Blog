@@ -1,5 +1,15 @@
 @extends('layouts.master')
-
+@section('head')
+    <script type="text/javascript" src="{{asset('/plugins/textSearch/jquery.textSearch-1.0.js')}}"></script>
+    <script language="JavaScript">
+        var sea = "{!! $q !!}";
+        $(function () {
+            if (sea) {
+                $("#content").textSearch(sea, {markColor: "#EA4335"});
+            }
+        });
+    </script>
+@stop
 @section('content')
     <title>Larry的博客</title>
     <div class="panel panel-default">
@@ -8,7 +18,7 @@
                 {!!$title!!}
             </h5>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" id="content">
             @foreach($posts as $item)
                 <div class="row">
                     <div class="col-md-12">
@@ -19,7 +29,7 @@
                             <li><i class="icon-calendar"></i> {{$item->created_at->diffForHumans()}}</li>
                             <li><i class="icon-eye-open"></i> {{$item->read_count}} Browse</li>
                             {{--<li><i class="icon-comment"></i>--}}
-                                {{--<a href="{{route('post.view',['post_id'=>$item->post_id]).'#disqus_thread'}}">{{$item->comment_count}} Comments</a>--}}
+                            {{--<a href="{{route('post.view',['post_id'=>$item->post_id]).'#disqus_thread'}}">{{$item->comment_count}} Comments</a>--}}
                             {{--</li>--}}
                             <li class="tags">
                                 <i class="icon-tags"></i>
@@ -46,6 +56,6 @@
             @endforeach
         </div>
     </div>
-    {!! $posts->render() !!}
+    {!! $posts->appends('q',$q)->render() !!}
     <div class="clearfix"></div>
 @endsection

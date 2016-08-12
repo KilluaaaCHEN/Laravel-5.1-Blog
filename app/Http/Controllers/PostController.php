@@ -19,17 +19,27 @@ class PostController extends Controller
     {
         $cache_key = URL::full();
         $posts = \Cache::get($cache_key);
+        $q = \Input::get('q');
         if (!$posts) {
             $query = Post::where(['state_id' => 10])->orderBy('post_id', 'desc');
+            if ($q) {
+                $search_arr = explode(' ', $q);
+                foreach ($search_arr as $item) {
+                    $query->where('title', 'like', "%$item%");
+                    $query->orWhere('tags', 'like', "%$item%");
+                    $query->orWhere('desc', 'like', "%$item%");
+                    $query->orWhere('content', 'like', "%$item%");
+                }
+            }
             $posts = $query->paginate(5);
             \Cache::put($cache_key, $posts, 60 * 24);
         }
         return view('index', [
             'posts' => $posts,
-            'title' => '<i class="icon-book"></i> Release'
+            'title' => '<i class="icon-book"></i> Release',
+            'q' => $q
         ]);
     }
-
 
     public function view($post_id)
     {
@@ -58,7 +68,8 @@ class PostController extends Controller
         $title = "<i class='icon-search'></i> Current Tag : $tag <a href='" . route('home') . "' title='Clean up' class='icon-remove'></a>";
         return view('index', [
             'posts' => $posts,
-            'title' => $title
+            'title' => $title,
+            'q' => null
         ]);
     }
 

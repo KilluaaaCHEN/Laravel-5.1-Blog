@@ -27,7 +27,6 @@ class DocController extends Controller
             $uri = ltrim($uri, '{{domain}}');
             $req_list = explode(PHP_EOL, $req);
             $res_list = json_decode($res, true);
-
             $req_dic = [
                 'page_size' => '页码;每页大小,默认10;',
                 'page_index' => '页索引;从0开始,默认0'
@@ -35,7 +34,6 @@ class DocController extends Controller
             $res_dic = [
                 'open_id' => '用户唯一标示'
             ];
-
             $doc = <<<STR
 ### 1.0 $title 
 | URI | $uri  |   |   |   | 

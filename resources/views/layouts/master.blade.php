@@ -1,13 +1,4 @@
 <!DOCTYPE html>
-<!--
-                                         __     __     __
-   __                                   / /    / /    / /
-  / /   __ _  _ __  _ __  __ _  _   _  / /_   / /_   / /_     ___  ___   _ __ ___
- / /   / _` || '__|| '__|/ _` || | | || '_ \ | '_ \ | '_ \   / __|/ _ \ | '_ ` _ \
-/ /___| (_| || |   | |  | (_| || |_| || (_) || (_) || (_) |_| (__| (_) || | | | | |
-\____/ \__,_||_|   |_|   \__,_| \__, | \___/  \___/  \___/(_)\___|\___/ |_| |_| |_|
-                                |___/
---!>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
@@ -37,12 +28,19 @@
             <div id="w0-collapse" class="collapse navbar-collapse">
                 <ul id="w1" class="navbar-nav navbar-right nav">
                     <li>
-                        <a href="http://gjsq.me/10571644" target="_blank" style="padding:0px 50px 0px 0px">
-                            <img src="https://www.getgreenjsq.org/aff/banners/01.gif" height="50"/>
+                        <a href="http://gjsq.me/10571644" target="_blank" style="padding:0 50px 0 0">
+                            {{--<img src="https://www.getgreenjsq.com/aff/banners/01.gif" height="50"/>--}}
                         </a>
                     </li>
                     <li class="active"><a href="/">Home</a></li>
                     <li><a href="{{route('post.view',['post_id'=>1])}}">About</a></li>
+                    <li>
+                        <form class="demo_search" action="/" method="get">
+                            <i class="icon_search" id="open"></i>
+                            <input class="demo_sinput form-control" type="text" name="q" value="{{ isset($q)?$q:''}}"
+                                   id="search_input" placeholder="Search...">
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -58,12 +56,14 @@
                     <div class="col-md-3 col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h5 class="panel-title"> <span class="icon-flag"></span> Read Ranking </h5>
+                                <h5 class="panel-title"><span class="icon-flag"></span> Read Ranking </h5>
                             </div>
                             <div class="panel-body">
                                 <ul class="hot" id="read-ranking">
                                     @foreach(\App\Models\Post::getHotRead() as $key=>$item)
-                                        <li>{{$key+1}}.<a href="{{route('post.view',['post_id'=>$item->post_id])}}">{{$item->title."($item->read_count)"}}</a></li>
+                                        <li>{{$key+1}}.<a
+                                                    href="{{route('post.view',['post_id'=>$item->post_id])}}">{{$item->title."($item->read_count)"}}</a>
+                                        </li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -71,7 +71,7 @@
                         <br/>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h5 class="panel-title"> <span class="icon-tags"></span> Tags </h5>
+                                <h5 class="panel-title"><span class="icon-tags"></span> Tags </h5>
                             </div>
                             <div class="panel-body tags-ranking">
                                 @foreach(\App\Models\Post::getHotTag() as $item)
@@ -82,7 +82,7 @@
                         <br/>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h5 class="panel-title"> <span class="icon-link"></span> Friendly Link </h5>
+                                <h5 class="panel-title"><span class="icon-link"></span> Friendly Link </h5>
                             </div>
                             <div class="panel-body link">
                                 @foreach(\App\Models\Links::getLinks() as $item)
