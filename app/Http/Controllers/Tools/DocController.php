@@ -35,7 +35,7 @@ class DocController extends Controller
                 'open_id' => '用户唯一标示'
             ];
             $doc = <<<STR
-### 1.0 $title 
+### 1.x $title 
 | URI | $uri  |   |   |   | 
 | :----: | ------------ | ------------ | ------------ |  :----: |
 |  **请求方式** | $method  |  |   |   |
