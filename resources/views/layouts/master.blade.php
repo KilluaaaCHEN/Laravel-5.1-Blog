@@ -26,10 +26,10 @@
                 <a class="navbar-brand" href="/"><img class="logo" src="{{asset('img/logo.png')}}" alt="Larry"></a>
             </div>
             <div id="w0-collapse" class="collapse navbar-collapse">
-                <ul id="w1" class="navbar-nav navbar-right nav">
+                <ul id="w1" class="navbar-nav navbar-right nav" style="margin-right: 10px;">
                     <li>
-                        <a href="http://gjsq.me/10571644" target="_blank" style="padding:0 50px 0 0">
-                            {{--<img src="https://www.getgreenjsq.com/aff/banners/01.gif" height="50"/>--}}
+                        <a href="http://gjsq.me/10571644" target="_blank" style="padding:0 30px 0 0">
+                            <img src="{{asset('img/tg.gif')}}" height="50"/>
                         </a>
                     </li>
                     <li class="active"><a href="/">Home</a></li>
