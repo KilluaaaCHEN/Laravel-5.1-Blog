@@ -51,7 +51,7 @@ STR;
                     $doc .= "|   | `{$i[0]}`  | $text | $val | $not_null | \n";
                 }
             }
-            $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类**| ';
+            $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
             if ($res_list) {
                 foreach ($res_list as $key => $val) {
                     $type = gettype($val);
