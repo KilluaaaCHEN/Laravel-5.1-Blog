@@ -27,6 +27,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('inspire')->hourly();
-        $schedule->command('update-comment-count')->cron('0 * * * *');
+        $schedule->command('update-comment-count')->cron('10 * * * *');
     }
 }

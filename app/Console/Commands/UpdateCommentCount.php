@@ -13,7 +13,7 @@ class UpdateCommentCount extends Command
      *
      * @var string
      */
-    protected $signature = 'command:update-comment-count';
+    protected $signature = 'update-comment-count';
 
     /**
      *  统计文章评论数
