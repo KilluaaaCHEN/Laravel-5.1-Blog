@@ -23,7 +23,7 @@
             <input type="text" class="form-control" name="uri" value="{{ $uri }}" title=""/>
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Method</label>
+            <label>Method</label>
             <div class="radio">
                 <label>
                     <input type="radio" name="method" value="GET" {{$method=='GET'?'checked':''}}>
@@ -38,12 +38,16 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Request Parameter</label>
+            <label>Request Parameter</label>
             <textarea class="form-control" rows=3 title="" name="request">{{ $req }}</textarea>
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Response Format</label>
+            <label>Response Format</label>
             <textarea class="form-control" rows=3 title="" name="response">{{ $res }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Attributes</label>
+            <textarea class="form-control" rows=3 title="" name="attr">{{ $attr }}</textarea>
         </div>
         <button type="submit" class="btn btn-success">Generate</button>
     </form>
