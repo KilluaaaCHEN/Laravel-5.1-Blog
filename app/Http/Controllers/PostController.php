@@ -47,11 +47,11 @@ class PostController extends Controller
         $post = \Cache::get($cache_key);
         if (!$post) {
             $post = Post::findOrFail($post_id);
-            \Cache::put($cache_key, $post, 60 * 24);
+            \Cache::put($cache_key, $post, 1);
         }
         $key = 'Read_' . str_replace('.', '_', Request::getClientIp() . '_' . $post_id);
         if (!\Cache::has($key)) {
-            \Cache::put($key, 1, 60);
+            \Cache::put($key, 1, 1);
             $post->read_count++;
             $post->save();
             $post->read_count--;
