@@ -55,17 +55,39 @@ STR;
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
             if ($res_list) {
-                foreach ($res_list as $key => $val) {
-                    $type = gettype($val);
-                    if ($type == 'boolean') {
-                        $val = $val ? 'true' : 'false';
-                    }
-                    $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
-                    $doc .= " \n|   | `{$key}`  | $text | {$val} | {$type} |";
-                }
+                $doc = $this->format($res_list, $attr_list, $doc);
             }
         }
         return view('tools.doc', compact('title', 'uri', 'method', 'res', 'req', 'doc', 'attr'));
+    }
+
+    function format($res_list, $attr_list, $doc, $prefix = '')
+    {
+        foreach ($res_list as $key => $val) {
+            $type = gettype($val);
+            if ($type == 'boolean') {
+                $val = $val ? 'true' : 'false';
+            }
+            if ($type == 'array' || $type == 'object') {
+                $val = json_encode($val);
+                if (strstr($val, '{') && strstr($val, '}')) {
+                    $prefix = substr($key, 0, 1);
+                    $inner_doc = $this->format(json_decode($val), $attr_list, '', $prefix);
+                }
+            }
+            $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
+            if (isset($inner_doc)) {
+                $doc .= " \n|   | `{$key}`=>`$prefix`  | $text | {$val} | {$type} |";
+                $doc .= $inner_doc;
+            } else {
+                $str = "`{$key}`";
+                if ($prefix) {
+                    $str = "`$prefix`.`{$key}`";
+                }
+                $doc .= " \n|   | $str  | $text | {$val} | {$type} |";
+            }
+        }
+        return $doc;
     }
 
 }
