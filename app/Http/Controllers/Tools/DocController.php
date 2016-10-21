@@ -85,6 +85,7 @@ STR;
             $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
             if (isset($inner_doc)) {
                 $val = json_encode(json_decode($val), JSON_UNESCAPED_UNICODE);
+                $this->appendBr($val);
                 $doc .= " \n|   | `{$key}`=>`$pre`  | $text | {$val} | {$type} |";
                 $doc .= $inner_doc;
             } else {
@@ -96,6 +97,30 @@ STR;
             }
         }
         return $doc;
+    }
+
+    /**
+     * 添加<br/>
+     * @param $str
+     */
+    function appendBr(&$str)
+    {
+        while (strstr($str, '},')) {
+            $this->str_insert($str, stripos($str, '},') + 1, '<br/>');
+        }
+    }
+
+    /**
+     * 在指定位置添加字符
+     * @param $str
+     * @param $index
+     * @param $is
+     */
+    function str_insert(&$str, $index, $is)
+    {
+        $ss = substr($str, 0, $index);
+        $ls = substr($str, $index);
+        $str = $ss . $is . $ls;
     }
 
 }
