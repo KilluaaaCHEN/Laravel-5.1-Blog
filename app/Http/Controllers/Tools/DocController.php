@@ -58,12 +58,14 @@ STR;
                 $doc = $this->format($res_list, $attr_list, $doc);
             }
         }
+        $doc = urldecode($doc);
         return view('tools.doc', compact('title', 'uri', 'method', 'res', 'req', 'doc', 'attr'));
     }
 
     function format($res_list, $attr_list, $doc, $prefix = '')
     {
         foreach ($res_list as $key => $val) {
+            $inner_doc = null;
             $type = gettype($val);
             if ($type == 'boolean') {
                 $val = $val ? 'true' : 'false';
@@ -71,13 +73,19 @@ STR;
             if ($type == 'array' || $type == 'object') {
                 $val = json_encode($val);
                 if (strstr($val, '{') && strstr($val, '}')) {
-                    $prefix = substr($key, 0, 1);
-                    $inner_doc = $this->format(json_decode($val), $attr_list, '', $prefix);
+                    $list = json_decode($val);
+                    //数组只取第一个
+                    if (isset($list[0])) {
+                        $list = $list[0];
+                    }
+                    $pre = substr($key, 0, 1);
+                    $inner_doc = $this->format($list, $attr_list, '', $pre);
                 }
             }
             $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
             if (isset($inner_doc)) {
-                $doc .= " \n|   | `{$key}`=>`$prefix`  | $text | {$val} | {$type} |";
+                $val = json_encode(json_decode($val), JSON_UNESCAPED_UNICODE);
+                $doc .= " \n|   | `{$key}`=>`$pre`  | $text | {$val} | {$type} |";
                 $doc .= $inner_doc;
             } else {
                 $str = "`{$key}`";
