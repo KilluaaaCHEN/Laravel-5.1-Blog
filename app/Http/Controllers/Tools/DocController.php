@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tools;
 
+use App\Models\Dict;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -28,10 +29,15 @@ class DocController extends Controller
             $uri = ltrim($uri, '{{domain}}');
             $req_list = explode(PHP_EOL, $req);
             $res_list = json_decode($res, true);
-            $attr_list = [
-                'page_size' => '页码;每页大小,默认10;',
-                'page_index' => '页索引;从0开始,默认0'
-            ];
+
+            //查询字典
+            $cache_key = 'dict';
+            $attr_list = \Cache::get($cache_key);
+            if (!$attr_list) {
+                $attr_list = Dict::lists('val', 'key')->toArray();
+                \Cache::put($cache_key, $attr_list, 60 * 24);
+            }
+
             $attr_dic = json_decode($attr, true);
             if ($attr_dic) {
                 $attr_list = array_merge($attr_dic, $attr_list);

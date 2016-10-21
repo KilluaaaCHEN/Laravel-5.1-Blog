@@ -24,6 +24,8 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin'], function () {
         Route::get('post/delete/{post_id}', ['as' => 'admin.post.delete', 'uses' => 'PostController@delete']);
         Route::resource('links', 'LinksController', ['except' => ['update', 'destroy']]);
         Route::get('links/delete/{id}', ['as' => 'admin.links.delete', 'uses' => 'LinksController@delete']);
+        Route::resource('dict', 'DictController', ['except' => ['update', 'destroy']]);
+        Route::get('dict/delete/{id}', ['as' => 'admin.dict.delete', 'uses' => 'DictController@delete']);
         Route::get('logout', ['as' => 'admin.logout', 'uses' => 'AdminController@logout']);
     });
     Route::get('login', ['as' => 'admin.login', 'uses' => 'AdminController@login']);

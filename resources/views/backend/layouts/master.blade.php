@@ -126,6 +126,13 @@
                         <li><a href="{{route('admin.links.index')}}"><i class="fa fa-list-ul"></i>友链管理</a></li>
                     </ul>
                 </li>
+                <li class="treeview" data-id="admin.dict">
+                    <a href="#"><i class='fa fa-link'></i> <span>字典管理</span> <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{route('admin.dict.create')}}"><i class="fa fa-edit"></i>添加字典</a></li>
+                        <li><a href="{{route('admin.dict.index')}}"><i class="fa fa-list-ul"></i>字典管理</a></li>
+                    </ul>
+                </li
             </ul>
         </section>
     </aside>
