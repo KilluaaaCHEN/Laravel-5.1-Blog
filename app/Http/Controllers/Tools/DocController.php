@@ -79,7 +79,7 @@ STR;
             if ($type == 'array' || $type == 'object') {
                 $val = json_encode($val);
                 if (strstr($val, '{') && strstr($val, '}')) {
-                    $list = json_decode($val);
+                    $list = json_decode($val, true);
                     //数组只取第一个
                     if (isset($list[0])) {
                         $list = $list[0];
