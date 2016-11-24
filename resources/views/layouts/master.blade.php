@@ -27,11 +27,6 @@
             </div>
             <div id="w0-collapse" class="collapse navbar-collapse">
                 <ul id="w1" class="navbar-nav navbar-right nav" style="margin-right: 10px;">
-                    <li>
-                        <a href="http://gjsq.me/10571644" target="_blank" style="padding:0 30px 0 0">
-                            <img src="{{asset('img/tg.gif')}}" height="50"/>
-                        </a>
-                    </li>
                     <li class="active"><a href="/">Home</a></li>
                     <li><a href="{{route('post.view',['post_id'=>1])}}">About</a></li>
                     <li>
