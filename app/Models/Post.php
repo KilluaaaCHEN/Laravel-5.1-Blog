@@ -13,14 +13,14 @@ class Post extends Model
     protected $primaryKey = 'post_id';
     protected $guarded = [];
 
-    public static function getHotRead()
+    public static function getRandomRead()
     {
-        $cache_key = 'hot_read';
+        $cache_key = 'rand_read';
         $data = \Cache::get($cache_key);
         if (!$data) {
-            $query = Post::select(['post_id', 'title', 'read_count'])->where(['state_id' => 10]);
-            $data = $query->limit(10)->orderBy('read_count', 'desc')->get();
-            \Cache::put($cache_key, $data, 60 * 24);
+            $query = Post::select(['post_id', 'title', 'read_count'])->where(['state_id' => 10])->limit(10);
+            $data = $query->orderByRaw('RAND()')->get();
+            \Cache::put($cache_key, $data, 0.1);
         }
         return $data;
     }
@@ -28,17 +28,16 @@ class Post extends Model
     public static function getHotTag()
     {
         $cache_key = 'hot_tag';
-//        $data = \Cache::get($cache_key);
-//        if (!$data) {
+        $data = \Cache::get($cache_key);
+        if (!$data) {
             $query = Tag::select(['post_count', 'tag_name'])->distinct()->join('post_tag', 'tag.tag_id', '=', 'post_tag.tag_id');
             $data = $query->orderBy('post_count', 'desc')->get()->toArray();
             foreach ($data as $key => &$item) {
-                $i = ['label' => $item['tag_name'] . '(' . $item['post_count'] . ')', 'url' => '/tags/' . $item['tag_name'],'target'=>'_top'];
+                $i = ['label' => $item['tag_name'] . '(' . $item['post_count'] . ')', 'url' => '/tags/' . $item['tag_name'], 'target' => '_top'];
                 $item = $i;
             }
-//        }
+        }
         return json_encode($data);
-
     }
 
 

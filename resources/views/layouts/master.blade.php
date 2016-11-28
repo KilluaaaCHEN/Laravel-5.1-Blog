@@ -55,7 +55,7 @@
                             </div>
                             <div class="panel-body">
                                 <ul class="hot" id="read-ranking">
-                                    @foreach(\App\Models\Post::getHotRead() as $key=>$item)
+                                    @foreach(\App\Models\Post::getRandomRead() as $key=>$item)
                                         <li>{{$key+1}}.<a
                                                     href="{{route('post.view',['post_id'=>$item->post_id])}}">{{$item->title."($item->read_count)"}}</a>
                                         </li>
