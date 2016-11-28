@@ -51,7 +51,7 @@
                     <div class="col-md-3 col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h5 class="panel-title"><span class="icon-flag"></span> Read Ranking </h5>
+                                <h5 class="panel-title"><span class="icon-flag"></span> Random eading </h5>
                             </div>
                             <div class="panel-body">
                                 <ul class="hot" id="read-ranking">
@@ -62,17 +62,21 @@
                                     @endforeach
                                 </ul>
                             </div>
+
                         </div>
                         <br/>
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h5 class="panel-title"><span class="icon-tags"></span> Tags </h5>
                             </div>
-                            <div class="panel-body tags-ranking">
-                                @foreach(\App\Models\Post::getHotTag() as $item)
-                                    <a href="{{route('search.tag',['tag'=>$item->tag_name])}}">{{$item->tag_name."($item->post_count)"}}</a>
-                                @endforeach
+                            <div class="panel-body tags-ranking  zzsc-container">
+                                <div id='tag-cloud'></div>
                             </div>
+                            <script src="{{asset('plugins/tagcloud/jquery.svg3dtagcloud.min.js')}}"></script>
+                            <script>
+                                var tag_data = eval('(' + '{!! \App\Models\Post::getHotTag() !!}' + ')');
+                            </script>
+                            <script src="{{asset('plugins/tagcloud/tagcloud.js')}}"></script>
                         </div>
                         <br/>
                         <div class="panel panel-default">

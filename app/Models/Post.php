@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Helper\Curl;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use URL;
 
 class Post extends Model
 {
@@ -29,12 +28,17 @@ class Post extends Model
     public static function getHotTag()
     {
         $cache_key = 'hot_tag';
-        $data = \Cache::get($cache_key);
-        if (!$data) {
+//        $data = \Cache::get($cache_key);
+//        if (!$data) {
             $query = Tag::select(['post_count', 'tag_name'])->distinct()->join('post_tag', 'tag.tag_id', '=', 'post_tag.tag_id');
-            $data = $query->limit(15)->orderBy('post_count', 'desc')->get();
-        }
-        return $data;
+            $data = $query->orderBy('post_count', 'desc')->get()->toArray();
+            foreach ($data as $key => &$item) {
+                $i = ['label' => $item['tag_name'] . '(' . $item['post_count'] . ')', 'url' => '/tags/' . $item['tag_name'],'target'=>'_top'];
+                $item = $i;
+            }
+//        }
+        return json_encode($data);
+
     }
 
 
