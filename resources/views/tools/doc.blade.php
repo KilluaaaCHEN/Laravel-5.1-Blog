@@ -68,10 +68,6 @@
             });
         </script>
     @endif
-
-
 </div>
-
-
 </body>
 </html>
