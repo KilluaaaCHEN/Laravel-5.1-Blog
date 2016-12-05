@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Tools;
 
+use App\Http\Controllers\Controller;
 use App\Models\Dict;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class DocController extends Controller
 {
@@ -76,7 +74,7 @@ STR;
             if ($type == 'boolean') {
                 $val = $val ? 'true' : 'false';
             }
-            if ($type == 'array' || $type == 'object') {
+            if (($type == 'array' || $type == 'object') && $key != '_id') {
                 $val = json_encode($val);
                 if (strstr($val, '{') && strstr($val, '}')) {
                     $list = json_decode($val, true);
@@ -87,6 +85,10 @@ STR;
                     $pre = substr($key, 0, 1);
                     $inner_doc = $this->format($list, $attr_list, '', $pre);
                 }
+            }
+            if ($key == '_id') {
+                $val = json_encode($val);
+                $val = json_encode(json_decode($val), JSON_UNESCAPED_UNICODE);
             }
             $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
             if (isset($inner_doc)) {
