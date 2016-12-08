@@ -51,7 +51,7 @@
                     <div class="col-md-3 col-sm-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h5 class="panel-title"><span class="icon-flag"></span> Random eading </h5>
+                                <h5 class="panel-title"><span class="icon-flag"></span> Random Reading </h5>
                             </div>
                             <div class="panel-body">
                                 <ul class="hot" id="read-ranking">
