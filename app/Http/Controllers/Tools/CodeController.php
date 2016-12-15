@@ -385,14 +385,18 @@ STR;
      */
     public function editAction()
     {
-        \$id = \$this->get('id');
-        \$$this->model_short = new $this->model_cls();
-        \$fields = $this->keys;
-        \$data = \$$this->model_short->getInfo(\$id, \$fields);
-        if (!\$data) {
-            \$this->error(-1, '数据不存在');
+        try {
+            \$id = \$this->get('id');
+            \$$this->model_short = new $this->model_cls();
+            \$fields = $this->keys;
+            \$data = \$$this->model_short->getInfo(\$id, \$fields);
+            if (!\$data) {
+                \$this->error(-1, '数据不存在');
+            }
+            \$this->result('',\$data);
+        } catch (Exception \$e) {
+            \$this->error(500, \$e->getMessage());
         }
-        \$this->result('',\$data);
     }
 STR;
         return $str;
@@ -427,17 +431,21 @@ T2;
      */
     public function storeAction()
     {
-        $t1
-        \$id = \$this->get('id');
-        \$$this->model_short = new $this->model_cls();
-        $t2
-        \$data = compact($this->keys2);
-        \$rst = \$$this->model_short->saveData(\$data, \$id);
-        if (\$rst) {
-            \$this->result('OK');
-        } else {
-            \$this->error(-1, '保存失败');
-        }
+        try {
+            $t1
+            \$id = \$this->get('id');
+            \$$this->model_short = new $this->model_cls();
+            $t2
+            \$data = compact($this->keys2);
+            \$rst = \$$this->model_short->saveData(\$data, \$id);
+            if (\$rst) {
+                \$this->result('OK');
+            } else {
+                \$this->error(-1, '保存失败');
+            }
+        } catch (Exception \$e) {
+            \$this->error(500, \$e->getMessage());
+        } 
     }
 STR;
         return $str;
@@ -489,14 +497,18 @@ STR;
      */
     public function delAction()
     {
-        \$id = \$this->get('id');
-        \$$this->model_short = new $this->model_cls();
-        \$rst = \$$this->model_short->delData(\$id)['n'];
-        if (\$rst) {
-            \$this->result();
-        } else {
-            \$this->error(-1, '删除失败');
-        }
+        try {
+            \$id = \$this->get('id');
+            \$$this->model_short = new $this->model_cls();
+            \$rst = \$$this->model_short->delData(\$id)['n'];
+            if (\$rst) {
+                \$this->result();
+            } else {
+                \$this->error(-1, '删除失败');
+            }
+         } catch (Exception \$e) {
+            \$this->error(500, \$e->getMessage());
+         }
     }
 STR;
         return $str;
@@ -534,29 +546,33 @@ T3;
      */
     public function indexAction()
     {
-        \$page_size = \$this->get('page_size', 10);
-        \$page_index = \$this->get('page_index', 1);
-        $t2
-        $t1
-        \$query = [];
-        \$this->likeQuery(\$query, compact($this->keys_ex_int));
-        \$this->equalQuery(\$query, compact($this->keys_int));
-        $t3
-        $slh
-        \$data = \$$this->model_short->find(
-            \$query, ['__MODIFY_TIME__' => -1],
-            (\$page_index - 1) * \$page_size, \$page_size,
-            $this->keys
-        );
-        foreach (\$data['datas'] as &\$item) {
-            \$item['__CREATE_TIME__'] = date('Y-m-d H:i:s', \$item['__CREATE_TIME__']->sec);
+        try {
+            \$page_size = \$this->get('page_size', 10);
+            \$page_index = \$this->get('page_index', 1);
+            $t2
+            $t1
+            \$query = [];
+            \$this->likeQuery(\$query, compact($this->keys_ex_int));
+            \$this->equalQuery(\$query, compact($this->keys_int));
+            $t3
+            $slh
+            \$data = \$$this->model_short->find(
+                \$query, ['__MODIFY_TIME__' => -1],
+                (\$page_index - 1) * \$page_size, \$page_size,
+                $this->keys
+            );
+            foreach (\$data['datas'] as &\$item) {
+                \$item['__CREATE_TIME__'] = date('Y-m-d H:i:s', \$item['__CREATE_TIME__']->sec);
+            }
+            \$page_total = floor(\$data['total'] / \$page_size);
+            if (\$data['total'] % \$page_size != 0) {
+                \$page_total++;
+            }
+            \$data['page_total'] = \$page_total;
+            \$this->result('', \$data);
+        } catch (Exception \$e) {
+            \$this->error(500, \$e->getMessage());
         }
-        \$page_total = floor(\$data['total'] / \$page_size);
-        if (\$data['total'] % \$page_size != 0) {
-            \$page_total++;
-        }
-        \$data['page_total'] = \$page_total;
-        \$this->result('', \$data);
     }
 STR;
         return $str;
