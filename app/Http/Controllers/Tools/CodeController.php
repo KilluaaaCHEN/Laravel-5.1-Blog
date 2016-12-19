@@ -391,11 +391,11 @@ STR;
             \$fields = $this->keys;
             \$data = \$$this->model_short->getInfo(\$id, \$fields);
             if (!\$data) {
-                \$this->error(-1, '数据不存在');
+                abort(404,'数据不存在);
             }
             \$this->result('',\$data);
         } catch (Exception \$e) {
-            \$this->error(500, \$e->getMessage());
+            \$this->error(\$e->getCode(), \$e->getMessage());
         }
     }
 STR;
@@ -416,7 +416,7 @@ STR;
             if ($field['unique'] == '√') {
                 $t2 .= <<<T2
 {$tmp}if (\$$this->model_short->validateUnique('{$field['key']}', \${$field['key']}, \$id)) {
-    \t\t\$this->error(-1, '{$field['name']}已被使用');
+    \t\t\abort(-1, '{$field['name']}已被使用');
 \t\t}
 
 T2;
@@ -441,10 +441,10 @@ T2;
             if (\$rst) {
                 \$this->result('OK');
             } else {
-                \$this->error(-1, '保存失败');
+                \abort(-1, '保存失败');
             }
         } catch (Exception \$e) {
-            \$this->error(500, \$e->getMessage());
+            \$this->error(\$e->getCode(), \$e->getMessage());
         } 
     }
 STR;
@@ -504,10 +504,10 @@ STR;
             if (\$rst) {
                 \$this->result();
             } else {
-                \$this->error(-1, '删除失败');
+                \abort(-1, '删除失败');
             }
          } catch (Exception \$e) {
-            \$this->error(500, \$e->getMessage());
+            \$this->error(\$e->getCode(), \$e->getMessage());
          }
     }
 STR;
@@ -571,7 +571,7 @@ T3;
             \$data['page_total'] = \$page_total;
             \$this->result('', \$data);
         } catch (Exception \$e) {
-            \$this->error(500, \$e->getMessage());
+            \$this->error(\$e->getCode(), \$e->getMessage());
         }
     }
 STR;
