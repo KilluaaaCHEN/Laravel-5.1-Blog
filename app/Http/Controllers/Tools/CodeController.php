@@ -532,7 +532,7 @@ STR;
         }
         $t3 = <<<T3
 if (\$begin_time) {
-            \$query['begin_time'] = ['\$get' => new MongoDate(strtotime(\$begin_time))];
+            \$query['begin_time'] = ['\$gte' => new MongoDate(strtotime(\$begin_time))];
         }
         if (\$end_time) {
             \$query['end_time'] = ['\$lte' => new MongoDate(strtotime(\$end_time))];
