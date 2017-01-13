@@ -50,7 +50,9 @@ class DocController extends Controller
 STR;
             foreach ($req_list as $item) {
                 $not_null = strstr($item, '//') ? '  n' : '`y`';
-                $i = explode(':', ltrim($item, '//'));
+                $str = ltrim($item, '//');
+                $index = strpos($str, ':');
+                $i = [substr($str, 0, $index), substr($str, $index + 1)];
                 if (count($i) > 1) {
                     $text = key_exists($i[0], $attr_list) ? $attr_list[$i[0]] : '&nbsp;';
                     $val = trim($i[1]);
@@ -74,7 +76,7 @@ STR;
             if ($type == 'boolean') {
                 $val = $val ? 'true' : 'false';
             }
-            if (($type == 'array' || $type == 'object') && $key != '_id') {
+            if (($type == 'array' || $type == 'object') && $key != '_id' && !isset($val['sec']) && !isset($val['usec'])) {
                 $val = json_encode($val);
                 if (strstr($val, '{') && strstr($val, '}')) {
                     $list = json_decode($val, true);
@@ -86,7 +88,7 @@ STR;
                     $inner_doc = $this->format($list, $attr_list, '', $pre);
                 }
             }
-            if ($key == '_id') {
+            if ($key == '_id' || (isset($val['sec']) && isset($val['usec']))) {
                 $val = json_encode($val);
                 $val = json_encode(json_decode($val), JSON_UNESCAPED_UNICODE);
             }
@@ -101,6 +103,7 @@ STR;
                 if ($prefix) {
                     $str = "`$prefix`.`{$key}`";
                 }
+                $this->appendBr($val);
                 $doc .= " \n|   | $str  | $text | {$val} | {$type} |";
             }
         }
@@ -110,11 +113,18 @@ STR;
     /**
      * 添加<br/>
      * @param $str
+     * @return bool
      */
     function appendBr(&$str)
     {
-        while (strstr($str, '},')) {
-            $this->str_insert($str, stripos($str, '},') + 1, '<br/>');
+        if (mb_strlen($str) <= 30) {
+            return false;
+        }
+        while (strstr($str, '},{')) {
+            $this->str_insert($str, stripos($str, '},{') + 1, '<br/>');
+        }
+        while (strstr($str, '","')) {
+            $this->str_insert($str, stripos($str, '","') + 1, '<br/>');
         }
     }
 
@@ -126,8 +136,8 @@ STR;
      */
     function str_insert(&$str, $index, $is)
     {
-        $ss = substr($str, 0, $index);
-        $ls = substr($str, $index);
+        $ss = substr($str, 0, $index+1);
+        $ls = substr($str, $index+1);
         $str = $ss . $is . $ls;
     }
 
