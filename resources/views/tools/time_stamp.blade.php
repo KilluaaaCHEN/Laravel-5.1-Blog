@@ -72,6 +72,6 @@
         document.getElementById('time').value = date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
     }
 </script>
-
+@include('/common/stat')
 </body>
 </html>

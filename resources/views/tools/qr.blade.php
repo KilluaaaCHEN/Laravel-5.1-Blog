@@ -15,5 +15,6 @@
 <div style="width:600px; margin: 30px auto" class="form-group">
     <input id="text" value="{{$text}}" class="form-control" title="text"/>
 </div>
+@include('/common/stat')
 </body>
 </html>

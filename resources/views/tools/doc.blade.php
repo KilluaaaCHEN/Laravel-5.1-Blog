@@ -56,7 +56,8 @@
         <input type="button" class="btn btn-primary" value="Copy To Clipboard" id="copy"/>
         <br/>
         <br/>
-        <textarea id="doc" class="form-control" rows=5 onChange="clip.setText(this.value)" title="">{!! $doc !!}</textarea>
+        <textarea id="doc" class="form-control" rows=5 onChange="clip.setText(this.value)"
+                  title="">{!! $doc !!}</textarea>
         <script type="text/javascript" src="{{asset('/plugins/zeroClipboard/ZeroClipboard.js')}}"></script>
         <script language="JavaScript">
             var clip = new ZeroClipboard.Client();
@@ -69,5 +70,6 @@
         </script>
     @endif
 </div>
+@include('/common/stat')
 </body>
 </html>

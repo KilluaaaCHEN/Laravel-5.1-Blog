@@ -51,6 +51,9 @@ STR;
             foreach ($req_list as $item) {
                 $not_null = strstr($item, '//') ? '  n' : '`y`';
                 $str = ltrim($item, '//');
+                if (empty($str)) {
+                    continue;
+                }
                 $index = strpos($str, ':');
                 $i = [substr($str, 0, $index), substr($str, $index + 1)];
                 if (count($i) > 1) {
@@ -136,8 +139,8 @@ STR;
      */
     function str_insert(&$str, $index, $is)
     {
-        $ss = substr($str, 0, $index+1);
-        $ls = substr($str, $index+1);
+        $ss = substr($str, 0, $index + 1);
+        $ls = substr($str, $index + 1);
         $str = $ss . $is . $ls;
     }
 

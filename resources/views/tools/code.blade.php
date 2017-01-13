@@ -111,5 +111,6 @@
     {{--</script>--}}
     {{--@endif--}}
 </div>
+@include('/common/stat')
 </body>
 </html>
