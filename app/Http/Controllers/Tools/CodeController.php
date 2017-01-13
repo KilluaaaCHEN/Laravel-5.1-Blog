@@ -391,7 +391,7 @@ STR;
             \$fields = $this->keys;
             \$data = \$$this->model_short->getInfo(\$id, \$fields);
             if (!\$data) {
-                abort(404,'数据不存在);
+                abort(404,'数据不存在');
             }
             \$this->result('',\$data);
         } catch (Exception \$e) {
