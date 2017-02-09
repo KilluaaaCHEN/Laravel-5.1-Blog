@@ -416,7 +416,7 @@ STR;
             if ($field['unique'] == '√') {
                 $t2 .= <<<T2
 {$tmp}if (\$$this->model_short->validateUnique('{$field['key']}', \${$field['key']}, \$id)) {
-    \t\t\abort(-1, '{$field['name']}已被使用');
+    \t\tabort(-1, '{$field['name']}已被使用');
 \t\t}
 
 T2;
@@ -441,7 +441,7 @@ T2;
             if (\$rst) {
                 \$this->result('OK');
             } else {
-                \abort(-1, '保存失败');
+                abort(-1, '保存失败');
             }
         } catch (Exception \$e) {
             \$this->error(\$e->getCode(), \$e->getMessage());
@@ -504,7 +504,7 @@ STR;
             if (\$rst) {
                 \$this->result();
             } else {
-                \abort(-1, '删除失败');
+                abort(-1, '删除失败');
             }
          } catch (Exception \$e) {
             \$this->error(\$e->getCode(), \$e->getMessage());
