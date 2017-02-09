@@ -380,10 +380,10 @@ STR;
         $str = <<<STR
         
     /**
-     * 编辑数据
+     * 获取信息
      * @author Killua Chen
      */
-    public function editAction()
+    public function getInfoAction()
     {
         try {
             \$id = \$this->get('id');

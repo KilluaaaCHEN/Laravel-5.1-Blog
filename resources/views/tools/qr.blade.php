@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>二维码生成-larry666</title>
-    <link href="{{asset('plugins/qr/styles.css')}}" rel="stylesheet">
+    <link href="{{asset('plugins/qr/styles.css')}}" rel="stylesheet"qq>
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="{{asset('plugins/common/jquery.min.js')}}"></script>
     <script src="{{asset('plugins/qr/jquery-qrcode-0.14.0.min.js')}}"></script>
