@@ -109,15 +109,17 @@ class CodeController extends Controller
         $this->keys2 = rtrim($keys, ', ');
     }
 
-    public function setKeysExInt()
+    /**
+     * 设置变量keys
+     * @author Killua Chen
+     */
+    public function setKeysArray()
     {
-        $keys = '';
+        $keys = [];
         foreach ($this->structure as $item) {
-            if ($item['type'] != '数字输入框') {
-                $keys .= "'{$item['key']}', ";
-            }
+            array_push($keys, $item['key']);
         }
-        $this->keys_ex_int = rtrim($keys, ', ');
+        $this->keys_arr = $keys;
     }
 
     public function setKeysInt()
@@ -131,17 +133,15 @@ class CodeController extends Controller
         $this->keys_int = rtrim($keys, ', ');
     }
 
-    /**
-     * 设置变量keys
-     * @author Killua Chen
-     */
-    public function setKeysArray()
+    public function setKeysExInt()
     {
-        $keys = [];
+        $keys = '';
         foreach ($this->structure as $item) {
-            array_push($keys, $item['key']);
+            if ($item['type'] != '数字输入框') {
+                $keys .= "'{$item['key']}', ";
+            }
         }
-        $this->keys_arr = $keys;
+        $this->keys_ex_int = rtrim($keys, ', ');
     }
 
     /**
@@ -551,7 +551,7 @@ T3;
             \$page_index = \$this->get('page_index', 1);
             $t2
             $t1
-            \$query = [];
+            \$query = ['is_delete' => ['\$ne'=>true]];
             \$this->likeQuery(\$query, compact($this->keys_ex_int));
             \$this->equalQuery(\$query, compact($this->keys_int));
             $t3
