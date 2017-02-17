@@ -41,7 +41,7 @@ class DocController extends Controller
                 $attr_list = array_merge($attr_dic, $attr_list);
             }
             $doc = <<<STR
-### 1.x $title 
+###  $title 
 | URI | $uri  |   |   |   | 
 | :----: | ------------ | ------------ | ------------ |  :----: |
 |  **请求方式** | $method  |  |   |   |
