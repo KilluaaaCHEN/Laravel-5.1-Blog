@@ -4,9 +4,9 @@
  * Created by Killua Chen
  * User: killua
  * Date: 17/02/20
- * Time: 14:23
+ * Time: 18:14
  */
-class 123_123Controller extends iWebsite_Controller_Action
+class Backend_SigninRecordController extends iWebsite_Controller_Action
 {
     /**
      * 首页
@@ -32,28 +32,42 @@ class 123_123Controller extends iWebsite_Controller_Action
 		$course_id = $this->get('course_id');
 		$is_delete = intval($this->get('is_delete'));
 		$date = intval($this->get('date'));
+            
             $query = ['is_delete' => ['$ne'=>true]];
             $this->likeQuery($query, compact('open_id', 'staff_name', 'course', 'coach_id', 'coach_name', 'floor', 'course_id', 'is_delete'));
             $this->equalQuery($query, compact('status', 'begin_time', 'end_time', 'duration', 'course_type', 'date'));
-            if ($begin_time) {
+                    //按时间精确到秒查询
+        $begin_time = $this->get('begin_time');
+        $end_time = $this->get('end_time');
+        if ($begin_time) {
             $query['begin_time'] = ['$gte' => new MongoDate(strtotime($begin_time))];
         }
         if ($end_time) {
             $query['end_time'] = ['$lte' => new MongoDate(strtotime($end_time))];
         }
-            $_service = new 123_Model_123();
+        
+        //按日期按天查询
+        $begin_date = $this->get('begin_date');
+        $end_date = $this->get('end_date');
+        if ($begin_date) {
+            $query['time']['$gte'] = strtotime($begin_date);
+        }
+        if ($end_date) {
+            $query['time']['$lte'] = strtotime('+1 days', strtotime($$end_date));
+        }
+
+            $bsr_service = new Backend_Model_SigninRecord();
             $is_export = $this->get('is_export');
             if ($is_export) {
                 $page_size = MAX_VALUE;
                 $page_index = 1;
             }
-            $data = $_service->find(
+            $data = $bsr_service->find(
                 $query, ['__MODIFY_TIME__' => -1],
                 ($page_index - 1) * $page_size, $page_size,
                 ['open_id' => 1, 'staff_name' => 1, 'status' => 1, 'course' => 1, 'coach_id' => 1, 'coach_name' => 1, 'begin_time' => 1, 'end_time' => 1, 'floor' => 1, 'duration' => 1, 'course_type' => 1, 'course_id' => 1, 'is_delete' => 1, 'date' => 1, '_id' => 0, '__CREATE_TIME__' => 1]
             );
             foreach ($data['datas'] as &$item) {
-                $item['__CREATE_TIME__'] = date('Y-m-d H:i:s', $item['__CREATE_TIME__']->sec);
             }
             if ($is_export) {
                 arrayToCVS2('', [
@@ -71,8 +85,7 @@ class 123_123Controller extends iWebsite_Controller_Action
                         'course_type' => '课程类型',
                         'course_id' => '课程编号',
                         'is_delete' => '是否删除',
-                        'date' => '日期'
-        ],
+                        'date' => '日期'],
                     'result' => $data['datas']
                 ]);
             }
@@ -96,9 +109,9 @@ class 123_123Controller extends iWebsite_Controller_Action
     {
         try {
             $id = $this->get('id');
-            $_service = new 123_Model_123();
+            $bsr_service = new Backend_Model_SigninRecord();
             $fields = ['open_id' => 1, 'staff_name' => 1, 'status' => 1, 'course' => 1, 'coach_id' => 1, 'coach_name' => 1, 'begin_time' => 1, 'end_time' => 1, 'floor' => 1, 'duration' => 1, 'course_type' => 1, 'course_id' => 1, 'is_delete' => 1, 'date' => 1, '_id' => 0, '__CREATE_TIME__' => 1];
-            $data = $_service->getInfo($id, $fields);
+            $data = $bsr_service->getInfo($id, $fields);
             if (!$data) {
                 abort(404,'数据不存在');
             }
@@ -131,10 +144,10 @@ class 123_123Controller extends iWebsite_Controller_Action
 		$is_delete = intval($this->get('is_delete'));
 		$date = intval($this->get('date'));
             $id = $this->get('id');
-            $_service = new 123_Model_123();
+            $bsr_service = new Backend_Model_SigninRecord();
             
             $data = compact('open_id', 'staff_name', 'status', 'course', 'coach_id', 'coach_name', 'begin_time', 'end_time', 'floor', 'duration', 'course_type', 'course_id', 'is_delete', 'date');
-            $rst = $_service->saveData($data, $id);
+            $rst = $bsr_service->saveData($data, $id);
             if ($rst) {
                 $this->result('OK');
             } else {
@@ -154,8 +167,8 @@ class 123_123Controller extends iWebsite_Controller_Action
     {
         try {
             $id = $this->get('id');
-            $_service = new 123_Model_123();
-            $rst = $_service->delData($id)['n'];
+            $bsr_service = new Backend_Model_SigninRecord();
+            $rst = $bsr_service->delData($id)['n'];
             if ($rst) {
                 $this->result();
             } else {

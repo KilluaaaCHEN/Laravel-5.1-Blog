@@ -94,7 +94,7 @@ class CodeController extends Controller
         foreach ($this->structure as $item) {
             $keys .= "'{$item['key']}' => 1, ";
         }
-        $keys = rtrim($keys, ' ,') . ", '_id' => 0, '__CREATE_TIME__' => 1]";
+        $keys = rtrim($keys, ' ,') . ", '_id' => 1]";
         $this->keys = $keys;
     }
 
@@ -535,20 +535,27 @@ STR;
     {
         $t1 = $this->getGetStr('index');
         $slh = $this->getSlh();
-        $t2 = '';
-        if (!in_array('begin_time', $this->keys_arr)) {
-            $t2 .= "\$begin_time = \$this->get('begin_time');";
-        }
-        if (!in_array('end_time', $this->keys_arr)) {
-            $t2 .= "\$end_time = \$this->get('end_time');";
-        }
         $t3 = <<<T3
-if (\$begin_time) {
+        //按时间精确到秒查询
+        \$begin_time = \$this->get('begin_time');
+        \$end_time = \$this->get('end_time');
+        if (\$begin_time) {
             \$query['begin_time'] = ['\$gte' => new MongoDate(strtotime(\$begin_time))];
         }
         if (\$end_time) {
             \$query['end_time'] = ['\$lte' => new MongoDate(strtotime(\$end_time))];
         }
+        
+        //按日期按天查询
+        \$begin_date = \$this->get('begin_date');
+        \$end_date = \$this->get('end_date');
+        if (\$begin_date) {
+            \$query['time']['\$gte'] = strtotime(\$begin_date);
+        }
+        if (\$end_date) {
+            \$query['time']['\$lte'] = strtotime('+1 days', strtotime($\$end_date));
+        }
+
 T3;
 
         $str = <<<STR
@@ -561,8 +568,9 @@ T3;
         try {
             \$page_size = \$this->get('page_size', 10);
             \$page_index = \$this->get('page_index', 1);
-            $t2
+            
             $t1
+            
             \$query = ['is_delete' => ['\$ne'=>true]];
             \$this->likeQuery(\$query, compact($this->keys_ex_int));
             \$this->equalQuery(\$query, compact($this->keys_int));
@@ -579,7 +587,6 @@ T3;
                 $this->keys
             );
             foreach (\$data['datas'] as &\$item) {
-                \$item['__CREATE_TIME__'] = date('Y-m-d H:i:s', \$item['__CREATE_TIME__']->sec);
             }
             if (\$is_export) {
                 arrayToCVS2('', [
