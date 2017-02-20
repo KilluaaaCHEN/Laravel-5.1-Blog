@@ -16,6 +16,7 @@ class CodeController extends Controller
     public $keys_arr; // ['key1','key2']
     public $keys_int; // ['key1','key2']
     public $keys_ex_int; // ['key1','key2']
+    public $attr_kv; //['open_id' => '学员编号','staff_name' => '学员姓名']
 
     /**
      * 生成iWebSite CRUD代码
@@ -62,6 +63,7 @@ class CodeController extends Controller
         $this->setKeysArray();
         $this->setKeysInt();
         $this->setKeysExInt();
+        $this->setKeysAttr();
     }
 
     /**
@@ -142,6 +144,16 @@ class CodeController extends Controller
             }
         }
         $this->keys_ex_int = rtrim($keys, ', ');
+    }
+
+    private function setKeysAttr()
+    {
+        $str = '[';
+        foreach ($this->structure as $item) {
+            $str .= "
+                        '{$item['key']}' => '{$item['name']}',";
+        }
+        $this->attr_kv = rtrim($str, ',') . ']';
     }
 
     /**
@@ -556,6 +568,11 @@ T3;
             \$this->equalQuery(\$query, compact($this->keys_int));
             $t3
             $slh
+            \$is_export = \$this->get('is_export');
+            if (\$is_export) {
+                \$page_size = MAX_VALUE;
+                \$page_index = 1;
+            }
             \$data = \$$this->model_short->find(
                 \$query, ['__MODIFY_TIME__' => -1],
                 (\$page_index - 1) * \$page_size, \$page_size,
@@ -563,6 +580,12 @@ T3;
             );
             foreach (\$data['datas'] as &\$item) {
                 \$item['__CREATE_TIME__'] = date('Y-m-d H:i:s', \$item['__CREATE_TIME__']->sec);
+            }
+            if (\$is_export) {
+                arrayToCVS2('', [
+                    'title' => $this->attr_kv,
+                    'result' => \$data['datas']
+                ]);
             }
             \$page_total = floor(\$data['total'] / \$page_size);
             if (\$data['total'] % \$page_size != 0) {
