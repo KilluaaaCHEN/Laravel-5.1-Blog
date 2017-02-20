@@ -73,6 +73,7 @@ STR;
 
     function format($res_list, $attr_list, $doc, $prefix = '')
     {
+        $this->filterAttr($res_list);
         foreach ($res_list as $key => $val) {
             $inner_doc = null;
             $type = gettype($val);
