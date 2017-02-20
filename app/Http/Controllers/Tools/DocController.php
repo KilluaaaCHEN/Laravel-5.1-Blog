@@ -88,6 +88,7 @@ STR;
                         $list = $list[0];
                     }
                     $pre = substr($key, 0, 1);
+                    $this->filterAttr($list);
                     $inner_doc = $this->format($list, $attr_list, '', $pre);
                 }
             }
@@ -97,7 +98,9 @@ STR;
             }
             $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
             if (isset($inner_doc)) {
-                $val = json_encode(json_decode($val), JSON_UNESCAPED_UNICODE);
+                $val = json_decode($val, true);
+                $this->filterAttr($val[0]);
+                $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                 $this->appendBr($val);
                 $doc .= " \n|   | `{$key}`=>`$pre`  | $text | {$val} | {$type} |";
                 $doc .= $inner_doc;
@@ -111,6 +114,14 @@ STR;
             }
         }
         return $doc;
+    }
+
+    public function filterAttr(&$list)
+    {
+        $unset_arr = ['__REMOVED__', '__MODIFY_TIME__', '__CREATE_TIME__', 'is_delete'];
+        foreach ($unset_arr as $item) {
+            unset($list[$item]);
+        }
     }
 
     /**
