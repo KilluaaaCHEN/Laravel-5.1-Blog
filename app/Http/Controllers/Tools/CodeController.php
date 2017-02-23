@@ -478,7 +478,6 @@ STR;
             \$id = \$this->get('id');
             \$$this->model_short = new $this->model_cls();
             
-            
             \$rules = [
                 $rules
             ];
