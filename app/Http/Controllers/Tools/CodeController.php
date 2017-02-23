@@ -262,7 +262,7 @@ STR;
         if (\$id) {
             return !!\$this->count([\$field => \$val, '_id' => ['\$ne' => myMongoId(\$id)]$t2]);
         } else {
-            return !!\$this->count([\$field => \$val$t3]);
+            return !!\$this->count([\$field => \$val$t2]);
         }
     }
 

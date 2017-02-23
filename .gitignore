@@ -5,3 +5,4 @@ Homestead.json
 .env
 .idea/
 /public/tmp
+.DS_Store
