@@ -6,3 +6,4 @@ Homestead.json
 .idea/
 /public/tmp
 .DS_Store
+/public/tmp/temp.php

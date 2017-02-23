@@ -422,19 +422,49 @@ STR;
     public function getStoreStr()
     {
         $t1 = $this->getGetStr();
-        $t2 = '';
+        $rules = '';
+
         foreach ($this->structure as $i => $field) {
-            $tmp = $i > 0 ? "\t\t" : '';
-            if ($field['unique'] == '√') {
-                $t2 .= <<<T2
-{$tmp}if (\$$this->model_short->validateUnique('{$field['key']}', \${$field['key']}, \$id)) {
-    \t\tabort(-1, '{$field['name']}已被使用');
-\t\t}
-
-T2;
-
+            $rule = '';
+            if ($field['required'] == '√') {
+                $rule .= 'required|';
             }
+            if ($field['unique'] == '√') {
+                $rule .= 'unique|';
+            }
+            if ($field['type'] == '数组') {
+                $rule .= 'array|';
+            }
+            if ($field['filter'] == '整数验证') {
+                $rule .= 'integer|';
+            }
+            if ($field['filter'] == '浮点验证' || $field['type'] == '数字输入框') {
+                $rule .= 'numeric|';
+            } elseif (strstr($field['name'], '日期') || strstr($field['name'], '生日')) {
+                $rule .= 'date|dateFormat:Ymd';
+            }
+            if ($field['filter'] == '是否IP地址' || strstr($field['name'], 'IP')) {
+                $rule .= 'ip|';
+            }
+            if ($field['filter'] == '是否Email') {
+                $rule .= 'email|';
+            }
+
+            if (strstr($field['name'], '时间')) {
+                $rule .= 'date|';
+            }
+            if (strstr($field['name'], '手机')) {
+                $rule .= 'mobile|';
+            }
+            if (strstr($field['name'], '身份证')) {
+                $rule .= 'idCard|';
+            }
+            $rule = rtrim($rule, '|');
+            $rules .= "
+                '{$field['key']}' => '$rule',";
         }
+
+
         $str = <<<STR
         
     /**
@@ -447,7 +477,16 @@ T2;
             $t1
             \$id = \$this->get('id');
             \$$this->model_short = new $this->model_cls();
-            $t2
+            
+            
+            \$rules = [
+                $rules
+            ];
+            \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
+            if (!\$v->validate()) {
+                \$this->error(-1,\$v->msg());
+            }
+            
             \$data = compact($this->keys2);
             \$rst = \$$this->model_short->saveData(\$data, \$id);
             if (\$rst) {
