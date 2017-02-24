@@ -441,9 +441,6 @@ STR;
             if ($field['filter'] == '是否Email') {
                 $rule .= 'email|';
             }
-            if ($field['filter'] == '整数验证') {
-                $rule .= 'integer|';
-            }
             if ($field['filter'] == '是否URL') {
                 $rule .= 'url|';
             }
