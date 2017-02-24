@@ -488,19 +488,15 @@ STR;
     public function storeAction()
     {
         try {
-            $t1
-            \$id = \$this->get('id');
-            \$$this->model_short = new $this->model_cls();
-            
             \$rules = [
                 $rules
             ];
+            \$$this->model_short = new $this->model_cls();
             \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
             if (!\$v->validate()) {
                 \$this->error(-1,\$v->msg());
             }
-            
-            \$data = compact($this->keys2);
+            \$data = \$v->data();
             \$rst = \$$this->model_short->saveData(\$data, \$id);
             if (\$rst) {
                 \$this->result('OK');

@@ -4,7 +4,7 @@
  * Created by Killua Chen
  * User: killua
  * Date: 17/02/24
- * Time: 10:13
+ * Time: 12:17
  */
 class Frontend_UserController extends iWebsite_Controller_Action
 {
@@ -21,7 +21,7 @@ class Frontend_UserController extends iWebsite_Controller_Action
             $open_id = $this->get('open_id');
 		$name = $this->get('name');
 		$mobile = intval($this->get('mobile'));
-		$gender = intval($this->get('gender'));
+		$gender = $this->get('gender');
 		$birthday = intval($this->get('birthday'));
 		$stature = intval($this->get('stature'));
 		$floor = $this->get('floor');
@@ -30,8 +30,8 @@ class Frontend_UserController extends iWebsite_Controller_Action
 		$is_delete = intval($this->get('is_delete'));
             
             $query = ['is_delete' => ['$ne'=>true]];
-            $this->likeQuery($query, compact('open_id', 'name', 'floor', 'identity', 'head_img', 'is_delete'));
-            $this->equalQuery($query, compact('mobile', 'gender', 'birthday', 'stature'));
+            $this->likeQuery($query, compact('open_id', 'name', 'gender', 'floor', 'identity', 'head_img', 'is_delete'));
+            $this->equalQuery($query, compact('mobile', 'birthday', 'stature'));
                     //按时间精确到秒查询
         $begin_time = $this->get('begin_time');
         $end_time = $this->get('end_time');
@@ -121,37 +121,24 @@ class Frontend_UserController extends iWebsite_Controller_Action
     public function storeAction()
     {
         try {
-            $open_id = $this->get('open_id');
-		$name = $this->get('name');
-		$mobile = intval($this->get('mobile'));
-		$gender = intval($this->get('gender'));
-		$birthday = intval($this->get('birthday'));
-		$stature = intval($this->get('stature'));
-		$floor = $this->get('floor');
-		$identity = $this->get('identity');
-		$head_img = $this->get('head_img');
-		$is_delete = intval($this->get('is_delete'));
-            $id = $this->get('id');
-            $fu_service = new Frontend_Model_User();
-            
             $rules = [
                 'open_id' => 'required|unique',
                 'name' => 'required',
-                'mobile' => 'required|mobile',
-                'gender' => 'required|numeric',
-                'birthday' => 'required|dateFormat:Ymd',
-                'stature' => 'required|integer',
-                'floor' => 'required|integer',
-                'identity' => 'required|integer',
-                'head_img' => '',
+                'mobile' => 'required|mobile|numeric',
+                'gender' => 'required',
+                'birthday' => 'required|dateFormat:Ymd|numeric',
+                'stature' => 'required|numeric',
+                'floor' => 'required',
+                'identity' => 'required',
+                'head_img' => 'required|url',
                 'is_delete' => '',
             ];
+            $fu_service = new Frontend_Model_User();
             $v = new iValidator($_REQUEST, $rules, $fu_service);
             if (!$v->validate()) {
                 $this->error(-1,$v->msg());
             }
-            
-            $data = compact('open_id', 'name', 'mobile', 'gender', 'birthday', 'stature', 'floor', 'identity', 'head_img', 'is_delete');
+            $data = $v->data();
             $rst = $fu_service->saveData($data, $id);
             if ($rst) {
                 $this->result('OK');
