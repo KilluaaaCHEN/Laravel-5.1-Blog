@@ -444,6 +444,9 @@ STR;
             if ($field['filter'] == '整数验证') {
                 $rule .= 'integer|';
             }
+            if ($field['filter'] == '是否URL') {
+                $rule .= 'url|';
+            }
             if (strstr($field['filter'], '是非验证')) {
                 $rule .= 'boolean|';
             }
