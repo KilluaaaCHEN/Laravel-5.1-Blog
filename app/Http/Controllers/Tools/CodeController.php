@@ -450,16 +450,22 @@ STR;
 
             if (strstr($field['name'], '手机')) {
                 $rule .= 'mobile|';
-            } elseif (strstr($field['name'], '日期') || strstr($field['name'], '生日')) {
-                $rule .= 'date|dateFormat:Ymd';
+            } elseif (strstr($field['name'], '生日')) {
+                $rule .= 'dateFormat:Ymd|';
+            } elseif (strstr($field['name'], '日期')) {
+                $rule .= 'date|';
             } elseif ($field['filter'] == '整数验证') {
                 $rule .= 'integer|';
             } elseif ($field['filter'] == '浮点验证' || $field['type'] == '数字输入框') {
                 $rule .= 'numeric|';
             }
             $rule = rtrim($rule, '|');
-            $rules .= "
+            if ($i == 0) {
+                $rules .= "'{$field['key']}' => '$rule',";
+            }else{
+                $rules .= "
                 '{$field['key']}' => '$rule',";
+            }
         }
 
 

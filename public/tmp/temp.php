@@ -3,10 +3,10 @@
 /**
  * Created by Killua Chen
  * User: killua
- * Date: 17/02/20
- * Time: 18:14
+ * Date: 17/02/24
+ * Time: 10:13
  */
-class Backend_SigninRecordController extends iWebsite_Controller_Action
+class Frontend_UserController extends iWebsite_Controller_Action
 {
     /**
      * 首页
@@ -19,23 +19,19 @@ class Backend_SigninRecordController extends iWebsite_Controller_Action
             $page_index = $this->get('page_index', 1);
             
             $open_id = $this->get('open_id');
-		$staff_name = $this->get('staff_name');
-		$status = intval($this->get('status'));
-		$course = $this->get('course');
-		$coach_id = $this->get('coach_id');
-		$coach_name = $this->get('coach_name');
-		$begin_time = intval($this->get('begin_time'));
-		$end_time = intval($this->get('end_time'));
+		$name = $this->get('name');
+		$mobile = intval($this->get('mobile'));
+		$gender = intval($this->get('gender'));
+		$birthday = intval($this->get('birthday'));
+		$stature = intval($this->get('stature'));
 		$floor = $this->get('floor');
-		$duration = intval($this->get('duration'));
-		$course_type = intval($this->get('course_type'));
-		$course_id = $this->get('course_id');
+		$identity = $this->get('identity');
+		$head_img = $this->get('head_img');
 		$is_delete = intval($this->get('is_delete'));
-		$date = intval($this->get('date'));
             
             $query = ['is_delete' => ['$ne'=>true]];
-            $this->likeQuery($query, compact('open_id', 'staff_name', 'course', 'coach_id', 'coach_name', 'floor', 'course_id', 'is_delete'));
-            $this->equalQuery($query, compact('status', 'begin_time', 'end_time', 'duration', 'course_type', 'date'));
+            $this->likeQuery($query, compact('open_id', 'name', 'floor', 'identity', 'head_img', 'is_delete'));
+            $this->equalQuery($query, compact('mobile', 'gender', 'birthday', 'stature'));
                     //按时间精确到秒查询
         $begin_time = $this->get('begin_time');
         $end_time = $this->get('end_time');
@@ -56,36 +52,32 @@ class Backend_SigninRecordController extends iWebsite_Controller_Action
             $query['time']['$lte'] = strtotime('+1 days', strtotime($$end_date));
         }
 
-            $bsr_service = new Backend_Model_SigninRecord();
+            $fu_service = new Frontend_Model_User();
             $is_export = $this->get('is_export');
             if ($is_export) {
                 $page_size = MAX_VALUE;
                 $page_index = 1;
             }
-            $data = $bsr_service->find(
+            $data = $fu_service->find(
                 $query, ['__MODIFY_TIME__' => -1],
                 ($page_index - 1) * $page_size, $page_size,
-                ['open_id' => 1, 'staff_name' => 1, 'status' => 1, 'course' => 1, 'coach_id' => 1, 'coach_name' => 1, 'begin_time' => 1, 'end_time' => 1, 'floor' => 1, 'duration' => 1, 'course_type' => 1, 'course_id' => 1, 'is_delete' => 1, 'date' => 1, '_id' => 0, '__CREATE_TIME__' => 1]
+                ['open_id' => 1, 'name' => 1, 'mobile' => 1, 'gender' => 1, 'birthday' => 1, 'stature' => 1, 'floor' => 1, 'identity' => 1, 'head_img' => 1, 'is_delete' => 1, '_id' => 1]
             );
             foreach ($data['datas'] as &$item) {
             }
             if ($is_export) {
                 arrayToCVS2('', [
                     'title' => [
-                        'open_id' => '学员编号',
-                        'staff_name' => '学员姓名',
-                        'status' => '签到状态',
-                        'course' => '课程',
-                        'coach_id' => '教练编号',
-                        'coach_name' => '教练名称',
-                        'begin_time' => '开始时间',
-                        'end_time' => '结束时间',
+                        'open_id' => '用户唯一标识',
+                        'name' => '姓名',
+                        'mobile' => '手机',
+                        'gender' => '性别',
+                        'birthday' => '生日',
+                        'stature' => '身高',
                         'floor' => '楼层',
-                        'duration' => '持续时间(m)',
-                        'course_type' => '课程类型',
-                        'course_id' => '课程编号',
-                        'is_delete' => '是否删除',
-                        'date' => '日期'],
+                        'identity' => '身份',
+                        'head_img' => '头像',
+                        'is_delete' => '是否删除'],
                     'result' => $data['datas']
                 ]);
             }
@@ -109,9 +101,9 @@ class Backend_SigninRecordController extends iWebsite_Controller_Action
     {
         try {
             $id = $this->get('id');
-            $bsr_service = new Backend_Model_SigninRecord();
-            $fields = ['open_id' => 1, 'staff_name' => 1, 'status' => 1, 'course' => 1, 'coach_id' => 1, 'coach_name' => 1, 'begin_time' => 1, 'end_time' => 1, 'floor' => 1, 'duration' => 1, 'course_type' => 1, 'course_id' => 1, 'is_delete' => 1, 'date' => 1, '_id' => 0, '__CREATE_TIME__' => 1];
-            $data = $bsr_service->getInfo($id, $fields);
+            $fu_service = new Frontend_Model_User();
+            $fields = ['open_id' => 1, 'name' => 1, 'mobile' => 1, 'gender' => 1, 'birthday' => 1, 'stature' => 1, 'floor' => 1, 'identity' => 1, 'head_img' => 1, 'is_delete' => 1, '_id' => 1];
+            $data = $fu_service->getInfo($id, $fields);
             if (!$data) {
                 abort(404,'数据不存在');
             }
@@ -130,24 +122,37 @@ class Backend_SigninRecordController extends iWebsite_Controller_Action
     {
         try {
             $open_id = $this->get('open_id');
-		$staff_name = $this->get('staff_name');
-		$status = intval($this->get('status'));
-		$course = $this->get('course');
-		$coach_id = $this->get('coach_id');
-		$coach_name = $this->get('coach_name');
-		$begin_time = intval($this->get('begin_time'));
-		$end_time = intval($this->get('end_time'));
+		$name = $this->get('name');
+		$mobile = intval($this->get('mobile'));
+		$gender = intval($this->get('gender'));
+		$birthday = intval($this->get('birthday'));
+		$stature = intval($this->get('stature'));
 		$floor = $this->get('floor');
-		$duration = intval($this->get('duration'));
-		$course_type = intval($this->get('course_type'));
-		$course_id = $this->get('course_id');
+		$identity = $this->get('identity');
+		$head_img = $this->get('head_img');
 		$is_delete = intval($this->get('is_delete'));
-		$date = intval($this->get('date'));
             $id = $this->get('id');
-            $bsr_service = new Backend_Model_SigninRecord();
+            $fu_service = new Frontend_Model_User();
             
-            $data = compact('open_id', 'staff_name', 'status', 'course', 'coach_id', 'coach_name', 'begin_time', 'end_time', 'floor', 'duration', 'course_type', 'course_id', 'is_delete', 'date');
-            $rst = $bsr_service->saveData($data, $id);
+            $rules = [
+                'open_id' => 'required|unique',
+                'name' => 'required',
+                'mobile' => 'required|mobile',
+                'gender' => 'required|numeric',
+                'birthday' => 'required|dateFormat:Ymd',
+                'stature' => 'required|integer',
+                'floor' => 'required|integer',
+                'identity' => 'required|integer',
+                'head_img' => '',
+                'is_delete' => '',
+            ];
+            $v = new iValidator($_REQUEST, $rules, $fu_service);
+            if (!$v->validate()) {
+                $this->error(-1,$v->msg());
+            }
+            
+            $data = compact('open_id', 'name', 'mobile', 'gender', 'birthday', 'stature', 'floor', 'identity', 'head_img', 'is_delete');
+            $rst = $fu_service->saveData($data, $id);
             if ($rst) {
                 $this->result('OK');
             } else {
@@ -167,8 +172,8 @@ class Backend_SigninRecordController extends iWebsite_Controller_Action
     {
         try {
             $id = $this->get('id');
-            $bsr_service = new Backend_Model_SigninRecord();
-            $rst = $bsr_service->delData($id)['n'];
+            $fu_service = new Frontend_Model_User();
+            $rst = $fu_service->delData($id)['n'];
             if ($rst) {
                 $this->result();
             } else {
