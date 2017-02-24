@@ -4,6 +4,5 @@ Homestead.yaml
 Homestead.json
 .env
 .idea/
-/public/tmp
 .DS_Store
 /public/tmp/temp.php
