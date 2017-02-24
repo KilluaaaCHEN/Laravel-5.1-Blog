@@ -435,29 +435,27 @@ STR;
             if ($field['type'] == '数组') {
                 $rule .= 'array|';
             }
-            if ($field['filter'] == '整数验证') {
-                $rule .= 'integer|';
-            }
-            if ($field['filter'] == '浮点验证' || $field['type'] == '数字输入框') {
-                $rule .= 'numeric|';
-            } elseif (strstr($field['name'], '日期') || strstr($field['name'], '生日')) {
-                $rule .= 'date|dateFormat:Ymd';
-            }
             if ($field['filter'] == '是否IP地址' || strstr($field['name'], 'IP')) {
                 $rule .= 'ip|';
             }
             if ($field['filter'] == '是否Email') {
                 $rule .= 'email|';
             }
-
             if (strstr($field['name'], '时间')) {
                 $rule .= 'date|';
             }
-            if (strstr($field['name'], '手机')) {
-                $rule .= 'mobile|';
-            }
             if (strstr($field['name'], '身份证')) {
                 $rule .= 'idCard|';
+            }
+
+            if (strstr($field['name'], '手机')) {
+                $rule .= 'mobile|';
+            } elseif (strstr($field['name'], '日期') || strstr($field['name'], '生日')) {
+                $rule .= 'date|dateFormat:Ymd';
+            } elseif ($field['filter'] == '整数验证') {
+                $rule .= 'integer|';
+            } elseif ($field['filter'] == '浮点验证' || $field['type'] == '数字输入框') {
+                $rule .= 'numeric|';
             }
             $rule = rtrim($rule, '|');
             $rules .= "
