@@ -414,6 +414,7 @@ STR;
         return $str;
     }
 
+
     /**
      * 获取保存字符串
      * @return string
@@ -421,64 +422,7 @@ STR;
      */
     public function getStoreStr()
     {
-        $t1 = $this->getGetStr();
-        $rules = '';
-
-        foreach ($this->structure as $i => $field) {
-            $rule = '';
-            if ($field['required'] == '√') {
-                $rule .= 'required|';
-            }
-            if ($field['unique'] == '√') {
-                $rule .= 'unique|';
-            }
-            if ($field['type'] == '数组') {
-                $rule .= 'array|';
-            }
-            if ($field['filter'] == '是否IP地址' || strstr($field['name'], 'IP')) {
-                $rule .= 'ip|';
-            }
-            if ($field['filter'] == '是否Email') {
-                $rule .= 'email|';
-            }
-            if ($field['filter'] == '是否URL') {
-                $rule .= 'url|';
-            }
-            if (strstr($field['filter'], '是非验证')) {
-                $rule .= 'boolean|';
-            }
-            if (strstr($field['filter'], 'HTML转义')) {
-                $rule .= 'html|';
-            }
-            if (strstr($field['name'], '身份证')) {
-                $rule .= 'idCard|';
-            }
-
-
-
-            if (strstr($field['name'], '手机')) {
-                $rule .= 'mobile|';
-            } elseif (strstr($field['name'], '生日')) {
-                $rule .= 'dateFormat:Ymd|';
-            } elseif (strstr($field['name'], '日期')) {
-                $rule .= 'date|';
-            }
-
-            if ($field['filter'] == '整数验证') {
-                $rule .= 'integer|';
-            } elseif ($field['filter'] == '浮点验证' || $field['type'] == '数字输入框') {
-                $rule .= 'numeric|';
-            }
-            $rule = rtrim($rule, '|');
-            if ($i == 0) {
-                $rules .= "'{$field['key']}' => '$rule',";
-            }else{
-                $rules .= "
-                '{$field['key']}' => '$rule',";
-            }
-        }
-
-
+        $rules = $this->getValidateStr();
         $str = <<<STR
         
     /**
@@ -512,34 +456,78 @@ STR;
     }
 
     /**
-     * 获取get字符串
+     * 获取验证字符
      * @param string $type
      * @return string
      * @author Killua Chen
      */
-    public function getGetStr($type = 'store')
+    public function getValidateStr($type = 'store')
     {
-        $t1 = "";
-        foreach ($this->structure as $i => $item) {
-            switch ($item['type']) {
-                case '数字输入框':
-                case '是非选择框':
-                    $t1 .= ($i > 0 ? "\t\t" : "") . "\${$item['key']} = intval(\$this->get('{$item['key']}'));\n";
-                    break;
-                case '日期控件':
-                    if ($type == 'store') {
-                        $t1 .= ($i > 0 ? "\t\t" : "") . "\${$item['key']} = new MongoDate(strtotime(\$this->get('{$item['key']}')));\n";
-                    } else {
-                        $t1 .= ($i > 0 ? "\t\t" : "") . "\${$item['key']} = \$this->get('{$item['key']}');\n";
-                    }
-                    break;
-                default:
-                    $t1 .= ($i > 0 ? "\t\t" : "") . "\${$item['key']} = \$this->get('{$item['key']}');\n";
-                    break;
+        $rules = '';
+
+        foreach ($this->structure as $i => $field) {
+            $rule = '';
+            if ($type == 'store') {
+                if ($field['required'] == '√') {
+                    $rule .= 'required|';
+                }
+                if ($field['unique'] == '√') {
+                    $rule .= 'unique|';
+                }
+                if ($field['type'] == '数组') {
+                    $rule .= 'array|';
+                }
+            }
+            if ($field['filter'] == '是否IP地址' || strstr($field['name'], 'IP')) {
+                $rule .= 'ip|';
+            }
+            if ($field['filter'] == '是否Email') {
+                $rule .= 'email|';
+            }
+            if ($field['filter'] == '是否URL') {
+                $rule .= 'url|';
+            }
+            if (strstr($field['filter'], '是非验证')) {
+                $rule .= 'boolean|';
+            }
+            if (strstr($field['filter'], 'HTML转义')) {
+                $rule .= 'html|';
+            }
+            if (strstr($field['name'], '身份证')) {
+                $rule .= 'idCard|';
+            }
+
+            if (strstr($field['name'], '手机')) {
+                $rule .= 'mobile|';
+            } elseif (strstr($field['name'], '生日')) {
+                $rule .= 'dateFormat:Ymd|';
+            } elseif (strstr($field['name'], '日期')) {
+                $rule .= 'date|';
+            }
+
+            if ($field['filter'] == '整数验证') {
+                $rule .= 'integer|';
+            } elseif ($field['filter'] == '浮点验证' || $field['type'] == '数字输入框') {
+                $rule .= 'numeric|';
+            }
+            $rule = rtrim($rule, '|');
+            if ($i == 0) {
+                $rules .= "'{$field['key']}' => '$rule',";
+            } else {
+                $rules .= "
+                '{$field['key']}' => '$rule',";
             }
         }
-        $t1 = rtrim($t1, "\n");
-        return $t1;
+        if ($type == 'index') {
+            $rules .= "
+                'page_index' => 'integer',
+                'page_size' => 'integer',
+                'begin_time' => 'date',
+                'end_time' => 'date',
+                'begin_date' => 'dateFormat:Ymd',
+                'end_date' => 'dateFormat:Ymd',";
+        }
+        return $rules;
     }
 
     /**
@@ -584,27 +572,30 @@ STR;
         $t1 = $this->getGetStr('index');
         $slh = $this->getSlh();
         $t3 = <<<T3
-        //按时间精确到秒查询
-        \$begin_time = \$this->get('begin_time');
-        \$end_time = \$this->get('end_time');
-        if (\$begin_time) {
-            \$query['begin_time'] = ['\$gte' => new MongoDate(strtotime(\$begin_time))];
-        }
-        if (\$end_time) {
-            \$query['end_time'] = ['\$lte' => new MongoDate(strtotime(\$end_time))];
-        }
         
-        //按日期按天查询
-        \$begin_date = \$this->get('begin_date');
-        \$end_date = \$this->get('end_date');
-        if (\$begin_date) {
-            \$query['time']['\$gte'] = strtotime(\$begin_date);
-        }
-        if (\$end_date) {
-            \$query['time']['\$lte'] = strtotime('+1 days', strtotime($\$end_date));
-        }
+            //按时间精确到秒查询
+            \$begin_time = \$this->get('begin_time');
+            \$end_time = \$this->get('end_time');
+            if (\$begin_time) {
+                \$query['begin_time'] = ['\$gte' => new MongoDate(strtotime(\$begin_time))];
+            }
+            if (\$end_time) {
+                \$query['end_time'] = ['\$lte' => new MongoDate(strtotime(\$end_time))];
+            }
+            
+            //按日期按天查询
+            \$begin_date = \$this->get('begin_date');
+            \$end_date = \$this->get('end_date');
+            if (\$begin_date) {
+                \$query['time']['\$gte'] = strtotime(\$begin_date);
+            }
+            if (\$end_date) {
+                \$query['time']['\$lte'] = strtotime('+1 days', strtotime($\$end_date));
+            }
 
 T3;
+
+        $rules = $this->getValidateStr('index');
 
         $str = <<<STR
 /**
@@ -614,21 +605,30 @@ T3;
     public function indexAction()
     {
         try {
+            \$rules = [
+                $rules
+            ];
+            $slh
+            \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
+            if (!\$v->validate()) {
+                \$this->error(-1,\$v->msg());
+            }
+            
             \$page_size = \$this->get('page_size', 10);
             \$page_index = \$this->get('page_index', 1);
-            
             $t1
-            
             \$query = ['is_delete' => ['\$ne'=>true]];
             \$this->likeQuery(\$query, compact($this->keys_ex_int));
             \$this->equalQuery(\$query, compact($this->keys_int));
+            
             $t3
-            $slh
+            
             \$is_export = \$this->get('is_export');
             if (\$is_export) {
                 \$page_size = MAX_VALUE;
                 \$page_index = 1;
             }
+            
             \$data = \$$this->model_short->find(
                 \$query, ['__MODIFY_TIME__' => -1],
                 (\$page_index - 1) * \$page_size, \$page_size,
@@ -654,6 +654,37 @@ T3;
     }
 STR;
         return $str;
+    }
+
+    /**
+     * 获取get字符串
+     * @param string $type
+     * @return string
+     * @author Killua Chen
+     */
+    public function getGetStr($type = 'store')
+    {
+        $t1 = "";
+        foreach ($this->structure as $i => $item) {
+            switch ($item['type']) {
+                case '数字输入框':
+                case '是非选择框':
+                    $t1 .= ($i > 0 ? "\t\t\t" : "") . "\${$item['key']} = intval(\$this->get('{$item['key']}'));\n";
+                    break;
+                case '日期控件':
+                    if ($type == 'store') {
+                        $t1 .= ($i > 0 ? "\t\t\t" : "") . "\${$item['key']} = new MongoDate(strtotime(\$this->get('{$item['key']}')));\n";
+                    } else {
+                        $t1 .= ($i > 0 ? "\t\t\t" : "") . "\${$item['key']} = \$this->get('{$item['key']}');\n";
+                    }
+                    break;
+                default:
+                    $t1 .= ($i > 0 ? "\t\t\t" : "") . "\${$item['key']} = \$this->get('{$item['key']}');\n";
+                    break;
+            }
+        }
+        $t1 = rtrim($t1, "\n");
+        return $t1;
     }
 
     /**
