@@ -441,12 +441,20 @@ STR;
             if ($field['filter'] == '是否Email') {
                 $rule .= 'email|';
             }
-            if (strstr($field['name'], '时间')) {
-                $rule .= 'date|';
+            if ($field['filter'] == '整数验证') {
+                $rule .= 'integer|';
+            }
+            if (strstr($field['filter'], '是非验证')) {
+                $rule .= 'boolean|';
+            }
+            if (strstr($field['filter'], 'HTML转义')) {
+                $rule .= 'html|';
             }
             if (strstr($field['name'], '身份证')) {
                 $rule .= 'idCard|';
             }
+
+
 
             if (strstr($field['name'], '手机')) {
                 $rule .= 'mobile|';
@@ -454,7 +462,9 @@ STR;
                 $rule .= 'dateFormat:Ymd|';
             } elseif (strstr($field['name'], '日期')) {
                 $rule .= 'date|';
-            } elseif ($field['filter'] == '整数验证') {
+            }
+
+            if ($field['filter'] == '整数验证') {
                 $rule .= 'integer|';
             } elseif ($field['filter'] == '浮点验证' || $field['type'] == '数字输入框') {
                 $rule .= 'numeric|';
