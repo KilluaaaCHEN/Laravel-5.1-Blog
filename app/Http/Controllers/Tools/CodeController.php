@@ -441,6 +441,7 @@ STR;
                 \$this->error(-1,\$v->msg());
             }
             \$data = \$v->data();
+            \$id = \$this->get('id');
             \$rst = \$$this->model_short->saveData(\$data, \$id);
             if (\$rst) {
                 \$this->result('OK');
@@ -616,7 +617,7 @@ T3;
             
             \$page_size = \$this->get('page_size', 10);
             \$page_index = \$this->get('page_index', 1);
-            $t1
+            $t1 
             \$query = ['is_delete' => ['\$ne'=>true]];
             \$this->likeQuery(\$query, compact($this->keys_ex_int));
             \$this->equalQuery(\$query, compact($this->keys_int));
