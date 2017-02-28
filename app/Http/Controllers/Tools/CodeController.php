@@ -503,7 +503,9 @@ STR;
             } elseif (strstr($field['name'], '生日')) {
                 $rule .= 'dateFormat:Ymd|';
             } elseif (strstr($field['name'], '日期')) {
-                $rule .= 'date|';
+                $rule .= 'dateFormat:Ymd|';
+            } elseif (strstr($field['name'], '时间')) {
+                $rule .= 'date';
             }
 
             if ($field['filter'] == '整数验证') {
