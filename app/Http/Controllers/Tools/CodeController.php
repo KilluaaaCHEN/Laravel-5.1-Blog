@@ -558,7 +558,14 @@ STR;
     {
         try {
             \$id = \$this->get('id');
+            \$rules = [
+                'id' => 'required' 
+            ];
             \$$this->model_short = new $this->model_cls();
+            \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
+            if (!\$v->validate()) {
+                \$this->error(-1,\$v->msg());
+            }
             \$rst = \$$this->model_short->delData(\$id)['n'];
             if (\$rst) {
                 \$this->result();
