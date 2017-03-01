@@ -48,19 +48,36 @@ class DocController extends Controller
 |  **输入参数** |  **名称** | **含义**  | **示例**  | **必填** |
 
 STR;
+
+            //数组格式初始化
+            $req_data = [];
             foreach ($req_list as $item) {
-                $not_null = strstr($item, '//') ? '  n' : '`y`';
-                $str = ltrim($item, '//');
-                if (empty($str)) {
+                if (empty($item)) {
                     continue;
                 }
-                $index = strpos($str, ':');
-                $i = [substr($str, 0, $index), substr($str, $index + 1)];
-                if (count($i) > 1) {
-                    $text = key_exists($i[0], $attr_list) ? $attr_list[$i[0]] : '&nbsp;';
-                    $val = trim($i[1]);
-                    $doc .= "|   | `{$i[0]}`  | $text | $val | $not_null | \n";
+                $i = explode(':', $item);
+                $val = rtrim($i[1], "\r");
+                if (isset($req_data[$i[0]])) {
+                    $req_data[$i[0]][] = $val;
+                } elseif (strpos($i[0], '[]') !== false) {
+                    $req_data[$i[0]][] = $val;
+                } else {
+                    $req_data[$i[0]] = $val;
                 }
+            }
+            foreach ($req_data as $key => $val) {
+                $not_null = strstr($key, '//') ? '  n' : '`y`';
+                $key = ltrim($key, '//');
+                $key = rtrim($key, '[]');
+                if (empty($key)) {
+                    continue;
+                }
+                $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
+                if (is_array($val)) {
+                    $val = json_encode($val, JSON_UNESCAPED_UNICODE);
+                    $text.=',数组';
+                }
+                $doc .= "|   | `{$key}`  | $text | $val | $not_null | \n";
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
             if ($res_list) {
