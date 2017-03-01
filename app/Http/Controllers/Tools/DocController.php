@@ -101,6 +101,9 @@ STR;
             if (isset($inner_doc)) {
                 $val = json_decode($val, true);
                 $this->filterAttr($val[0]);
+                if (count($val[0]) > 1) {
+                    $val = [$val[0]];
+                }
                 $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                 $this->appendBr($val);
                 $doc .= " \n|   | `{$key}`=>`$pre`  | $text | {$val} | {$type} |";
