@@ -75,7 +75,7 @@ STR;
                 $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
                 if (is_array($val)) {
                     $val = json_encode($val, JSON_UNESCAPED_UNICODE);
-                    $text.=',数组';
+                    $text .= ',数组';
                 }
                 $doc .= "|   | `{$key}`  | $text | $val | $not_null | \n";
             }
@@ -158,8 +158,14 @@ STR;
         while (strstr($str, '},{')) {
             $this->str_insert($str, stripos($str, '},{') + 1, '<br/>');
         }
-        while (strstr($str, '","')) {
-            $this->str_insert($str, stripos($str, '","') + 1, '<br/>');
+        $str_arr = explode(',', $str);
+        $str = '';
+        if (count($str_arr) > 1) {
+            foreach ($str_arr as $item) {
+                $str .= $item . ',<br/>';
+            }
+        } else {
+            $str = $str_arr[0];
         }
     }
 
