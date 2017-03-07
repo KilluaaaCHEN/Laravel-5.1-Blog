@@ -167,6 +167,7 @@ STR;
         } else {
             $str = $str_arr[0];
         }
+        $str=rtrim(',<br/>');
     }
 
     /**
