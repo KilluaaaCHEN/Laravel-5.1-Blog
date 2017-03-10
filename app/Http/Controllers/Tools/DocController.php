@@ -91,6 +91,17 @@ STR;
     function format($res_list, $attr_list, $doc, $prefix = '')
     {
         $this->filterAttr($res_list);
+        //数组牌组,对象放最后
+        $after = [];
+        foreach ($res_list as $i => $item) {
+            if (is_array($item) && count($item) > 1) {
+                $after[$i] = $item;
+                unset($res_list[$i]);
+            }
+        }
+        foreach ($after as $i => $item) {
+            $res_list[$i] = $item;
+        }
         foreach ($res_list as $key => $val) {
             $inner_doc = null;
             $type = gettype($val);
