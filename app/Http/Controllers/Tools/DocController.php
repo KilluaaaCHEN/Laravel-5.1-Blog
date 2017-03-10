@@ -158,16 +158,22 @@ STR;
         while (strstr($str, '},{')) {
             $this->str_insert($str, stripos($str, '},{') + 1, '<br/>');
         }
+        $str = str_replace('"0":null', '', $str);
         $str_arr = explode(',', $str);
         $str = '';
         if (count($str_arr) > 1) {
             foreach ($str_arr as $item) {
-                $str .= $item . ',<br/>';
+                if ($item != '}') {
+                    $str .= $item . ',<br/>';
+                } else {
+                    $str = rtrim($str, ',<br/>');
+                    $str .= $item;
+                }
             }
         } else {
             $str = $str_arr[0];
         }
-        $str=rtrim($str,',<br/>');
+        $str = rtrim($str, ',<br/>');
     }
 
     /**
