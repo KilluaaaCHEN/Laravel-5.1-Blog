@@ -36,6 +36,15 @@ class DocController extends Controller
                 \Cache::put($cache_key, $attr_list, 60 * 24);
             }
 
+            //多个数组合并属性
+            $attr_list = explode('}', $attr);
+            $attr = [];
+            foreach ($attr_list as $item) {
+                if (!empty($item)) {
+                    $attr = array_merge($attr, json_decode($item . '}', true));
+                }
+            }
+
             $attr_dic = json_decode($attr, true);
             if ($attr_dic) {
                 $attr_list = array_merge($attr_dic, $attr_list);
