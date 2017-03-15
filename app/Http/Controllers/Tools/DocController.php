@@ -37,9 +37,9 @@ class DocController extends Controller
             }
 
             //多个数组合并属性
-            $attr_list = explode('}', $attr);
+            $attr_arr= explode('}', $attr);
             $attr_dic = [];
-            foreach ($attr_list as $item) {
+            foreach ($attr_arr as $item) {
                 if (!empty($item)) {
                     $attr_dic = array_merge($attr_dic, json_decode($item . '}', true));
                 }
