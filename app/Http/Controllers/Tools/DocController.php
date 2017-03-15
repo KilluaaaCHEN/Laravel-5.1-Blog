@@ -38,14 +38,14 @@ class DocController extends Controller
 
             //多个数组合并属性
             $attr_list = explode('}', $attr);
-            $attr = [];
+            $attr_dic = [];
             foreach ($attr_list as $item) {
                 if (!empty($item)) {
-                    $attr = array_merge($attr, json_decode($item . '}', true));
+                    $attr_dic = array_merge($attr_dic, json_decode($item . '}', true));
                 }
             }
-            if ($attr) {
-                $attr_list = array_merge($attr, $attr_list);
+            if ($attr_dic) {
+                $attr_list = array_merge($attr_dic, $attr_list);
             }
             $doc = <<<STR
 ###  $title 
