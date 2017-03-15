@@ -37,7 +37,7 @@ class DocController extends Controller
             }
 
             //多个数组合并属性
-            $attr_arr= explode('}', $attr);
+            $attr_arr = explode('}', $attr);
             $attr_dic = [];
             foreach ($attr_arr as $item) {
                 if (!empty($item)) {
@@ -141,6 +141,7 @@ STR;
                 }
                 $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                 $this->appendBr($val);
+                $val = str_replace('\/', '/', $val);
                 $doc .= " \n|   | `{$key}`=>`$pre`  | $text | {$val} | {$type} |";
                 $doc .= $inner_doc;
             } else {
