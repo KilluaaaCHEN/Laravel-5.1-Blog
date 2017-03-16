@@ -448,7 +448,7 @@ STR;
             if (!\$v->validate()) {
                 \$this->error(-1,\$v->msg());
             }
-            \$data = \$v->data();
+            \$data = \$v->data(false;);
             \$id = \$this->get('id');
             \$rst = \$$this->model_short->saveData(\$data, \$id);
             if (\$rst) {
@@ -649,7 +649,7 @@ T3;
             
             \$data = \$$this->model_short->find(
                 \$query, ['__MODIFY_TIME__' => -1],
-                (\$page_index - 1) * \$page_size, \$page_size,
+                (\$d->\$page_index - 1) * \$d->\$page_size, \$d->\$page_size,
                 $this->keys
             );
             foreach (\$data['datas'] as &\$item) {
@@ -660,8 +660,8 @@ T3;
                     'result' => \$data['datas']
                 ]);
             }
-            \$page_total = floor(\$data['total'] / \$page_size);
-            if (\$data['total'] % \$page_size != 0) {
+            \$page_total = floor(\$data['total'] / \$d->\$page_size);
+            if (\$data['total'] % \$d->\$page_size != 0) {
                 \$page_total++;
             }
             \$data['page_total'] = \$page_total;
