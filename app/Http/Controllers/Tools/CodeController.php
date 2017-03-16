@@ -531,8 +531,8 @@ STR;
         }
         if ($type == 'index') {
             $rules .= "
-                'page_index' => 'integer',
-                'page_size' => 'integer',
+                'page_index' => 'required:1|integer',
+                'page_size' => 'required:20|integer',
                 'begin_time' => 'date',
                 'end_time' => 'date',
                 'begin_date' => 'dateFormat:Ymd',
