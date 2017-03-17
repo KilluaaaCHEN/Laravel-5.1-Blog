@@ -62,16 +62,27 @@ STR;
                 if (empty($item)) {
                     continue;
                 }
-                $i = explode(':', $item);
-                $val = rtrim($i[1], "\r");
-                if (isset($req_data[$i[0]])) {
-                    $req_data[$i[0]][] = $val;
-                } elseif (strpos($i[0], '[]') !== false) {
-                    $req_data[$i[0]][] = $val;
+                $index = strpos($item, ':');
+                $key = substr($item, 0, $index);
+                $val = rtrim(substr($item, $index + 1), "\r");
+                $this->appendBr($val);
+                if (isset($req_data[$key])) {
+                    $req_data[$key][] = $val;
+                } elseif (strpos($key, '[]') !== false) {
+                    $req_data[$key][] = $val;
                 } else {
-                    $req_data[$i[0]] = $val;
+                    $req_data[$key] = $val;
                 }
             }
+
+            //非必填的放在后面
+            foreach ($req_data as $key => $val) {
+                if (strstr($key, '//')) {
+                    unset($req_data[$key]);
+                    $req_data[$key] = $val;
+                }
+            }
+
             foreach ($req_data as $key => $val) {
                 $not_null = strstr($key, '//') ? '  n' : '`y`';
                 $key = ltrim($key, '//');
@@ -93,6 +104,50 @@ STR;
         }
         $doc = urldecode($doc);
         return view('tools.doc', compact('title', 'uri', 'method', 'res', 'req', 'doc', 'attr'));
+    }
+
+    /**
+     * 添加<br/>
+     * @param $str
+     * @return bool
+     */
+    function appendBr(&$str)
+    {
+        if (mb_strlen($str) <= 30) {
+            return false;
+        }
+        while (strstr($str, '},{')) {
+            $this->str_insert($str, stripos($str, '},{') + 1, '<br/>');
+        }
+        $str = str_replace('"0":null', '', $str);
+        $str_arr = explode(',', $str);
+        $str = '';
+        if (count($str_arr) > 1) {
+            foreach ($str_arr as $item) {
+                if ($item != '}') {
+                    $str .= $item . ',<br/>';
+                } else {
+                    $str = rtrim($str, ',<br/>');
+                    $str .= $item;
+                }
+            }
+        } else {
+            $str = $str_arr[0];
+        }
+        $str = rtrim($str, ',<br/>');
+    }
+
+    /**
+     * 在指定位置添加字符
+     * @param $str
+     * @param $index
+     * @param $is
+     */
+    function str_insert(&$str, $index, $is)
+    {
+        $ss = substr($str, 0, $index + 1);
+        $ls = substr($str, $index + 1);
+        $str = $ss . $is . $ls;
     }
 
     function format($res_list, $attr_list, $doc, $prefix = '')
@@ -162,50 +217,6 @@ STR;
         foreach ($unset_arr as $item) {
             unset($list[$item]);
         }
-    }
-
-    /**
-     * 添加<br/>
-     * @param $str
-     * @return bool
-     */
-    function appendBr(&$str)
-    {
-        if (mb_strlen($str) <= 30) {
-            return false;
-        }
-        while (strstr($str, '},{')) {
-            $this->str_insert($str, stripos($str, '},{') + 1, '<br/>');
-        }
-        $str = str_replace('"0":null', '', $str);
-        $str_arr = explode(',', $str);
-        $str = '';
-        if (count($str_arr) > 1) {
-            foreach ($str_arr as $item) {
-                if ($item != '}') {
-                    $str .= $item . ',<br/>';
-                } else {
-                    $str = rtrim($str, ',<br/>');
-                    $str .= $item;
-                }
-            }
-        } else {
-            $str = $str_arr[0];
-        }
-        $str = rtrim($str, ',<br/>');
-    }
-
-    /**
-     * 在指定位置添加字符
-     * @param $str
-     * @param $index
-     * @param $is
-     */
-    function str_insert(&$str, $index, $is)
-    {
-        $ss = substr($str, 0, $index + 1);
-        $ls = substr($str, $index + 1);
-        $str = $ss . $is . $ls;
     }
 
 }
