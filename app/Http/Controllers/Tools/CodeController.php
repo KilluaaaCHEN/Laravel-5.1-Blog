@@ -343,7 +343,7 @@ STR;
     {
         $date = date('y/m/d');
         $time = date('H:i');
-        $edit_str = $this->getEditStr();
+        $edit_str = $this->getGetInfoStr();
         $store_str = $this->getStoreStr();
         $delete_str = $this->getDeleteStr();
         $index_str = $this->getIndexStr();
@@ -377,7 +377,7 @@ STR;
      * @return string
      * @author Killua Chen
      */
-    public function getEditStr()
+    public function getGetInfoStr()
     {
         $str = <<<STR
         
@@ -388,8 +388,6 @@ STR;
     public function getInfoAction()
     {
         try {
-            \$id = \$this->get('id');
-            
             \$rules = [
                 'id' => 'required' 
             ];
@@ -398,8 +396,9 @@ STR;
             if (!\$v->validate()) {
                 \$this->error(-1,\$v->msg());
             }
+            \$d = \$v->data();
             \$fields = $this->keys;
-            \$data = \$$this->model_short->getInfo(\$id, \$fields);
+            \$data = \$$this->model_short->getInfo(\$d->id, \$fields);
             if (!\$data) {
                 abort(404,'数据不存在');
             }
