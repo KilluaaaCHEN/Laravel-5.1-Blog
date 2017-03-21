@@ -219,7 +219,7 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
      * @return bool
      * @author Killua Chen
      */
-    public function isExist(\$id)
+    public function isExists(\$id)
     {
         return !!\$this->count([
             '_id' => myMongoId(\$id)$t1
@@ -402,7 +402,7 @@ STR;
     {
         try {
             \$rules = [
-                'id' => 'required|exist' 
+                'id' => 'required|exists' 
             ];
             \$$this->model_short = new $this->model_cls();
             \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
@@ -442,7 +442,7 @@ STR;
     {
         try {
             \$rules = [
-                'id' => 'exist',
+                'id' => 'exists',
                 $rules
             ];
             \$$this->model_short = new $this->model_cls();
@@ -561,7 +561,7 @@ STR;
         try {
             \$id = \$this->get('id');
             \$rules = [
-                'id' => 'required|exist' 
+                'id' => 'required|exists' 
             ];
             \$$this->model_short = new $this->model_cls();
             \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
