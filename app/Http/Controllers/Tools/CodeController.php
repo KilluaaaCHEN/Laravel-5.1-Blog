@@ -402,7 +402,7 @@ STR;
     {
         try {
             \$rules = [
-                'id' => 'required' 
+                'id' => 'required|exist' 
             ];
             \$$this->model_short = new $this->model_cls();
             \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
@@ -442,6 +442,7 @@ STR;
     {
         try {
             \$rules = [
+                'id' => 'exist',
                 $rules
             ];
             \$$this->model_short = new $this->model_cls();
@@ -560,7 +561,7 @@ STR;
         try {
             \$id = \$this->get('id');
             \$rules = [
-                'id' => 'required' 
+                'id' => 'required|exist' 
             ];
             \$$this->model_short = new $this->model_cls();
             \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
