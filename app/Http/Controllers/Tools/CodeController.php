@@ -213,6 +213,19 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
         ], \$fields);
     }
     
+    /**
+     * 是否存在
+     * @param \$id
+     * @return bool
+     * @author Killua Chen
+     */
+    public function isExist(\$id)
+    {
+        return !!\$this->count([
+            '_id' => myMongoId(\$id)$t1
+        ]);
+    }
+    
     $delete_str
 }
 STR;
