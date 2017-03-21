@@ -580,23 +580,19 @@ STR;
         $t3 = <<<T3
         
             //按时间精确到秒查询
-            \$begin_time = \$this->get('begin_time');
-            \$end_time = \$this->get('end_time');
-            if (\$begin_time) {
-                \$query['begin_time'] = ['\$gte' => new MongoDate(strtotime(\$begin_time))];
+            if (\$d->begin_time) {
+                \$query['begin_time'] = ['\$gte' => new MongoDate(strtotime(\$d->begin_time))];
             }
-            if (\$end_time) {
-                \$query['end_time'] = ['\$lte' => new MongoDate(strtotime(\$end_time))];
+            if (\$d->end_time) {
+                \$query['end_time'] = ['\$lte' => new MongoDate(strtotime(\$d->end_time))];
             }
             
             //按日期按天查询
-            \$begin_date = \$this->get('begin_date');
-            \$end_date = \$this->get('end_date');
-            if (\$begin_date) {
-                \$query['time']['\$gte'] = strtotime(\$begin_date);
+;            if (\$d->begin_date) {
+                \$query['time']['\$gte'] = strtotime(\$d->begin_date);
             }
-            if (\$end_date) {
-                \$query['time']['\$lte'] = strtotime('+1 days', strtotime($\$end_date));
+            if (\$d->end_date) {
+                \$query['time']['\$lte'] = strtotime('+1 days', strtotime($\$d->end_date));
             }
 
 T3;
