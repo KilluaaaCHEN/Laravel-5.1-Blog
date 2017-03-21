@@ -448,7 +448,7 @@ STR;
             if (!\$v->validate()) {
                 \$this->error(-1,\$v->msg());
             }
-            \$data = \$v->data(false;);
+            \$data = \$v->data(false);
             \$id = \$this->get('id');
             \$rst = \$$this->model_short->saveData(\$data, \$id);
             if (\$rst) {
@@ -587,7 +587,6 @@ STR;
      */
     public function getIndexStr()
     {
-        $t1 = $this->getGetStr('index');
         $slh = $this->getSlh();
         $t3 = <<<T3
         
@@ -632,39 +631,35 @@ T3;
                 \$this->error(-1,\$v->msg());
             }
             
-            \$page_size = \$this->get('page_size', 10);
-            \$page_index = \$this->get('page_index', 1);
-            $t1 
-            \$query = ['is_delete' => ['\$ne'=>true]];
+            \$query = [
+                'is_delete' => ['\$ne'=>true],
+                'begin_time' => ['\$lte' => new MongoDate()]
+                'end_time' => ['\$gte' => new MongoDate()],
+            ];
             \$this->likeQuery(\$query, compact($this->keys_ex_int));
             \$this->equalQuery(\$query, compact($this->keys_int));
             
             $t3
             
-            \$is_export = \$this->get('is_export');
-            if (\$is_export) {
-                \$page_size = MAX_VALUE;
-                \$page_index = 1;
+            if (\$d->is_export) {
+                \$d->page_size = MAX_VALUE;
+                \$d->page_index = 1;
             }
             
             \$data = \$$this->model_short->find(
-                \$query, ['__MODIFY_TIME__' => -1],
-                (\$d->\$page_index - 1) * \$d->\$page_size, \$d->\$page_size,
+                \$query, ['sort' => 1],
+                (\$d->page_index - 1) * \$d->page_size, \$d->page_size,
                 $this->keys
             );
             foreach (\$data['datas'] as &\$item) {
             }
-            if (\$is_export) {
-                arrayToCVS2('', [
+            if (\$d->is_export) {
+                arrayToCVSPlus('', [
                     'title' => $this->attr_kv,
                     'result' => \$data['datas']
                 ]);
             }
-            \$page_total = floor(\$data['total'] / \$d->\$page_size);
-            if (\$data['total'] % \$d->\$page_size != 0) {
-                \$page_total++;
-            }
-            \$data['page_total'] = \$page_total;
+            calcPager(\$data, \$d->page_size);
             \$this->result('', \$data);
         } catch (Exception \$e) {
             \$this->error(\$e->getCode(), \$e->getMessage());
