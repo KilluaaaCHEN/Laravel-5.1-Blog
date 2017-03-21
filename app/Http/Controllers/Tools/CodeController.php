@@ -17,6 +17,7 @@ class CodeController extends Controller
     public $keys_int; // ['key1','key2']
     public $keys_ex_int; // ['key1','key2']
     public $attr_kv; //['open_id' => '学员编号','staff_name' => '学员姓名']
+    public $keys_like;//['key1'=>$d->key1]
 
     /**
      * 生成iWebSite CRUD代码
@@ -62,7 +63,7 @@ class CodeController extends Controller
         $this->setKeys2();
         $this->setKeysArray();
         $this->setKeysInt();
-        $this->setKeysExInt();
+        $this->setKeysLike();
         $this->setKeysAttr();
     }
 
@@ -129,21 +130,10 @@ class CodeController extends Controller
         $keys = '';
         foreach ($this->structure as $item) {
             if ($item['type'] == '数字输入框') {
-                $keys .= "'{$item['key']}', ";
+                $keys .= "'{$item['key']}'=>\$d->{$item['key']}, ";
             }
         }
         $this->keys_int = rtrim($keys, ', ');
-    }
-
-    public function setKeysExInt()
-    {
-        $keys = '';
-        foreach ($this->structure as $item) {
-            if ($item['type'] != '数字输入框') {
-                $keys .= "'{$item['key']}', ";
-            }
-        }
-        $this->keys_ex_int = rtrim($keys, ', ');
     }
 
     private function setKeysAttr()
@@ -422,7 +412,6 @@ STR;
         return $str;
     }
 
-
     /**
      * 获取保存字符串
      * @return string
@@ -630,14 +619,15 @@ T3;
             if (!\$v->validate()) {
                 \$this->error(-1,\$v->msg());
             }
+            \$d = $v->data();
             
             \$query = [
                 'is_delete' => ['\$ne'=>true],
-                'begin_time' => ['\$lte' => new MongoDate()]
+                'begin_time' => ['\$lte' => new MongoDate()],
                 'end_time' => ['\$gte' => new MongoDate()],
             ];
-            \$this->likeQuery(\$query, compact($this->keys_ex_int));
-            \$this->equalQuery(\$query, compact($this->keys_int));
+            \$this->likeQuery(\$query, [$this->keys_like]);
+            \$this->equalQuery(\$query, [$this->keys_int]);
             
             $t3
             
@@ -670,6 +660,27 @@ STR;
     }
 
     /**
+     * 获取实例化
+     * @return string
+     * @author Killua Chen
+     */
+    private function getSlh()
+    {
+        return "\$$this->model_short = new $this->model_cls();";
+    }
+
+    public function setKeysLike()
+    {
+        $keys = '';
+        foreach ($this->structure as $item) {
+            if ($item['type'] != '数字输入框') {
+                $keys .= "'{$item['key']}'=>\$d->{$item['key']}, ";
+            }
+        }
+        $this->keys_like = rtrim($keys, ', ');
+    }
+
+    /**
      * 获取get字符串
      * @param string $type
      * @return string
@@ -698,16 +709,6 @@ STR;
         }
         $t1 = rtrim($t1, "\n");
         return $t1;
-    }
-
-    /**
-     * 获取实例化
-     * @return string
-     * @author Killua Chen
-     */
-    private function getSlh()
-    {
-        return "\$$this->model_short = new $this->model_cls();";
     }
 
     /**
