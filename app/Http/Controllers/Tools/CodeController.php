@@ -619,7 +619,7 @@ T3;
             if (!\$v->validate()) {
                 \$this->error(-1,\$v->msg());
             }
-            \$d = $v->data();
+            \$d = \$v->data();
             
             \$query = [
                 'is_delete' => ['\$ne'=>true],
