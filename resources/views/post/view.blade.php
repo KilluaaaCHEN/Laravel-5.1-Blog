@@ -16,7 +16,7 @@
             <li><i class="icon-calendar"></i> {{$post->created_at->diffForHumans()}}</li>
             <li><i class="icon-eye-open"></i> {{$post->read_count}} Browse</li>
             <li><i class="icon-comment"></i>
-                <a href="{{route('post.view',['post_id'=>$post->post_id]).'#disqus_thread'}}">{{$post->comment_count}} Comments</a>
+                <a href="{{route('post.view',['post_id'=>$post->post_id]).'#disqus_thread'}}">Comments</a>
             </li>
             <li class="tags">
                 <i class="icon-tags"></i>
@@ -43,35 +43,15 @@
     <h3 id="comments"></h3>
     <h3 class="menu"><span>Comments</span></h3>
     <div id="disqus_thread"></div>
-    {{--<script>--}}
-        {{--var disqus_config = function () {--}}
-            {{--this.page.identifier = '{{$post->post_id}}}';--}}
-        {{--};--}}
-        {{--var disqus_shortname = 'larry666';--}}
-        {{--(function () {--}}
-            {{--var d = document, s = d.createElement('script');--}}
-            {{--s.src = '//' + disqus_shortname + '.disqus.com/embed.js';--}}
-            {{--s.setAttribute('data-timestamp', +new Date());--}}
-            {{--(d.head || d.body).appendChild(s);--}}
-        {{--})();--}}
-    {{--</script>--}}
-    <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="{{$post->post_id}}" data-title="{{$post->title}}" data-url="{{route('post.view',['post_id'=>$post->post_id])}}"></div>
-    <!-- 多说评论框 end -->
-    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-        var duoshuoQuery = {short_name:"larry-cz"};
+    <script>
         (function() {
-            var ds = document.createElement('script');
-            ds.type = 'text/javascript';ds.async = true;
-            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-            ds.charset = 'UTF-8';
-            (document.getElementsByTagName('head')[0]
-            || document.getElementsByTagName('body')[0]).appendChild(ds);
+            var d = document, s = d.createElement('script');
+            s.src = 'https://killua.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
         })();
     </script>
-    <!-- 多说公共JS代码 end -->
-
+    <script id="dsq-count-scr" src="//killua.disqus.com/count.js" async></script>
 @endsection
 
 @section('footer')

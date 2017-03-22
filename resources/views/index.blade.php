@@ -29,7 +29,7 @@
                             <li><i class="icon-calendar"></i> {{$item->created_at->diffForHumans()}}</li>
                             <li><i class="icon-eye-open"></i> {{$item->read_count}} Browse</li>
                             <li><i class="icon-comment"></i>
-                                <a href="{{route('post.view',['post_id'=>$item->post_id]).'#disqus_thread'}}">{{$item->comment_count}} Comments</a>
+                                <a href="{{route('post.view',['post_id'=>$item->post_id]).'#disqus_thread'}}">Comments</a>
                             </li>
                             <li class="tags">
                                 <i class="icon-tags"></i>
@@ -56,6 +56,7 @@
             @endforeach
         </div>
     </div>
+    <script id="dsq-count-scr" src="//killua.disqus.com/count.js" async></script>
     {!! $posts->appends('q',$q)->render() !!}
     <div class="clearfix"></div>
 @endsection
