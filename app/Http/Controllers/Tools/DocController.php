@@ -156,7 +156,7 @@ STR;
         //数组牌组,对象放最后
         $after = [];
         foreach ($res_list as $i => $item) {
-            if (is_array($item) && count($item) > 1) {
+            if (is_array($item) && !isset($item['sec']) && !isset($item['usec']) && $i != '_id') {
                 $after[$i] = $item;
                 unset($res_list[$i]);
             }
