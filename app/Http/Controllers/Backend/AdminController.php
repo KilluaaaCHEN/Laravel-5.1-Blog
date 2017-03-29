@@ -13,7 +13,6 @@ use App\Models\Post;
 use App\Services\FileService;
 use Auth;
 use Input;
-use Plugins\MarkDownEditor\Editor;
 use Redirect;
 use Request;
 use Validator;

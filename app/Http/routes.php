@@ -37,13 +37,3 @@ Route::get('/time-stamp', ['as' => 'ts', 'uses' => 'Tools\TimeStampController@in
 Route::get('/qr-code', ['as' => 'qr_code', 'uses' => 'Tools\QrCodeController@generate']);
 Route::any('/generate/doc', ['as' => 'generate_doc', 'uses' => 'Tools\DocController@generate']);
 Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeController@generate']);
-
-
-Route::get('test', function () {
-    error_reporting(E_ALL & ~E_NOTICE);
-    $data = ['name' => 'Killua', 'age' => 24];
-    $a = 0;
-    $b = 10 / $a;
-    var_dump($data['name']);
-    var_dump($data['a']);
-});

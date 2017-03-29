@@ -194,6 +194,7 @@ STR;
                 if (count($val[0]) > 1) {
                     $val = [$val[0]];
                 }
+                $this->filterAttr($val);
                 $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                 $this->appendBr($val);
                 $val = str_replace('\/', '/', $val);
@@ -216,6 +217,14 @@ STR;
         $unset_arr = ['__REMOVED__', '__MODIFY_TIME__', '__CREATE_TIME__', 'is_delete'];
         foreach ($unset_arr as $item) {
             unset($list[$item]);
+        }
+        if (is_array($list)) {
+
+            foreach ($list as &$item) {
+                if (is_string($item) && mb_strlen($item) > 50 && strpos($item, 'http://') !== false) {
+                    $item = substr($item, 0, 50);
+                }
+            }
         }
     }
 
