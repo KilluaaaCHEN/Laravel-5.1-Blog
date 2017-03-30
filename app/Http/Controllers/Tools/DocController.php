@@ -135,6 +135,7 @@ STR;
             $str = $str_arr[0];
         }
         $str = rtrim($str, ',<br/>');
+        $str = str_replace('<br/><br/>', '<br/>', $str);
     }
 
     /**
@@ -198,7 +199,7 @@ STR;
                 $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                 $this->appendBr($val);
                 $val = str_replace('\/', '/', $val);
-                $doc .= " \n|   | `{$key}`=>`$pre`  | $text | {$val} | {$type} |";
+                $doc .= " \n|   | `{$key}`=>`$pre`  | {$text}信息 | {$val} | {$type} |";
                 $doc .= $inner_doc;
             } else {
                 $str = "`{$key}`";
