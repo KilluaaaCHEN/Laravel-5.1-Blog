@@ -20,7 +20,7 @@ class IndexController extends Controller
     {
         $wechat = app('wechat');
         $wechat->server->setMessageHandler(function ($message) {
-            return "欢迎关注 Larry！";
+            return "欢迎关注:" . $message;
         });
 
         Log::info('return response.');

@@ -43,8 +43,7 @@ Route::any('/wechat/callback', ['as' => 'wechat_callback', 'uses' => 'Wechat\Ind
 
 Route::group(['middleware' => ['wechat.oauth']], function () {
     Route::get('/user', function () {
-        $user = session('wechat.oauth_user'); // 拿到授权用户资料
-
+        $user = session('wechat.oauth_user');
         dd($user);
     });
 });
