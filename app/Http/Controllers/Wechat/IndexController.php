@@ -30,9 +30,10 @@ class IndexController extends Controller
             ],
         ];
         $app = new Application($options);
+        $app->server->setMessageHandler(function ($message) {
+            return "您好！欢迎关注我! Larry666";
+        });
         $response = $app->server->serve();
-// 将响应输出
-//        $response->send(); // Laravel 里请使用：return $response;
         return $response;
     }
 
