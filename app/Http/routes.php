@@ -39,3 +39,12 @@ Route::any('/generate/doc', ['as' => 'generate_doc', 'uses' => 'Tools\DocControl
 Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeController@generate']);
 
 Route::any('/wechat/callback', ['as' => 'wechat_callback', 'uses' => 'Wechat\IndexController@callback']);
+
+
+Route::group(['middleware' => ['wechat.oauth']], function () {
+    Route::get('/user', function () {
+        $user = session('wechat.oauth_user'); // 拿到授权用户资料
+
+        dd($user);
+    });
+});
