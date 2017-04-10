@@ -31,7 +31,7 @@ class IndexController extends Controller
         ];
         $app = new Application($options);
         $app->server->setMessageHandler(function ($message) {
-            return "您好！欢迎关注我!";
+            return "您好！欢迎关注我!Larry";
         });
         $response = $app->server->serve();
         return $response;
