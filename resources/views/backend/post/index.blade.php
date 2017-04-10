@@ -4,7 +4,7 @@
     <small> 宝剑锋从磨砺出，梅花香自苦寒来。</small>
 @endsection
 @section('breadcrumb')
-    <li><a href="{{route('admin.post.index')}}">文章管理</a></li>
+    <li><a href="{{route('post.index')}}">文章管理</a></li>
     <li class="active">文章列表</li>
 @endsection
 @section('head')
@@ -37,7 +37,7 @@
                         <tbody>
                         @forelse($posts as $post)
                             <tr>
-                                <td><a href="{{route('admin.post.show',$post->post_id)}}">{{$post->title}}</a>
+                                <td><a href="{{route('post.show',$post->post_id)}}">{{$post->title}}</a>
                                 </td>
                                 <td>{{\Illuminate\Support\Str::limit($post->desc,30)}}</td>
                                 <td>{{$post->getState($post->state_id)}}</td>
@@ -50,7 +50,7 @@
                                             管理 <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="{{route('admin.post.edit',$post->post_id)}}">编辑</a></li>
+                                            <li><a href="{{route('post.edit',$post->post_id)}}">编辑</a></li>
                                             <li><a href="{{route('admin.post.delete',$post->post_id)}}" onclick="return confirm('是否删除?')">软删除</a></li>
                                         </ul>
                                     </div>

@@ -10,9 +10,9 @@
     <title>{{$title}} - LarryBlog</title>
 @endsection
 @section('breadcrumb')
-    <li><a href="{{route('admin.post.index')}}">文章管理</a></li>
+    <li><a href="{{route('post.index')}}">文章管理</a></li>
     @if($model->post_id)
-        <li><a href="{{route('admin.post.show',['post_id'=>$model->post_id])}}">{{$model->title}}</a></li>
+        <li><a href="{{route('post.show',['post_id'=>$model->post_id])}}">{{$model->title}}</a></li>
     @endif
     <li class="active">{{$title}}</li>
 @endsection
@@ -20,7 +20,7 @@
     <br/>
     <div class="box box-success">
         <div class="box-body">
-            <form action="{{route('admin.post.store')}}" method="POST" role="form" class="col-sm-9">
+            <form action="{{route('post.store')}}" method="POST" role="form" class="col-sm-9">
                 @include('common.error')
                 {!! csrf_field() !!}
                 <input type="hidden" name="post_id" value="{{old('post_id',$model->post_id)}}"/>

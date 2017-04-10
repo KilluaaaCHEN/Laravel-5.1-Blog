@@ -99,7 +99,7 @@ class PostController extends Controller
         } else {
             self::flashState(false, '保存失败', '请联系管理员');
         }
-        return redirect()->route('admin.post.index');
+        return redirect()->route('post.index');
     }
 
 

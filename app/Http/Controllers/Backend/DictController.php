@@ -71,7 +71,7 @@ class DictController extends Controller
         } else {
             self::flashState(false, '保存失败', '请联系管理员');
         }
-        return redirect()->route('admin.dict.index');
+        return redirect()->route('dict.index');
     }
 
     /**

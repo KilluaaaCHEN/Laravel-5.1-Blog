@@ -13,14 +13,14 @@ class Tag extends Model
 
     public static function getAllTag()
     {
-        $data = json_encode(Tag::lists('tag_name')->toArray());
+        $data = json_encode(Tag::pluck('tag_name')->toArray());
         return $data;
     }
 
     public static function updateTag($post_id, $tags)
     {
         $old_tags = PostTag::where(['post_id' => $post_id])->get();
-        $old_tags_arr = PostTag::where(['post_id' => $post_id])->lists('tag_id');
+        $old_tags_arr = PostTag::where(['post_id' => $post_id])->pluck('tag_id');
         Tag::whereIn('tag_id', $old_tags_arr)->decrement('post_count', 1);
         foreach ($tags as $val) {
             $val = trim($val);

@@ -11,15 +11,16 @@ use App\Helper\Common;
 use App\Models\Post;
 use Request;
 use URL;
+use Input;
 
 class PostController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $cache_key = URL::full();
         $posts = \Cache::get($cache_key);
-        $q = \Input::get('q');
+        $q = $request::get('q');
         if (!$posts) {
             $query = Post::where(['state_id' => 10])->orderBy('post_id', 'desc');
             if ($q) {

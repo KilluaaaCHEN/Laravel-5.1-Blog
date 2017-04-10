@@ -34,11 +34,11 @@ class AdminController extends Controller
         return view('backend.admin.login');
     }
 
-    public function postLogin()
+    public function postLogin(Request $request)
     {
-        $email = Input::get("email");
-        $pwd = Input::get('password');
-        $remember = Input::get('remember', false);
+        $email = $request::get("email");
+        $pwd = $request::get('password');
+        $remember = $request::get('remember', false);
         // 验证参数
         $validator = Validator::make(Request::all(), [
             'email' => 'required|email',

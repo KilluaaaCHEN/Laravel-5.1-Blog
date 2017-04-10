@@ -7,3 +7,6 @@ Homestead.json
 .idea/
 .DS_Store
 /public/tmp/temp.php
+
+*.[oa]
+*~

@@ -4,7 +4,7 @@
     <small> 宝剑锋从磨砺出，梅花香自苦寒来。</small>
 @endsection
 @section('breadcrumb')
-    <li><a href="{{route('admin.links.index')}}">友链管理</a></li>
+    <li><a href="{{route('links.index')}}">友链管理</a></li>
     <li class="active">友链列表</li>
 @endsection
 @section('head')
@@ -35,7 +35,7 @@
                         <tbody>
                         @forelse($items as $item)
                             <tr>
-                                <td><a href="{{route('admin.links.show',$item->id)}}">{{$item->name}}</a>
+                                <td><a href="{{route('links.show',$item->id)}}">{{$item->name}}</a>
                                 </td>
                                 <td>{{$item->url}}</td>
                                 <td>{{$item->sort_num}}</td>
@@ -46,7 +46,7 @@
                                             管理 <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="{{route('admin.links.edit',$item->id)}}">编辑</a></li>
+                                            <li><a href="{{route('links.edit',$item->id)}}">编辑</a></li>
                                             <li><a href="{{route('admin.links.delete',$item->id)}}" onclick="return confirm('是否删除?')">删除</a></li>
                                         </ul>
                                     </div>

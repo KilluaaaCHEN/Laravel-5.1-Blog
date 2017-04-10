@@ -12,10 +12,8 @@ class Path
      */
     public static function getAlias()
     {
-        $action = Controller::getRouter()->current()->getAction();
-        if (isset($action['as'])) {
-            return substr($action['as'], 0, strrpos($action['as'], '.'));
-        }
-        return null;
+        $url = url()->current();
+        $url = explode('/', $url);
+        return $url[3] . '.' . $url[4];
     }
 }

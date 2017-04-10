@@ -1,5 +1,0 @@
-{
-    "require": {
-        "larry/pjax-for-laravel": "dev-master"
-    }
-}

@@ -76,7 +76,7 @@ class LinksController extends Controller
         } else {
             self::flashState(false, '保存失败', '请联系管理员');
         }
-        return redirect()->route('admin.links.index');
+        return redirect()->route('links.index');
     }
 
     /**

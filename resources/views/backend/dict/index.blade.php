@@ -4,7 +4,7 @@
     <small> 宝剑锋从磨砺出，梅花香自苦寒来。</small>
 @endsection
 @section('breadcrumb')
-    <li><a href="{{route('admin.dict.index')}}">字典管理</a></li>
+    <li><a href="{{route('dict.index')}}">字典管理</a></li>
     <li class="active">字典列表</li>
 @endsection
 @section('head')
@@ -41,7 +41,7 @@
                                             管理 <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="{{route('admin.dict.edit',$item->id)}}">编辑</a></li>
+                                            <li><a href="{{route('dict.edit',$item->id)}}">编辑</a></li>
                                             <li><a href="{{route('admin.dict.delete',$item->id)}}" onclick="return confirm('是否删除?')">删除</a></li>
                                         </ul>
                                     </div>
