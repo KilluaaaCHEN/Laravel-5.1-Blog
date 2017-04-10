@@ -9,7 +9,7 @@
         "laravel/framework": "5.1.*",
         "larry666/pjax-for-laravel": "dev-master",
         "larry666/laravel-5-markdown-editor": "1.0",
-        "overtrue/wechat": "~3.1"
+        "overtrue/wechat": "^3.2"
         
     },
     "require-dev": {

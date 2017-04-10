@@ -37,3 +37,5 @@ Route::get('/time-stamp', ['as' => 'ts', 'uses' => 'Tools\TimeStampController@in
 Route::get('/qr-code', ['as' => 'qr_code', 'uses' => 'Tools\QrCodeController@generate']);
 Route::any('/generate/doc', ['as' => 'generate_doc', 'uses' => 'Tools\DocController@generate']);
 Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeController@generate']);
+
+Route::any('/wechat/callback', ['as' => 'generate_code', 'uses' => 'Tools\CodeController@generate']);
