@@ -41,9 +41,9 @@ Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeCont
 Route::any('/wechat/callback', ['as' => 'wechat_callback', 'uses' => 'Wechat\IndexController@callback']);
 
 
-Route::group(['middleware' => ['wechat.oauth', 'web']], function () {
+Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
     Route::get('/user', function () {
-        $user = session('wechat.oauth_user');
+        $user = session('wechat.oauth_user'); // 拿到授权用户资料
         dd($user);
     });
 });
