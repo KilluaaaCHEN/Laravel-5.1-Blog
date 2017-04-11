@@ -14,6 +14,6 @@ class Path
     {
         $url = url()->current();
         $url = explode('/', $url);
-        return $url[3] . '.' . $url[4];
+        return @$url[3] . '.' . @$url[4];
     }
 }

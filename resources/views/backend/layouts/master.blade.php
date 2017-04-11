@@ -234,7 +234,6 @@
 <script>
     $(function(){
         var current='{{\App\Helper\Path::getAlias()}}';
-        console.log(current);
         $('.treeview[data-id="'+current+'"]').addClass('active');
     });
 </script>
