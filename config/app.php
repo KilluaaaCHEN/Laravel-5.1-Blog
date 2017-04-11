@@ -178,7 +178,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Plugins\MarkDownEditor\MdeServiceProvider::class,
         Overtrue\LaravelWechat\ServiceProvider::class,
-
     ],
 
     /*
