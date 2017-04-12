@@ -38,7 +38,7 @@ Route::any('/generate/doc', ['as' => 'generate_doc', 'uses' => 'Tools\DocControl
 Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeController@generate']);
 
 
-
+Route::any('/wechat/callback', ['as' => 'wechat_callback', 'uses' => 'Wechat\IndexController@callback']);
 Route::get('/wechat/menu', 'Wechat\IndexController@menu');
 
 Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
