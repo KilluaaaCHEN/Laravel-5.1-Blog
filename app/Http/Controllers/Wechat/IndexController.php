@@ -16,8 +16,9 @@ class IndexController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function callback(Application $wechat)
+    public function callback()
     {
+        $wechat = app('wechat');
         $wechat->server->setMessageHandler(function ($message) {
             switch ($message->MsgType) {
                 case 'event':
