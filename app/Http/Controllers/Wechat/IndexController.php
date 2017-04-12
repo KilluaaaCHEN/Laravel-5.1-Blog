@@ -22,7 +22,7 @@ class IndexController extends Controller
         $wechat->server->setMessageHandler(function ($message) {
             switch ($message->MsgType) {
                 case 'event':
-                    return '收到事件消息';
+                    return '收到事件消息' . $message;
                     break;
                 case 'text':
                     return '收到文字消息' . $message;
@@ -86,6 +86,27 @@ class IndexController extends Controller
         $menu->add($buttons);
         $menus = $menu->all();
         dd($menus);
+    }
+
+    public function notice(Application $wechat)
+    {
+        $userId = 'o7TeK040ZuriQze6k7rhmzv9aj_w';
+        $templateId = 'k4mOTPLWew2uL3nyNJWYAjNIRy3AEro4SoACZlT0iuo';
+        $url = 'http://larry666.com/view/35';
+
+        $data = array(
+            "first" => array("恭喜你购买成功！", '#555555'),
+            "name" => array("巧克力", "#ccc"),
+            "price" => array("39.8元", "#FF0000"),
+            "remark" => array("欢迎再次购买！", "#5599FF"),
+        );
+        $result = $wechat->notice->uses($templateId)->withUrl($url)->andData($data)->andReceiver($userId)->send();
+        var_dump($result);
+    }
+
+    public function reply(Application $wechat)
+    {
+        dd($wechat->reply->current());
     }
 
 }

@@ -9,6 +9,8 @@
 
 Route::any('callback', ['as' => 'wechat_callback', 'uses' => 'Wechat\IndexController@callback']);
 Route::get('menu', 'Wechat\IndexController@menu');
+Route::get('notice', 'Wechat\IndexController@notice');
+Route::get('reply', 'Wechat\IndexController@reply');
 
 Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
     Route::get('/user', function () {
