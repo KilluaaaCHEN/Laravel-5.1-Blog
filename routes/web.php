@@ -32,14 +32,14 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin'], function () {
     Route::post('login', ['as' => 'admin.login', 'uses' => 'AdminController@postLogin']);
 });
 
-
 Route::get('/time-stamp', ['as' => 'ts', 'uses' => 'Tools\TimeStampController@index']);
 Route::get('/qr-code', ['as' => 'qr_code', 'uses' => 'Tools\QrCodeController@generate']);
 Route::any('/generate/doc', ['as' => 'generate_doc', 'uses' => 'Tools\DocController@generate']);
 Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeController@generate']);
 
-Route::any('/wechat/callback', ['as' => 'wechat_callback', 'uses' => 'Wechat\IndexController@callback']);
 
+
+Route::get('/wechat/menu', 'Wechat\IndexController@menu');
 
 Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
     Route::get('/user', function () {
