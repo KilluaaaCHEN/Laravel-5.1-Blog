@@ -32,7 +32,7 @@ class DocController extends Controller
             $cache_key = 'dict';
             $attr_list = \Cache::get($cache_key);
             if (!$attr_list) {
-                $attr_list = Dict::lists('val', 'key')->toArray();
+                $attr_list = Dict::pluck('val', 'key')->toArray();
                 \Cache::put($cache_key, $attr_list, 60 * 24);
             }
 

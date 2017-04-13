@@ -100,13 +100,16 @@ class IndexController extends Controller
             "price" => array("39.8元", "#FF0000"),
             "remark" => array("欢迎再次购买！", "#5599FF"),
         );
-        $result = $wechat->notice->uses($templateId)->withUrl($url)->andData($data)->andReceiver($userId)->send();
+        $result = $wechat->oauth->notice->uses($templateId)->withUrl($url)->andData($data)->andReceiver($userId)->send();
         var_dump($result);
     }
 
     public function reply(Application $wechat)
     {
-        dd($wechat->reply->current());
+        $userService = $wechat->user;
+        $user = $userService->get('o7TeK040ZuriQze6k7rhmzv9aj_w');
+        var_dump($user);
+        dd($userService->lists($nextOpenId = null));
     }
 
 }
