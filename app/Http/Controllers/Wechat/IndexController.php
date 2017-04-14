@@ -22,29 +22,90 @@ class IndexController extends Controller
         $wechat->server->setMessageHandler(function ($message) {
             switch ($message->MsgType) {
                 case 'event':
-                    return '收到事件消息' . $message;
+                    switch ($message->Event) {
+                        case 'subscribe':// 关注事件
+                            // 扫描带参数二维码事件 用户未关注时，进行关注后的事件推送
+                            if (!empty($message->EventKey) && !empty($message->Ticket)) {
+                                $scene_id = str_ireplace('qrscene_', '', $message->EventKey);
+                                return "用户未关注时\n场景:$scene_id,Tickey:$message->Ticket\n$message";
+                            } else {
+                                return "欢迎关注Larry WeChat Test\n$message";
+                            }
+                            break;
+                        case 'SCAN':// 扫描带参数二维码事件 用户已关注时的事件推送
+                            return "用户已关注时的事件推送\n场景:$message->EventKey,Tickey:$message->Ticket\n$message";
+                            break;
+                        case 'unsubscribe':
+                            return "取消关注\n$message";
+                            break;
+                        case 'CLICK':// 自定义菜单事件推送
+                            break;
+                        case 'LOCATION':
+                            return "地理位置纬度:$message->Location_X
+                            地理位置经度 $message->Location_Y
+                            地图缩放大小 $message->Scale
+                            地理位置信息 $message->Label\n$message";
+                            break;
+                        case 'scancode_push':// 自定义菜单事件推送 -scancode_push：扫码推事件的事件推送
+                            return PHP_EOL . $message;
+                            break;
+                        case 'scancode_waitmsg': // 自定义菜单事件推送 -scancode_waitmsg：扫码推事件且弹出“消息接收中”提示框的事件推送
+                            return PHP_EOL . $message;
+                            break;
+                        case 'pic_sysphoto':// 自定义菜单事件推送 -pic_sysphoto：弹出系统拍照发图的事件推送
+                            return PHP_EOL . $message;
+                            break;
+                        case 'pic_photo_or_album':// 自定义菜单事件推送 -pic_photo_or_album：弹出拍照或者相册发图的事件推送
+                            return PHP_EOL . $message;
+                            break;
+                        case 'pic_weixin':// 自定义菜单事件推送 -pic_weixin：弹出微信相册发图器的事件推送
+                            return PHP_EOL . $message;
+                            break;
+                        case 'location_select':// 自定义菜单事件推送 -location_select：弹出地理位置选择器的事件推送
+                            return PHP_EOL . $message;
+                            break;
+                        case 'MASSSENDJOBFINISH': // 事件推送群发结果
+                            return PHP_EOL . $message;
+                            break;
+                        case 'TEMPLATESENDJOBFINISH':// 事件推送模版消息发送结果
+                            return PHP_EOL . $message;
+                            break;
+                        case 'user_pay_from_pay_cell':// 买单事件推送
+                            return PHP_EOL . $message;
+                            break;
+                        case 'qualification_verify_success':// 资质认证成功
+                        case 'qualification_verify_fail':// 资质认证失败
+                        case 'naming_verify_success':// 名称认证成功
+                        case 'naming_verify_fail':// 名称认证失败
+                        case 'annual_renew':// 年审通知
+                        case 'verify_expired':// 认证过期失效通知
+                            return '资质通知' . PHP_EOL . $message;
+                            break;
+                        default:
+                            return '未知类型' . PHP_EOL . $message;
+                            break;
+                    }
                     break;
                 case 'text':
                     return '收到文字消息' . $message;
                     break;
                 case 'image':
-                    return new Image(['media_id' => 'l0g2_vWTfcUyRSefKF4iDrUuBSxfl-GjEHTVykPu2_hMq1TNCyYTplZFwoEA_pmz']);
+                    return PHP_EOL . $message;
                     break;
                 case 'voice':
-                    return '收到语音消息';
+                    return PHP_EOL . $message;
                     break;
                 case 'video':
-                    return '收到视频消息';
+                    return PHP_EOL . $message;
                     break;
                 case 'location':
-                    return '收到坐标消息';
+                    return PHP_EOL . $message;
                     break;
                 case 'link':
-                    return '收到链接消息';
+                    return PHP_EOL . $message;
                     break;
-                // ... 其它消息
                 default:
-                    return '收到其它消息';
+                    return '收到其它消息' . PHP_EOL . $message;
                     break;
             }
         });
@@ -106,10 +167,25 @@ class IndexController extends Controller
 
     public function reply(Application $wechat)
     {
-        $userService = $wechat->user;
-        $user = $userService->get('o7TeK040ZuriQze6k7rhmzv9aj_w');
-        var_dump($user);
-        dd($userService->lists($nextOpenId = null));
+        $reply = $wechat->reply;
+
+
+        dd($reply->current());
+    }
+
+    public function qrCode(Application $wechat)
+    {
+        $qrcode = $wechat->qrcode;
+        $result = $qrcode->forever('back_sign');
+        $ticket = $result->ticket;// 或者 $result['ticket']
+        $expireSeconds = $result->expire_seconds; // 有效秒数
+        $url = $result->url; // 二维码图片解析后的地址，开发者可根据该地址自行生成需要的二维码图片
+
+        dd($ticket, $expireSeconds, $url, $qrcode->url($ticket));
+
+        $url = $qrcode->url($ticket);
+
+
     }
 
 }
