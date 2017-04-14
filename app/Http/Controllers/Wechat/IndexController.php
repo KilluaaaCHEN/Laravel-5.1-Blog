@@ -27,19 +27,19 @@ class IndexController extends Controller
                             // 扫描带参数二维码事件 用户未关注时，进行关注后的事件推送
                             if (!empty($message->EventKey) && !empty($message->Ticket)) {
                                 $scene_id = str_ireplace('qrscene_', '', $message->EventKey);
-                                return "用户未关注时\n场景:$scene_id,Tickey:$message->Ticket\n$message";
+                                return "用户未关注时\n$message";
                             } else {
                                 return "欢迎关注Larry WeChat Test\n$message";
                             }
                             break;
                         case 'SCAN':// 扫描带参数二维码事件 用户已关注时的事件推送
-                            return "用户已关注时的事件推送\n场景:$message->EventKey,Tickey:$message->Ticket\n$message";
+                            return "用户已关注时的事件推送\n$message";
                             break;
                         case 'unsubscribe':
                             return "取消关注\n$message";
                             break;
                         case 'CLICK':// 自定义菜单事件推送
-                            return '自定义菜单时间' . $message;
+                            return '自定义菜单事件' . $message;
                             break;
                         case 'LOCATION':
                             return "地理位置纬度:$message->Location_X
