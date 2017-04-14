@@ -39,6 +39,7 @@ class IndexController extends Controller
                             return "取消关注\n$message";
                             break;
                         case 'CLICK':// 自定义菜单事件推送
+                            return '自定义菜单时间' . $message;
                             break;
                         case 'LOCATION':
                             return "地理位置纬度:$message->Location_X
