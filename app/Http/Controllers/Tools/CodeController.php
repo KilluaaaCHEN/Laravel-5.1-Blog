@@ -130,10 +130,10 @@ class CodeController extends Controller
         $keys = '';
         foreach ($this->structure as $item) {
             if ($item['type'] == '数字输入框') {
-                $keys .= "'{$item['key']}'=>\$d->{$item['key']}, ";
+                $keys .= "'{$item['key']}'=>\$d->{$item['key']}, \n";
             }
         }
-        $this->keys_int = rtrim($keys, ', ');
+        $this->keys_int = rtrim($keys, ", \n");
     }
 
     private function setKeysAttr()
@@ -601,7 +601,7 @@ STR;
             }
             
             //按日期按天查询
-;            if (\$d->begin_date) {
+            if (\$d->begin_date) {
                 \$query['time']['\$gte'] = strtotime(\$d->begin_date);
             }
             if (\$d->end_date) {
@@ -683,10 +683,10 @@ STR;
         $keys = '';
         foreach ($this->structure as $item) {
             if ($item['type'] != '数字输入框') {
-                $keys .= "'{$item['key']}'=>\$d->{$item['key']}, ";
+                $keys .= "'{$item['key']}'=>\$d->{$item['key']}, \n";
             }
         }
-        $this->keys_like = rtrim($keys, ', ');
+        $this->keys_like = rtrim($keys, ", \n");
     }
 
     /**
