@@ -105,7 +105,7 @@ STR;
                 }
                 $doc = $this->format($format_res, $attr_list, $doc);
             }
-            //返回示例 只取第一条数据
+            //响应示例 只取第一条数据
             $json_demo = $res;
             if (isset($res_list['result']['datas'])) {
                 $res_list['result']['datas'] = [$res_list['result']['datas'][0]];
@@ -116,7 +116,7 @@ STR;
             }
             $doc .= <<<STR
             
-> 返回示例
+> 响应示例
 ```
 $json_demo
 ```
