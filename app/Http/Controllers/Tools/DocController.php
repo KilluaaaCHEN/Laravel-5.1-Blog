@@ -101,6 +101,19 @@ STR;
             if ($res_list) {
                 $doc = $this->format($res_list, $attr_list, $doc);
             }
+            $num = 1.1;
+            $title_arr = explode(' ', $title);
+            if (count($title_arr) > 1) {
+                $num = $title_arr[0];
+            }
+            $doc .= <<<STR
+            
+#### $num.1 返回示例
+```
+$res
+```
+STR;
+
         }
         $doc = urldecode($doc);
         return view('tools.doc', compact('title', 'uri', 'method', 'res', 'req', 'doc', 'attr'));
