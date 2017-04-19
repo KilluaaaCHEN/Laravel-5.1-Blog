@@ -36,3 +36,18 @@ Route::get('/time-stamp', ['as' => 'ts', 'uses' => 'Tools\TimeStampController@in
 Route::get('/qr-code', ['as' => 'qr_code', 'uses' => 'Tools\QrCodeController@generate']);
 Route::any('/generate/doc', ['as' => 'generate_doc', 'uses' => 'Tools\DocController@generate']);
 Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeController@generate']);
+
+Route::get('hooks', function () {
+    $secret = env('WEBHOOKS_SECRET');
+    $path = env('WEBHOOKS_PATH');
+    $signature = $_SERVER['HTTP_X_HUB_SIGNATURE'];
+    if ($signature) {
+        $postdata = file_get_contents("php://input");
+        $hash = "sha1=" . hash_hmac('sha1', $postdata, $secret);
+        if (strcmp($signature, $hash) == 0) {
+            echo shell_exec("cd {$path} && /usr/bin/git reset --hard origin/master && /usr/bin/git clean -f && /usr/bin/git pull 2>&1");
+            exit();
+        }
+    }
+    http_response_code(404);
+});
