@@ -99,21 +99,25 @@ STR;
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
             if ($res_list) {
-                $doc = $this->format($res_list, $attr_list, $doc);
+                $doc = $this->format($res_list['result'], $attr_list, $doc);
             }
             $num = 1.1;
             $title_arr = explode(' ', $title);
             if (count($title_arr) > 1) {
                 $num = $title_arr[0];
             }
+            $json_demo = $res;
+            if (isset($res_list['result']['datas'])) {
+                $res_list['result']['datas'] = [$res_list['result']['datas'][0]];
+                $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
+            }
             $doc .= <<<STR
             
 #### $num.1 返回示例
 ```
-$res
+$json_demo
 ```
 STR;
-
         }
         $doc = urldecode($doc);
         return view('tools.doc', compact('title', 'uri', 'method', 'res', 'req', 'doc', 'attr'));
@@ -203,7 +207,8 @@ STR;
             }
             $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
             if (isset($inner_doc)) {
-                $val = json_decode($val, true);
+                //取消内嵌示例
+                /*$val = json_decode($val, true);
                 $this->filterAttr($val[0]);
                 if (count($val[0]) > 1) {
                     $val = [$val[0]];
@@ -211,8 +216,8 @@ STR;
                 $this->filterAttr($val);
                 $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                 $this->appendBr($val);
-                $val = str_replace('\/', '/', $val);
-                $doc .= " \n|   | `{$key}`=>`$pre`  | {$text}信息 | {$val} | {$type} |";
+                $val = str_replace('\/', '/', $val);*/
+                $doc .= " \n|   | `{$key}`=>`$pre`  | {$text}信息 |  | {$type} |";
                 $doc .= $inner_doc;
             } else {
                 $str = "`{$key}`";
