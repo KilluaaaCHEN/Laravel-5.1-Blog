@@ -99,12 +99,19 @@ STR;
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
             if ($res_list) {
-                $doc = $this->format($res_list['result'], $attr_list, $doc);
+                $format_res = $res_list['result'];
+                if (!isset($format_res['datas']) && is_array($format_res) && is_array($format_res[0])) {
+                    $format_res = $format_res[0];
+                }
+                $doc = $this->format($format_res, $attr_list, $doc);
             }
-            //返回示例
+            //返回示例 只取第一条数据
             $json_demo = $res;
             if (isset($res_list['result']['datas'])) {
                 $res_list['result']['datas'] = [$res_list['result']['datas'][0]];
+                $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
+            }elseif(is_array($res_list['result']) && is_array($res_list['result'][0])){
+                $res_list['result'] = [$res_list['result'][0]];
                 $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
             }
             $doc .= <<<STR
