@@ -37,7 +37,7 @@ Route::get('/qr-code', ['as' => 'qr_code', 'uses' => 'Tools\QrCodeController@gen
 Route::any('/generate/doc', ['as' => 'generate_doc', 'uses' => 'Tools\DocController@generate']);
 Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeController@generate']);
 
-Route::get('hooks', function () {
+Route::any('hooks', function () {
     $secret = env('WEBHOOKS_SECRET');
     $path = env('WEBHOOKS_PATH');
     $signature = $_SERVER['X-Hub-Signature'];
