@@ -36,7 +36,6 @@ class DocController extends Controller
                 \Cache::put($cache_key, $attr_list, 60 * 24);
             }
 
-
             //多个数组合并属性
             $attr_arr = explode('}', $attr);
             $attr_dic = [];
