@@ -40,7 +40,7 @@ Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeCont
 Route::get('hooks', function () {
     $secret = env('WEBHOOKS_SECRET');
     $path = env('WEBHOOKS_PATH');
-    $signature = $_SERVER['HTTP_X_HUB_SIGNATURE'];
+    $signature = $_SERVER['X-Hub-Signature'];
     if ($signature) {
         $postdata = file_get_contents("php://input");
         $hash = "sha1=" . hash_hmac('sha1', $postdata, $secret);
