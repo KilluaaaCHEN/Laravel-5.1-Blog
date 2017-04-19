@@ -101,11 +101,7 @@ STR;
             if ($res_list) {
                 $doc = $this->format($res_list['result'], $attr_list, $doc);
             }
-            $num = 1.1;
-            $title_arr = explode(' ', $title);
-            if (count($title_arr) > 1) {
-                $num = $title_arr[0];
-            }
+            //返回示例
             $json_demo = $res;
             if (isset($res_list['result']['datas'])) {
                 $res_list['result']['datas'] = [$res_list['result']['datas'][0]];
@@ -113,7 +109,7 @@ STR;
             }
             $doc .= <<<STR
             
-#### $num.1 返回示例
+> 返回示例
 ```
 $json_demo
 ```
