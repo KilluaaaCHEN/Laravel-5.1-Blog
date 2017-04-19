@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class DocController extends Controller
 {
 
+
     /**
      * 生成Markdown形式的API文档
      * @param Request $request
