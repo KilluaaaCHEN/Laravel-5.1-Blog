@@ -82,7 +82,7 @@ STR;
                     $req_data[$key] = $val;
                 }
             }
-
+            //格式化
             foreach ($req_data as $key => $val) {
                 $not_null = strstr($key, '//') ? '  n' : '`y`';
                 $key = ltrim($key, '//');
@@ -98,6 +98,7 @@ STR;
                 $doc .= "|   | `{$key}`  | $text | $val | $not_null | \n";
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
+            //格式化响应数据
             if ($res_list) {
                 $format_res = $res_list['result'];
                 if (!isset($format_res['datas']) && is_array($format_res) && is_array($format_res[0])) {
