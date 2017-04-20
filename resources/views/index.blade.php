@@ -11,7 +11,7 @@
     </script>
 @stop
 @section('content')
-    <title>Larry的博客 -1</title>
+    <title>Larry的博客 -2</title>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h5 class="panel-title">
