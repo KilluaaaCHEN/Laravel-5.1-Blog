@@ -98,13 +98,14 @@ STR;
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
             //格式化响应数据
+            $format_res = $res_list;
             if ($res_list && isset($res_list['result'])) {
                 $format_res = $res_list['result'];
                 if (!isset($format_res['datas']) && is_array($format_res) && is_array($format_res[0])) {
                     $format_res = $format_res[0];
                 }
-                $doc = $this->format($format_res, $attr_list, $doc);
             }
+            $doc = $this->format($format_res, $attr_list, $doc);
             //响应示例 只取第一条数据
             $json_demo = $res;
             if (isset($res_list['result']['datas'])) {
