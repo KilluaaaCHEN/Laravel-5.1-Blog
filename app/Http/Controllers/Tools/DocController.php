@@ -110,7 +110,7 @@ STR;
             if (isset($res_list['result']['datas'])) {
                 $res_list['result']['datas'] = [$res_list['result']['datas'][0]];
                 $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
-            } elseif (is_array($res_list['result']) && is_array($res_list['result'][0])) {
+            } elseif (isset($res_list['result']) && is_array($res_list['result']) && is_array($res_list['result'][0])) {
                 $res_list['result'] = [$res_list['result'][0]];
                 $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
             }
