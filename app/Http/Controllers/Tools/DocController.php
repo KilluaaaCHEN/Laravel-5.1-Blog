@@ -195,7 +195,7 @@ STR;
                 $val = $val ? 'true' : 'false';
             }
             if (($type == 'array' || $type == 'object') && $key != '_id' && !isset($val['sec']) && !isset($val['usec'])) {
-                $val = json_encode($val);
+                $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                 if (strstr($val, '{') && strstr($val, '}')) {
                     $list = json_decode($val, true);
                     //数组只取第一个
