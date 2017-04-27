@@ -412,9 +412,6 @@ STR;
             \$d = \$v->data();
             \$fields = $this->keys;
             \$data = \$$this->model_short->getInfo(\$d->id, \$fields);
-            if (!\$data) {
-                abort(404,'数据不存在');
-            }
             \$this->result('',\$data);
         } catch (Exception \$e) {
             \$this->error(\$e->getCode(), \$e->getMessage());
