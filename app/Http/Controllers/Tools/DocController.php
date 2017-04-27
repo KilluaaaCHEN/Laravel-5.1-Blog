@@ -98,7 +98,7 @@ STR;
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
             //格式化响应数据
-            if ($res_list) {
+            if ($res_list && isset($res_list['result'])) {
                 $format_res = $res_list['result'];
                 if (!isset($format_res['datas']) && is_array($format_res) && is_array($format_res[0])) {
                     $format_res = $format_res[0];
@@ -110,11 +110,11 @@ STR;
             if (isset($res_list['result']['datas'])) {
                 $res_list['result']['datas'] = [$res_list['result']['datas'][0]];
                 $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
-            }elseif(is_array($res_list['result']) && is_array($res_list['result'][0])){
+            } elseif (is_array($res_list['result']) && is_array($res_list['result'][0])) {
                 $res_list['result'] = [$res_list['result'][0]];
                 $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
             }
-            if($res){
+            if ($res) {
                 $doc .= <<<STR
             
 > 响应示例
