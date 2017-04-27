@@ -114,13 +114,15 @@ STR;
                 $res_list['result'] = [$res_list['result'][0]];
                 $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
             }
-            $doc .= <<<STR
+            if($res){
+                $doc .= <<<STR
             
 > 响应示例
 ```
 $json_demo
 ```
 STR;
+            }
         }
         $doc = urldecode($doc);
         return view('tools.doc', compact('title', 'uri', 'method', 'res', 'req', 'doc', 'attr'));
