@@ -101,7 +101,7 @@ STR;
             $format_res = $res_list;
             if ($res_list && isset($res_list['result'])) {
                 $format_res = $res_list['result'];
-                if (!isset($format_res['datas']) && is_array($format_res) && is_array($format_res[0])) {
+                if (!isset($format_res['datas']) && is_array($format_res) && isset($format_res[0])) {
                     $format_res = $format_res[0];
                 }
             }
