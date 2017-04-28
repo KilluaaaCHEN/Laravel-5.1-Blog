@@ -97,25 +97,26 @@ STR;
                 $doc .= "|   | `{$key}`  | $text | $val | $not_null | \n";
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
-            //格式化响应数据
-            $format_res = $res_list;
-            if ($res_list && isset($res_list['result'])) {
-                $format_res = $res_list['result'];
-                if (!isset($format_res['datas']) && is_array($format_res) && isset($format_res[0])) {
-                    $format_res = $format_res[0];
-                }
-            }
-            $doc = $this->format($format_res, $attr_list, $doc);
-            //响应示例 只取第一条数据
-            $json_demo = $res;
-            if (isset($res_list['result']['datas'])) {
-                $res_list['result']['datas'] = [$res_list['result']['datas'][0]];
-                $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
-            } elseif (isset($res_list['result']) && is_array($res_list['result']) && isset($res_list['result'][0])) {
-                $res_list['result'] = [$res_list['result'][0]];
-                $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
-            }
+
             if ($res) {
+                //格式化响应数据
+                $format_res = $res_list;
+                if ($res_list && isset($res_list['result'])) {
+                    $format_res = $res_list['result'];
+                    if (!isset($format_res['datas']) && is_array($format_res) && isset($format_res[0])) {
+                        $format_res = $format_res[0];
+                    }
+                }
+                $doc = $this->format($format_res, $attr_list, $doc);
+                //响应示例 只取第一条数据
+                $json_demo = $res;
+                if (isset($res_list['result']['datas'])) {
+                    $res_list['result']['datas'] = [$res_list['result']['datas'][0]];
+                    $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
+                } elseif (isset($res_list['result']) && is_array($res_list['result']) && isset($res_list['result'][0])) {
+                    $res_list['result'] = [$res_list['result'][0]];
+                    $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
+                }
                 $doc .= <<<STR
             
 > 响应示例
