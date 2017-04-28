@@ -203,16 +203,20 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
     
     /**
      * 获取数据
-     * @param \$id
-     * @param \$fields
+     * @param \$condition \$id or \$query
+     * @param array \$fields
      * @return mixed
      * @author Killua Chen
      */
-    public function getInfo(\$id, \$fields = [])
+    public function getInfo(\$condition, \$fields = [])
     {
-        return \$this->findOne([
-            '_id' => \$id instanceof MongoId ? \$id : myMongoId(\$id)$t1
-        ], \$fields);
+        \$query = [];
+        if (is_array(\$condition)) {
+            \$query = \$condition;
+        } else {
+            \$query['_id'] = \$condition instanceof MongoId ? \$condition : myMongoId(\$condition);
+        }
+        return \$this->findOne(\$query, \$fields);
     }
     
     /**
