@@ -212,7 +212,7 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
     {
         \$query = [];
         if (is_array(\$condition)) {
-            \$query = \$condition;
+            \$query = array_merge(\$query, \$condition);
         } else {
             \$query['_id'] = \$condition instanceof MongoId ? \$condition : myMongoId(\$condition);
         }
