@@ -183,7 +183,7 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
      * 保存数据
      * @param \$data
      * @param bool \$id
-     * @return bool
+     * @return string 
      * @author Killua Chen
      */
     public function saveData(\$data, \$id = false)
@@ -191,10 +191,12 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
         $pwd_str
         if (\$id) {
             \$rst = \$this->update(['_id' => myMongoId(\$id)], ['\$set' => \$data])['n'];
+            if (!\$rst) \$id = false;
         } else {
             \$rst = \$this->insert(\$data);
+            @\$id = myMongoId(\$rst['_id']);
         }
-        return \$rst ? true : false;
+        return \$id;
     }
 
     $unique
