@@ -253,15 +253,15 @@ STR;
         }
         $str = <<<STR
         
-    /**
-     * 验证字段唯一性
+  /**
+     * 验证字段唯一,是否存在
      * @param \$field
      * @param \$val
      * @param \$id
      * @return bool
      * @author Killua Chen
      */
-    public function validateUnique(\$field, \$val, \$id)
+    public function validateUnique(\$field, \$val, \$id=false)
     {
         $t1
         if (\$id) {
