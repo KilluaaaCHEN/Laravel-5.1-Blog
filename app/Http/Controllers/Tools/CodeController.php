@@ -448,7 +448,7 @@ STR;
                 \$this->error(-1,\$v->msg());
             }
             \$data = \$v->data(false);
-            \$rst = \$$this->model_short->saveData(\$data, \$d->id);
+            \$rst = \$$this->model_short->saveData(\$data, \$data['id']);
             if (\$rst) {
                 \$this->result('OK');
             } else {
