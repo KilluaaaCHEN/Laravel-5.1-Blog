@@ -74,9 +74,9 @@ class AdminController extends Controller
         $file = $request->file('editormd-image-file');
         $file_path = $file->getPathname();
         $key = 'blog/' . uniqid();
-        list($ret, $error) = $upManager->putFile($token, $key, $file_path, null, $file->getMimeType());
-        $rst = ['success' => 0, 'message' => '图片上传失败'];
+        $rst = ['success' => 0, 'message' => '图片上传失败,20M以内'];
         if (file_exists($file_path)) {
+            list($ret, $error) = $upManager->putFile($token, $key, $file_path, null, $file->getMimeType());
             if (is_null($error)) {
                 $rst = ['success' => 1, 'url' => 'http://images.larry666.com/' . $key];
             }
