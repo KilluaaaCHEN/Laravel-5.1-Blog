@@ -41,6 +41,10 @@
     <div class="clearfix"></div>
     <div>
         {!! \Plugins\MarkDownEditor\MdeDecode::decode($post->content) !!}
+        <blockquote>
+            <p>本文为作者原创，允许转载，转载后请以<a href="{{URL::current()}}">链接形式</a>说明文章出处.
+                如转载但不标明来源，后果自负。</p>
+        </blockquote>
     </div>
     <h3 id="comments"></h3>
     <h3 class="menu"><span>Comments</span></h3>

@@ -63,3 +63,4 @@ em{color:#EA4335;    font-style: normal;}
 #tag-cloud{ width:100%; height:260px; }
 .zzsc-container{padding:0 !important;}
 #content img{max-height: 300px;}
+blockquote { font-size: 100% !important; border-left: 5px solid; border-color: green !important; padding: 1em 0em 1em 1em; }
