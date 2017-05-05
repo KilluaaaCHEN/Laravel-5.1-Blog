@@ -72,13 +72,14 @@ class AdminController extends Controller
         $auth = new Auth(env('QINIU_AK'), env('QINIU_SK'));
         $token = $auth->uploadToken('killua');
         $file = $request->file('editormd-image-file');
-        $file_path = $file->getPath() . '/' . $file->getFilename();
+        $file_path = $file->getPathname();
         $key = 'blog/' . uniqid();
         list($ret, $error) = $upManager->putFile($token, $key, $file_path, null, $file->getMimeType());
-        if (!is_null($error)) {
-            $rst = ['success' => 0, 'message' => '图片上传失败'];
-        } else {
-            $rst = ['success' => 1, 'url' => 'http://images.larry666.com/' . $key];
+        $rst = ['success' => 0, 'message' => '图片上传失败'];
+        if (file_exists($file_path)) {
+            if (is_null($error)) {
+                $rst = ['success' => 1, 'url' => 'http://images.larry666.com/' . $key];
+            }
         }
         return json_encode($rst);
 
