@@ -10,13 +10,14 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use App\Services\FileService;
-use Auth;
 use Input;
 use Redirect;
-use Request;
+use Illuminate\Http\Request;
+use Storage;
 use Validator;
-use YuanChao\Editor\EndaEditor;
+use Illuminate\Http\File;
+use Qiniu\Storage\UploadManager;
+use Qiniu\Auth;
 
 class AdminController extends Controller
 {
@@ -28,19 +29,19 @@ class AdminController extends Controller
 
     public function login()
     {
-        if(Auth::check()){
+        if (\Auth::check()) {
             return redirect()->route('admin.index');
         }
         return view('backend.admin.login');
     }
 
-    public function postLogin(Request $request)
+    public function postLogin(\Request $request)
     {
         $email = $request::get("email");
         $pwd = $request::get('password');
         $remember = $request::get('remember', false);
         // 验证参数
-        $validator = Validator::make(Request::all(), [
+        $validator = Validator::make(\Request::all(), [
             'email' => 'required|email',
             'password' => 'required',
         ], [
@@ -49,24 +50,37 @@ class AdminController extends Controller
             'password.required' => '密码不能为空',
         ]);
         if ($validator->fails()) {
-            return Redirect::route('admin.login')->withErrors($validator)->withInput(Request::all());
+            return Redirect::route('admin.login')->withErrors($validator)->withInput(\Request::all());
         }
-        if (Auth::attempt(['email' => $email, 'password' => $pwd], $remember)) {
+        if (\Auth::attempt(['email' => $email, 'password' => $pwd], $remember)) {
             return redirect()->route('admin.index');
         } else {
             $validator->getMessageBag()->add("err", "账号或者密码错误");
-            return Redirect::route('admin.login')->withErrors($validator)->withInput(Request::except('password'));
+            return Redirect::route('admin.login')->withErrors($validator)->withInput(\Request::except('password'));
         }
     }
 
     public function logout()
     {
-        Auth::logout();
+        \Auth::logout();
         return redirect()->route('admin.login');
     }
 
-    public function upload()
+    public function upload(Request $request)
     {
-        return json_encode(FileService::upload('editormd-image-file','path'));
+        $upManager = new UploadManager();
+        $auth = new Auth(env('QINIU_AK'), env('QINIU_SK'));
+        $token = $auth->uploadToken('killua');
+        $file = $request->file('editormd-image-file');
+        $file_path = $file->getPath() . '/' . $file->getFilename();
+        $key = 'blog/' . uniqid();
+        list($ret, $error) = $upManager->putFile($token, $key, $file_path, null, $file->getMimeType());
+        if (!is_null($error)) {
+            $rst = ['success' => 0, 'message' => '图片上传失败'];
+        } else {
+            $rst = ['success' => 1, 'url' => 'http://images.larry666.com/' . $key];
+        }
+        return json_encode($rst);
+
     }
 }

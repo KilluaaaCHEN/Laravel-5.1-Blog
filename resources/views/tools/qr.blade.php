@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>二维码生成-larry666</title>
+    <title>二维码生成-Killua</title>
     <link href="{{asset('plugins/qr/styles.css')}}" rel="stylesheet"qq>
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="{{asset('plugins/common/jquery.min.js')}}"></script>

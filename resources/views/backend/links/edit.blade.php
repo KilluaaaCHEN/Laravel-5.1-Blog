@@ -5,7 +5,7 @@
 @endsection
 @section('head')
     <link href="{{ asset('backend/site.css') }}" type="text/css" rel="stylesheet">
-    <title>{{$title}} - LarryBlog</title>
+    <title>{{$title}} - KilluaBlog</title>
 @endsection
 @section('breadcrumb')
     <li><a href="{{route('links.index')}}">友链管理</a></li>

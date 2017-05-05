@@ -1,7 +1,7 @@
 
-<link rel="stylesheet" href="{{ asset('plugins/pjax/css/nprogress.css') }}">
-<script type="text/javascript" src="{{ asset('plugins/pjax/js/jquery.pjax.js') }}"></script>
-<script type="text/javascript" src="{{ asset('plugins/pjax/js/nprogress.js') }}"></script>
+<link rel="stylesheet" href="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css">
+<script type="text/javascript" src="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
 <script>
     $(document).ready(function()
     {

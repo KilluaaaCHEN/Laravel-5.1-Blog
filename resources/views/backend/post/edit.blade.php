@@ -7,7 +7,7 @@
     <link href="{{ asset('/plugins/tokenfield/css/bootstrap-tokenfield.min.css') }}" type="text/css" rel="stylesheet">
     <link href="{{ asset('/plugins/tokenfield/css/jquery-ui.css') }}" type="text/css" rel="stylesheet">
     <link href="{{ asset('backend/site.css') }}" type="text/css" rel="stylesheet">
-    <title>{{$title}} - LarryBlog</title>
+    <title>{{$title}} - KilluaBlog</title>
 @endsection
 @section('breadcrumb')
     <li><a href="{{route('post.index')}}">文章管理</a></li>

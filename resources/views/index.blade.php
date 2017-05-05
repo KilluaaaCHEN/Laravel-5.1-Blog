@@ -11,7 +11,7 @@
     </script>
 @stop
 @section('content')
-    <title>Larry的博客</title>
+    <title>Killua Blog | A PHP Developer</title>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h5 class="panel-title">

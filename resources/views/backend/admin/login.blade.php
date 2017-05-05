@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>LarryBlog-Admin | Log in</title>
+    <title>KilluaBlog-Admin | Log in</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="{{asset('/plugins/boot/bootstrap.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('backend/lte/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css" />
@@ -19,7 +19,7 @@
 <body class="login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="javascript:void(0)"><b>Larry</b>-Blog</a>
+        <a href="javascript:void(0)"><b>Killua</b>-Blog</a>
     </div>
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>

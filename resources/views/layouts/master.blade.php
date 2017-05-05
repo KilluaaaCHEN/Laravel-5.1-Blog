@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="Larry的博客,陈洲的博客,陈洲,Larry,博客,PHP博客,PHP,程序员的博客,Larry666,Larry.com"/>
-    <meta name="description" content="Larry的博客专注于PHP技术研究及学习,以网站开发为核心的PHP技术交流博客,希望在今后写博客的道路上能结交很多志同道合的朋友!"/>
+    <meta name="keywords" content="Killua的博客,陈洲的博客,陈洲,Killua,博客,PHP博客,PHP,程序员的博客,KilluaChen的博客,KilluaChen.com"/>
+    <meta name="description" content="Killua的博客专注于PHP技术研究及学习,以网站开发为核心的PHP技术交流博客,希望在今后写博客的道路上能结交很多志同道合的朋友!"/>
     <link href="{{asset('front/site.css')}}" rel="stylesheet">
     <link href="{{asset('plugins/boot/bootstrap.css')}}" rel="stylesheet">
     <link href="{{asset('plugins/boot/awesome.min.css')}}" rel="stylesheet">
@@ -23,16 +23,30 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span></button>
-                <a class="navbar-brand" href="/"><img class="logo" src="{{asset('img/logo.png')}}" alt="Larry"></a>
+                <a class="navbar-brand" href="/"><img class="logo" src="{{asset('img/logo.png')}}" alt="Killua"></a>
             </div>
             <div id="w0-collapse" class="collapse navbar-collapse">
                 <ul id="w1" class="navbar-nav navbar-right nav" style="margin-right: 10px;">
                     <li class="active"><a href="/">Home</a></li>
+                    <li><a href="https://github.com/KilluaChen">GitHub</a></li>
                     <li><a href="{{route('post.view',['post_id'=>1])}}">About</a></li>
+                    <li role="presentation" class="dropdown">
+
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            Tools <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{route('ts')}}">TimeStamp</a></li>
+                            <li><a href="{{route('qr_code')}}">QrCode</a></li>
+                            <li><a href="{{route('generate_doc')}}">Doc</a></li>
+                            <li><a href="{{route('generate_code')}}">Code</a></li>
+                        </ul>
+                    </li>
                     <li>
                         <form class="demo_search" action="/" method="get">
-                            <i class="icon_search" id="open"></i>
-                            <input class="demo_sinput form-control" type="text" name="q" value="{{ isset($q)?$q:''}}"
+                            <i class="icon_search {{isset($q)?'hide':''}}" id="open"></i>
+                            <input class="demo_sinput form-control {{isset($q)?'show':''}}" type="text" name="q"
+                                   value="{{ isset($q)?$q:''}}"
                                    id="search_input" placeholder="Search...">
                         </form>
                     </li>
@@ -99,7 +113,7 @@
 
 <footer class="footer">
     <p class="text-center">
-        Copyright &copy; <?= date('Y') ?> Larry的博客<br/>
+        Copyright &copy; <?= date('Y') ?> Killua Blog<br/>
         渝ICP备15006619号-1<br/>
         <script type="text/javascript">
             var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
@@ -112,5 +126,5 @@
 </a>
 
 </body>
-{{--@include('common.pjax',['target'=>'#content'])--}}
+@include('common.pjax',['target'=>'#content'])
 </html>

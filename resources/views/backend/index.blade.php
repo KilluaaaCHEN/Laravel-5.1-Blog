@@ -4,7 +4,7 @@
     <small>Version 1.0</small>
 @endsection
 @section('head')
-    <title>Admin - LarryBlog</title>
+    <title>Admin - KilluaBlog</title>
 @endsection
 @section('content')
 @endsection

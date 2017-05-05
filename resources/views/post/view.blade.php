@@ -3,13 +3,12 @@
     <link rel="stylesheet" href="{{asset('plugins/highlight/highlight.min.css')}}">
     <script src="{{asset('plugins/highlight/highlight.min.js')}}"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-
-    {{--<link href="{{asset('plugins/zoom/zoom.css')}}" rel="stylesheet">--}}
-    {{--<script src="{{asset('plugins/zoom/zoom.min.js')}}"></script>--}}
-    {{--<script src="{{asset('plugins/zoom/transition.js')}}"></script>--}}
+    <link href="{{asset('plugins/zoom/zoom.css')}}" rel="stylesheet">
+    <script src="{{asset('plugins/zoom/zoom.min.js')}}"></script>
+    <script src="{{asset('plugins/zoom/transition.js')}}"></script>
 @endsection
 @section('content')
-    <title>{{$post->title}}</title>
+    <title>{{$post->title}} | Killua Blog</title>
     <div id="blog">
         <h3 class="big-h3">{{$post->title}}</h3>
         <ul class="list-inline blog-desc">

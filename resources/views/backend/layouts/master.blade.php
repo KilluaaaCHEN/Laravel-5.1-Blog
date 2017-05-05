@@ -20,8 +20,8 @@
             <!-- Main Header -->
     <header class="main-header">
         <a href="{{route('admin.index')}}" class="logo">
-            <span class="logo-mini"><b>Larry</b></span>
-            <span class="logo-lg"><b>Larry</b>Blog</span>
+            <span class="logo-mini"><b>Killua</b></span>
+            <span class="logo-lg"><b>Killua</b>Blog</span>
         </a>
         <nav class="navbar navbar-static-top" role="navigation">
             <a href="javascript:void(0)" class="sidebar-toggle" data-toggle="offcanvas" role="button">
