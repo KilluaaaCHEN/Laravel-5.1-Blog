@@ -27,11 +27,9 @@
             </div>
             <div id="w0-collapse" class="collapse navbar-collapse">
                 <ul id="w1" class="navbar-nav navbar-right nav" style="margin-right: 10px;">
-                    <li class="active"><a href="/">Home</a></li>
-                    <li><a href="https://github.com/KilluaChen">GitHub</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="{{route('post.view',['post_id'=>1])}}">About</a></li>
                     <li role="presentation" class="dropdown">
-
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             Tools <span class="caret"></span>
                         </a>
@@ -42,6 +40,7 @@
                             <li><a href="{{route('ts')}}">TimeStamp</a></li>
                         </ul>
                     </li>
+                    <li><a href="https://github.com/KilluaChen">GitHub</a></li>
                     <li>
                         <form class="demo_search" action="/" method="get">
                             <i class="icon_search {{isset($q)?'hide':''}}" id="open"></i>
@@ -58,52 +57,7 @@
         <div class="site-index">
             <div class="body-content">
                 <div class="row blog-page">
-                    <div class="col-md-9 col-sm-12 md-margin-bottom-40" id="content">
-                        @yield('content')
-                    </div>
-                    {{--右侧菜单--}}
-                    <div class="col-md-3 col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h5 class="panel-title"><span class="icon-flag"></span> Random Reading </h5>
-                            </div>
-                            <div class="panel-body">
-                                <ul class="hot" id="read-ranking">
-                                    @foreach(\App\Models\Post::getRandomRead() as $key=>$item)
-                                        <li>{{$key+1}}.<a
-                                                    href="{{route('post.view',['post_id'=>$item->post_id])}}">{{$item->title."($item->read_count)"}}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-
-                        </div>
-                        <br/>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h5 class="panel-title"><span class="icon-tags"></span> Tags </h5>
-                            </div>
-                            <div class="panel-body tags-ranking  zzsc-container">
-                                <div id='tag-cloud'></div>
-                            </div>
-                            <script src="{{asset('plugins/tagcloud/jquery.svg3dtagcloud.min.js')}}"></script>
-                            <script>
-                                var tag_data = eval('(' + '{!! \App\Models\Post::getHotTag() !!}' + ')');
-                            </script>
-                            <script src="{{asset('plugins/tagcloud/tagcloud.js')}}"></script>
-                        </div>
-                        <br/>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h5 class="panel-title"><span class="icon-link"></span> Friendly Link </h5>
-                            </div>
-                            <div class="panel-body link">
-                                @foreach(\App\Models\Links::getLinks() as $item)
-                                    <a href="{{$item->url}}" target="_blank">{{$item->name}}</a>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
+                    @yield('content')
                 </div>
             </div>
         </div>
@@ -124,7 +78,6 @@
 <a href="javascript:void(0)" class="go-top" title="Back to top">
     <img src="{{asset('img/top.png')}}" alt="Back to top">
 </a>
-
 </body>
 @include('common.pjax',['target'=>'#content'])
 </html>
