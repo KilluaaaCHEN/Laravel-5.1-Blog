@@ -10,6 +10,7 @@
     <link href="{{asset('plugins/boot/awesome.min.css')}}" rel="stylesheet">
     <script src="{{asset('plugins/common/jquery.min.js')}}"></script>
     <script src="{{asset('plugins/boot/bootstrap.js')}}"></script>
+    <script src="{{asset('front/site.js')}}"></script>
     @yield('head')
 </head>
 <body>

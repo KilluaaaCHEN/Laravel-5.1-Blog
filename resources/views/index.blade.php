@@ -31,7 +31,7 @@
                                 <li><i class="icon-eye-open"></i> {{$item->read_count}} Browse</li>
                                 <li><i class="icon-comment"></i>
                                     <a href="{{route('post.view',['post_id'=>$item->post_id]).'#comments'}}">
-                                        <span id="sourceId::{{$item->post_id}}" class="cy_cmt_count">0</span>
+                                        {{--<span id="sourceId::{{$item->post_id}}" class="cy_cmt_count">0</span>--}}
                                         Comments</a>
                                 </li>
                                 <li class="tags">
@@ -48,7 +48,6 @@
                                 </li>
                             </ul>
                             <p>{{$item->desc}}</p>
-
                             <p class="text-right">
                                 <a class="btn btn-success btn-sm"
                                    href="{{route('post.view',['post_id'=>$item->post_id])}}">
@@ -61,9 +60,6 @@
             </div>
 
         </div>
-
-        <script id="cy_cmt_num" src="https://changyan.sohu.com/upload/plugins/plugins.list.count.js?clientId=cysUrqwHN">
-        </script>
         {!! $posts->appends('q',$q)->render() !!}
         <div class="clearfix"></div>
     </div>
