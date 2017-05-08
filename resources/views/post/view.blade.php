@@ -51,11 +51,12 @@
         </div>
         <h3 id="comments"></h3>
         <h3 class="menu " data-toggle="tooltip" data-placement="left" title="无法加载评论?翻个墙试试!"><span>Comments</span></h3>
+
         <div id="disqus_thread"></div>
         <script>
             (function() { // DON'T EDIT BELOW THIS LINE
                 var d = document, s = d.createElement('script');
-                s.src = 'https://EXAMPLE.disqus.com/embed.js';
+                s.src = 'https://killuachen.disqus.com/embed.js';
                 s.setAttribute('data-timestamp', +new Date());
                 (d.head || d.body).appendChild(s);
             })();
