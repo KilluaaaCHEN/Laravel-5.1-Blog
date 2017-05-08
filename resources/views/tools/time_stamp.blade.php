@@ -1,7 +1,6 @@
 @extends('layouts.master')
 @section('head')
     <title>时间戳转换 | Killua Chen</title>
-    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 @endsection
 @section('content')
     <div style="width:300px; margin: 250px auto">

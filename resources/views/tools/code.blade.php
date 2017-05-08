@@ -1,7 +1,6 @@
 @extends('layouts.master')
 @section('head')
     <title>ICC-Gii生成工具 | Killua Chen</title>
-    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 @endsection
 @section('content')
     <div style="width:500px; margin: 30px auto">

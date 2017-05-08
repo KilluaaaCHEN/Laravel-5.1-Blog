@@ -26,21 +26,24 @@
                 <input type="hidden" name="post_id" value="{{old('post_id',$model->post_id)}}"/>
                 <div class="form-group">
                     <label class="control-label">标题</label>
-                    <input type="text" name="title" class="form-control" placeholder="请输入标题" autocomplete="off" value="{{old('title',$model->title)}}">
+                    <input type="text" name="title" class="form-control" placeholder="请输入标题" autocomplete="off"
+                           value="{{old('title',$model->title)}}">
                 </div>
                 <div class="form-group">
                     <label class="control-label">标签</label>
-                    <input type="text" name="tags" id="tags" class="form-control" placeholder="请输入标签" value="{{old('tags',$model->tags)}}">
+                    <input type="text" name="tags" id="tags" class="form-control" placeholder="请输入标签"
+                           value="{{old('tags',$model->tags)}}">
                 </div>
                 <div class="form-group">
                     <label class="control-label">描述</label>
-                    <input type="text" name="desc" class="form-control" placeholder="请输入描述" autocomplete="off" value="{{old('desc',$model->desc)}}">
+                    <input type="text" name="desc" class="form-control" placeholder="请输入描述" autocomplete="off"
+                           value="{{old('desc',$model->desc)}}">
                 </div>
                 <div class="form-group">
                     <label class="control-label">内容</label>
-                    <div  id="markdown-editor">
+                    <div id="markdown-editor">
                         <textarea name="content" class="form-control">{{old('content',$model->content)}}</textarea>
-                       @include('common.markdown-editor')
+                        @include('common.markdown-editor')
                     </div>
                 </div>
                 <div class="form-group">
@@ -50,6 +53,15 @@
                             <option value="{{$key}}" {{$key==old('state_id',$model->state_id)?'selected':''}}>{{$val}}</option>
                         @endforeach
                     </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">原创</label>
+                    <select name="is_original" class="form-control">
+                        @foreach($model::getOriginalMap() as $key=>$val)
+                            <option value="{{$key}}" {{$key==old('is_original',$model->is_original)?'selected':''}}>{{$val}}</option>
+                        @endforeach
+                    </select>
+
                 </div>
                 <div class="box-footer">
                     <button type="submit" class="btn btn-success">Submit</button>
@@ -64,7 +76,7 @@
     <script src="{{ asset('plugins/tokenfield/jquery-ui.js ') }}"></script>
     <script src="{{asset('plugins/tokenfield/bootstrap-tokenfield.js')}}"></script>
     <script type="text/javascript">
-        var tf_source=eval('{!! \App\Models\Tag::getAllTag()!!}');
+        var tf_source = eval('{!! \App\Models\Tag::getAllTag()!!}');
         $('[name=tags]').tokenfield({
             autocomplete: {
                 source: tf_source,

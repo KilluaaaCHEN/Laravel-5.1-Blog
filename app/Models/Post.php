@@ -59,6 +59,17 @@ class Post extends Model
     public static function getState($status_id = null)
     {
         $map = [10 => '启用', 20 => '停用', 30 => '草稿'];
+        return self::_getMap($status_id, $map);
+    }
+
+    public static function getOriginalMap($status_id = null)
+    {
+        $map = [1 => '原创', 2 => '转载'];
+        return self::_getMap($status_id, $map);
+    }
+
+    private static function _getMap($status_id, $map)
+    {
         if (array_key_exists($status_id, $map)) {
             return $map[$status_id];
         }
