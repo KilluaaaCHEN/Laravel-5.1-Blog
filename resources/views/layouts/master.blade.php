@@ -36,10 +36,10 @@
                             Tools <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{route('ts')}}">TimeStamp</a></li>
-                            <li><a href="{{route('qr_code')}}">QrCode</a></li>
                             <li><a href="{{route('generate_doc')}}">Doc</a></li>
                             <li><a href="{{route('generate_code')}}">Code</a></li>
+                            <li><a href="{{route('qr_code')}}">QrCode</a></li>
+                            <li><a href="{{route('ts')}}">TimeStamp</a></li>
                         </ul>
                     </li>
                     <li>
