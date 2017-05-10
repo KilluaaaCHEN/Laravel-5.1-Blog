@@ -427,35 +427,34 @@ STR;
             switch ($item['type']) {
                 case '单行文字输入框':
                 case '多行文本输入框':
-                    $data .= "'{$item['key']}'=>(string)\$item[$i],";
+                    $data .= "'{$item['key']}'=>(string)\$item[$i]," . PHP_EOL;
                     break;
                 case '数字输入框':
-                    $data .= "'{$item['key']}'=>floatval(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>floatval(\$item[$i])," . PHP_EOL;
                     break;
                 case '是非选择框':
-                    $data .= "'{$item['key']}'=>iboolval(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>iboolval(\$item[$i])," . PHP_EOL;
                     break;
                 case '数组':
                 case '内嵌文档':
-                    $data .= "'{$item['key']}'=>json_decode(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>json_decode(\$item[$i])," . PHP_EOL;
                     break;
                 case '日期控件':
-                    $data .= "'{$item['key']}'=>new MongoDate(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>new MongoDate(\$item[$i])," . PHP_EOL;
                     break;
                 case 'MD5密码输入字段':
-                    $data .= "'{$item['key']}'=>md5(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>md5(\$item[$i])," . PHP_EOL;
                     break;
                 case 'SHA1密码输入字段':
-                    $data .= "'{$item['key']}'=>sha1(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>sha1(\$item[$i])," . PHP_EOL;
                     break;
                 default:
-                    $data .= "'{$item['key']}'=>(string)\$item[$i],";
+                    $data .= "'{$item['key']}'=>(string)\$item[$i]," . PHP_EOL;
                     break;
             }
-
         }
         $count = count($this->keys_arr);
-        $data = rtrim($data, ',');
+        $data = rtrim($data, ',' . PHP_EOL);
         $str = <<<STR
  /**
      * 导入数据
