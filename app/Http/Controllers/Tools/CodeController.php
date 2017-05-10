@@ -427,29 +427,29 @@ STR;
             switch ($item['type']) {
                 case '单行文字输入框':
                 case '多行文本输入框':
-                    $data .= "'$item'=>(string)\$item[$i],";
+                    $data .= "'{$item['key']}'=>(string)\$item[$i],";
                     break;
                 case '数字输入框':
-                    $data .= "'$item'=>floatval(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>floatval(\$item[$i]),";
                     break;
                 case '是非选择框':
-                    $data .= "'$item'=>iboolval(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>iboolval(\$item[$i]),";
                     break;
                 case '数组':
                 case '内嵌文档':
-                    $data .= "'$item'=>json_decode(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>json_decode(\$item[$i]),";
                     break;
                 case '日期控件':
-                    $data .= "'$item'=>new MongoDate(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>new MongoDate(\$item[$i]),";
                     break;
                 case 'MD5密码输入字段':
-                    $data .= "'$item'=>md5(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>md5(\$item[$i]),";
                     break;
                 case 'SHA1密码输入字段':
-                    $data .= "'$item'=>sha1(\$item[$i]),";
+                    $data .= "'{$item['key']}'=>sha1(\$item[$i]),";
                     break;
                 default:
-                    $data .= "'$item'=>(string)\$item[$i],";
+                    $data .= "'{$item['key']}'=>(string)\$item[$i],";
                     break;
             }
 
