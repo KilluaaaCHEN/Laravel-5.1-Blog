@@ -264,7 +264,7 @@ STR;
         if (\$id) {
             return !!\$this->count([\$field => \$val, '_id' => ['\$ne' => myMongoId(\$id)]], \$condition);
         } else {
-            return !!\$this->count(array_merge([\$field => \$val], \$condition);
+            return !!\$this->count(array_merge([\$field => \$val], \$condition));
         }
     }
 
