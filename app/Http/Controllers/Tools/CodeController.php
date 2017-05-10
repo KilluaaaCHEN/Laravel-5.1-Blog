@@ -247,17 +247,10 @@ STR;
      */
     private function getUniqueFun()
     {
-        $t1 = '';
-        $t2 = '';
-        $t3 = '';
-        if ($this->delete) {
-            $t1 = "\$$this->delete = ['\$ne' => true];";
-            $t2 = ", '$this->delete' => \$$this->delete";
-            $t3 = ", '$this->delete'";
-        }
+
         $str = <<<STR
         
-  /**
+    /**
      * 验证字段唯一,是否存在
      * @param \$field
      * @param \$val
@@ -265,13 +258,13 @@ STR;
      * @return bool
      * @author Killua Chen
      */
-    public function validateUnique(\$field, \$val, \$id=false)
+    public function validateUnique(\$field, \$val, \$id = false)
     {
-        $t1
+        \$condition = ['is_delete' => ['\$ne' => true]];
         if (\$id) {
-            return !!\$this->count([\$field => \$val, '_id' => ['\$ne' => myMongoId(\$id)]$t2]);
+            return !!\$this->count([\$field => \$val, '_id' => ['\$ne' => myMongoId(\$id)]], \$condition);
         } else {
-            return !!\$this->count([\$field => \$val$t3]);
+            return !!\$this->count(array_merge([\$field => \$val], \$condition);
         }
     }
 
