@@ -40,14 +40,15 @@ class Disqus_Comment_Poll extends Command
     {
         $sk = env('DISQUS_SK');
         $forum = env('DISQUS_FORUM');
-        $limit = 50;
+        $limit = 100;
         $cache_key = 'disqus_comment_poll_key';
-        $max = Cache::get($cache_key, '');
-        $post_url = "https://disqus.com/api/3.0/posts/list.json?forum=$forum&limit=$limit&related=thread&api_secret=$sk&cursor=$max";
+        $start = Cache::get($cache_key, '');
+        $post_url = "https://disqus.com/api/3.0/posts/list.json?forum=$forum&limit=$limit&related=thread&api_secret=$sk&start=$start&order=asc";
         \Log::info($post_url);
+        $cu_time = time();
         $rst = json_decode(\App\Helper\Curl::get($post_url), true);
         if ($rst['code'] === 0) {
-            \Cache::put($cache_key, $rst['cursor']['next'], 120);
+            \Cache::put($cache_key, $cu_time, 120);
             foreach ($rst['response'] as $item) {
                 @$data = [
                     'title' => $item['thread']['title'],
