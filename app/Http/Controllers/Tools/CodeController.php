@@ -235,9 +235,7 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
     $delete_str
 }
 STR;
-        $model_file = public_path("tmp/temp.php");
-        file_put_contents($model_file, $str);
-        return response()->download($model_file, "{$data['model']}.php");
+        return $this->putFile($data, $str, "{$data['model']}.php");
     }
 
     /**
@@ -359,6 +357,7 @@ STR;
         $store_str = $this->getStoreStr();
         $delete_str = $this->getDeleteStr();
         $index_str = $this->getIndexStr();
+        $import_str = $this->getImportStr();
         $str = <<<STR
 <?php
 
@@ -377,11 +376,11 @@ class {$data['module']}_{$data['ctrl']} extends iWebsite_Controller_Action
     $store_str
     
     $delete_str
+    
+    $import_str
 }
 STR;
-        $model_file = public_path("tmp/temp.php");
-        file_put_contents($model_file, $str);
-        return response()->download($model_file, "{$data['ctrl']}.php");
+        return $this->putFile($data, $str, "{$data['ctrl']}.php");
     }
 
     /**
@@ -418,6 +417,55 @@ STR;
     }
 STR;
         return $str;
+    }
+
+
+    public function getImportStr()
+    {
+        $data = '';
+        foreach ($this->keys_arr as $i => $item) {
+            if ($i == 0) {
+                $data .= "'$item'=>\$item[$i],";
+            } else {
+                $data .= "
+                    '$item'=>\$item[$i],";
+            }
+        }
+        $count = count($this->keys_arr);
+        $data = rtrim($data, ',');
+        $str = <<<STR
+ /**
+     * 导入数据
+     * @author Killua Chen
+     */
+    public function importAction()
+    {
+        try {
+            \$rules = [
+                'file' => 'required_file',
+            ];
+            \$v = new iValidator(\$_REQUEST, \$rules);
+            if (!\$v->validate()) {
+                \$this->error(-1, \$v->msg());
+            }
+            \$d = \$v->data();
+            \$data = loadExcelData(\$d->file['tmp_name'], 2, $count);
+            \$batch_dta = [];
+            foreach (\$data as $\item) {
+                \$batch_dta[] = [
+                    $data
+                ];
+            }
+            \$$this->model_short = new $this->model_cls();
+            \$rst = $this->model_short->batchInsert(\$batch_dta);
+            \$this->result('OK', \$rst);
+        } catch (Exception \$e) {
+            \$this->error(\$e->getCode(), \$e->getMessage());
+        }
+    }
+STR;
+        return $str;
+
     }
 
     /**
@@ -713,6 +761,24 @@ STR;
         }
         $t1 = rtrim($t1, "\n");
         return $t1;
+    }
+
+    /**
+     * @param $data
+     * @param $str
+     * @author Killua Chen
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function putFile($data, $str, $filename)
+    {
+        $model_file = public_path("tmp/tmp.php");
+        $path_dir = dirname($model_file);
+        $is_exists = file_exists($path_dir);
+        if (!$is_exists) {
+            mkdir($path_dir);
+        }
+        file_put_contents($model_file, $str);
+        return response()->download($model_file, $filename);
     }
 
     /**

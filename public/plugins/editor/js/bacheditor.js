@@ -229,8 +229,8 @@ $(function() {
             //    if(c.text[0] === '@' && c.origin === '+input') {
             //        isAtting = true;
             //        if($('#atwho').length === 0) {  //之前没有at过
-            //            var temp = '<ul id="atwho" class="dropdown-menu"></ul>';
-            //            $('.editor').append(temp);
+            //            var tmp = '<ul id="atwho" class="dropdown-menu"></ul>';
+            //            $('.editor').append(tmp);
             //            editorAt('');
             //            $('#atwho').delegate('a', 'click', function(e) {
             //                e.preventDefault();

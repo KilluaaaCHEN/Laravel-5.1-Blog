@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands;
+use App\Console\Commands\Disqus_Comment_Poll;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\Disqus_Comment_Poll::class
+        Disqus_Comment_Poll::class,
     ];
 
     /**
@@ -25,7 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('disqus_comment_poll')->everyMinute();
+        \Log::info('msg');
+        $schedule->command('disqus_comment_poll')->cron('* * * * *');
     }
 
     /**
