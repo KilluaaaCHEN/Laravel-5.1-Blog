@@ -38,3 +38,6 @@ Route::any('/generate/doc', ['as' => 'generate_doc', 'uses' => 'Tools\DocControl
 Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeController@generate']);
 
 Route::post('/hooks', 'DeploymentController@deploy');
+
+
+

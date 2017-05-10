@@ -40,7 +40,7 @@ class Disqus_Comment_Poll extends Command
     {
         $sk = env('DISQUS_SK');
         $forum = env('DISQUS_FORUM');
-        $limit = 2;
+        $limit = 50;
         $cache_key = 'disqus_comment_poll_key';
         $max = Cache::get($cache_key, '');
         $post_url = "https://disqus.com/api/3.0/posts/list.json?forum=$forum&limit=$limit&related=thread&api_secret=$sk&cursor=$max";
@@ -54,7 +54,6 @@ class Disqus_Comment_Poll extends Command
                     'message' => $item['raw_message'],
                     'time' => date('m-d H:i', strtotime($item['createdAt']))
                 ];
-                var_dump($data);
                 \Log::info('发送数据', $data);
                 dispatch(new SendWechatComment($data, $item['url']));
             }

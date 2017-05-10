@@ -25,8 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        \Log::info('msg');
-        $schedule->command('disqus_comment_poll')->cron('* * * * *');
+        $schedule->command('command:disqus_comment_poll')->cron('* * * * *');
     }
 
     /**
