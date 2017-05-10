@@ -44,6 +44,7 @@ class Disqus_Comment_Poll extends Command
         $cache_key = 'disqus_comment_poll_key';
         $max = Cache::get($cache_key, '');
         $post_url = "https://disqus.com/api/3.0/posts/list.json?forum=$forum&limit=$limit&related=thread&api_secret=$sk&cursor=$max";
+        \Log::info($post_url);
         $rst = json_decode(\App\Helper\Curl::get($post_url), true);
         if ($rst['code'] === 0) {
             \Cache::put($cache_key, $rst['cursor']['next'], 120);
