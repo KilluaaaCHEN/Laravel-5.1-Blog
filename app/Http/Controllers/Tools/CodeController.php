@@ -423,13 +423,36 @@ STR;
     public function getImportStr()
     {
         $data = '';
-        foreach ($this->keys_arr as $i => $item) {
-            if ($i == 0) {
-                $data .= "'$item'=>\$item[$i],";
-            } else {
-                $data .= "
-                    '$item'=>\$item[$i],";
+        foreach ($this->structure as $i => $item) {
+            switch ($item['type']) {
+                case '单行文字输入框':
+                case '多行文本输入框':
+                    $data .= "'$item'=>(string)\$item[$i],";
+                    break;
+                case '数字输入框':
+                    $data .= "'$item'=>floatval(\$item[$i]),";
+                    break;
+                case '是非选择框':
+                    $data .= "'$item'=>iboolval(\$item[$i]),";
+                    break;
+                case '数组':
+                case '内嵌文档':
+                    $data .= "'$item'=>json_decode(\$item[$i]),";
+                    break;
+                case '日期控件':
+                    $data .= "'$item'=>new MongoDate(\$item[$i]),";
+                    break;
+                case 'MD5密码输入字段':
+                    $data .= "'$item'=>md5(\$item[$i]),";
+                    break;
+                case 'SHA1密码输入字段':
+                    $data .= "'$item'=>sha1(\$item[$i]),";
+                    break;
+                default:
+                    $data .= "'$item'=>(string)\$item[$i],";
+                    break;
             }
+
         }
         $count = count($this->keys_arr);
         $data = rtrim($data, ',');
