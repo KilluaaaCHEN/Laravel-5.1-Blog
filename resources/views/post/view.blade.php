@@ -43,26 +43,27 @@
         <div>
             {!! \Plugins\MarkDownEditor\MdeDecode::decode($post->content) !!}
             @if($post->is_original==1)
-            <blockquote>
-                <p>本文为作者原创，允许转载，转载后请以<a href="{{URL::current()}}">链接形式</a>说明文章出处.
-                    如转载但不标明来源，后果自负。</p>
-            </blockquote>
+                <blockquote>
+                    <p>本文为作者原创，允许转载，转载后请以<a href="{{URL::current()}}">链接形式</a>说明文章出处. 如转载但不标明来源，后果自负。</p>
+                </blockquote>
             @endif
         </div>
-        <h3 id="comments"></h3>
-        <h3 class="menu " data-toggle="tooltip" data-placement="left" title="无法加载评论?翻个墙试试!"><span>Comments</span></h3>
+
+
+        <h3 class="menu ">
+            <span>Comments</span>
+            <font class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top"
+               title="无法加载评论?翻个墙试试!"></font></h3>
 
         <div id="disqus_thread"></div>
         <script>
-            (function() { // DON'T EDIT BELOW THIS LINE
+            (function () { // DON'T EDIT BELOW THIS LINE
                 var d = document, s = d.createElement('script');
                 s.src = 'https://killuachen.disqus.com/embed.js';
                 s.setAttribute('data-timestamp', +new Date());
                 (d.head || d.body).appendChild(s);
             })();
         </script>
-        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
     </div>
     @include('layouts.right')
 @endsection
