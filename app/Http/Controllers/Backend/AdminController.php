@@ -78,7 +78,8 @@ class AdminController extends Controller
         if (file_exists($file_path)) {
             list($ret, $error) = $upManager->putFile($token, $key, $file_path, null, $file->getMimeType());
             if (is_null($error)) {
-                $rst = ['success' => 1, 'url' => 'http://images.larry666.com/' . $key];
+                $host = env('HOST_NAME');
+                $rst = ['success' => 1, 'url' => "http://img.$host/" . $key];
             }
         }
         return json_encode($rst);

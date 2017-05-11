@@ -36,6 +36,8 @@ class SendWechatComment implements ShouldQueue
         $templateId = env('WECHAT_BLOG_TEMPLATE_ID');
         $wechat = app('wechat');
         $rst = $wechat->notice->uses($templateId)->withUrl($this->url)->andData($this->data)->andReceiver($userId)->send();
-        \Log::info('Wechat消息推送:' . $rst);
+        \Log::info('Wec
+        
+        hat消息推送:' . $rst);
     }
 }
