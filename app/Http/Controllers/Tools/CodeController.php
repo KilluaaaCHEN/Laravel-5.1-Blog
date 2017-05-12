@@ -358,7 +358,9 @@ STR;
         $delete_str = $this->getDeleteStr();
         $index_str = $this->getIndexStr();
         $import_str = $this->getImportStr();
-        $class = "{$data['module']}_{$data['model']}";
+        $ctrl_class = "{$data['module']}_{$data['ctrl']}";
+        $model_class = "{$data['module']}_Model_{$data['model']}";
+
         $str = <<<STR
 <?php
 
@@ -368,15 +370,15 @@ STR;
  * Date: $date
  * Time: $time
  */
-class $class extends iWebsite_Controller_Action
+class $ctrl_class extends iWebsite_Controller_Action
 {
  
-    /** @var $class */
+    /** @var $model_class */
     private \$service;
 
     public function init()
     {
-        \$this->service = new $class();
+        \$this->service = new $model_class();
     }
 
 
