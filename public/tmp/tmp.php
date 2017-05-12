@@ -3,10 +3,10 @@
 /**
  * Created by Killua Chen
  * User: killua
- * Date: 17/05/10
- * Time: 14:27
+ * Date: 17/05/12
+ * Time: 12:12
  */
-class Backend_StoreController extends iWebsite_Controller_Action
+class Frontend_UsersController extends iWebsite_Controller_Action
 {
     /**
      * 首页
@@ -16,15 +16,16 @@ class Backend_StoreController extends iWebsite_Controller_Action
     {
         try {
             $rules = [
-                'store_code' => '',
-                'company_name' => '',
-                'province' => '',
-                'city' => '',
-                'region' => '',
-                'store_name' => '',
-                'business_type' => '',
-                'address' => '',
-                'location' => '',
+                'open_id' => '',
+                'nick_name' => '',
+                'head_img' => 'url',
+                'mobile' => 'mobile',
+                'total_count' => 'numeric',
+                'surplus_count' => 'numeric',
+                'mobile_auth' => 'mobile',
+                'img_list' => '',
+                'praise_list' => '',
+                'share_list' => '',
                 'page_index' => 'required:1|integer',
                 'page_size' => 'required:20|integer',
                 'begin_time' => 'date',
@@ -32,28 +33,32 @@ class Backend_StoreController extends iWebsite_Controller_Action
                 'begin_date' => 'dateFormat:Ymd',
                 'end_date' => 'dateFormat:Ymd',
             ];
-            $bs_service = new Backend_Model_Store();
-            $v = new iValidator($_REQUEST, $rules, $bs_service);
+            $fu_service = new Frontend_Model_Users();
+            $v = new iValidator($_REQUEST, $rules, $fu_service);
             if (!$v->validate()) {
-                $this->error(-1,$v->msg());
+                $this->error(-1, $v->msg());
             }
             $d = $v->data();
             
             $query = [
-                'is_delete' => ['$ne'=>true],
+                'is_delete' => ['$ne' => true],
                 'begin_time' => ['$lte' => new MongoDate()],
                 'end_time' => ['$gte' => new MongoDate()],
             ];
-            $this->likeQuery($query, ['store_code'=>$d->store_code, 
-'company_name'=>$d->company_name, 
-'province'=>$d->province, 
-'city'=>$d->city, 
-'region'=>$d->region, 
-'store_name'=>$d->store_name, 
-'business_type'=>$d->business_type, 
-'address'=>$d->address, 
-'location'=>$d->location]);
-            $this->equalQuery($query, []);
+            $this->likeQuery($query, [
+                'open_id' => $d->open_id, 
+'nick_name' => $d->nick_name, 
+'head_img' => $d->head_img, 
+'mobile' => $d->mobile, 
+'mobile_auth' => $d->mobile_auth, 
+'img_list' => $d->img_list, 
+'praise_list' => $d->praise_list, 
+'share_list' => $d->share_list]
+            );
+            $this->equalQuery($query, [
+                'total_count' => $d->total_count, 
+'surplus_count' => $d->surplus_count]
+            );
             
                     
             //按时间精确到秒查询
@@ -78,25 +83,26 @@ class Backend_StoreController extends iWebsite_Controller_Action
                 $d->page_index = 1;
             }
             
-            $data = $bs_service->find(
+            $data = $fu_service->find(
                 $query, ['sort' => 1],
                 ($d->page_index - 1) * $d->page_size, $d->page_size,
-                ['store_code' => 1, 'company_name' => 1, 'province' => 1, 'city' => 1, 'region' => 1, 'store_name' => 1, 'business_type' => 1, 'address' => 1, 'location' => 1, '_id' => 1]
+                ['open_id' => 1, 'nick_name' => 1, 'head_img' => 1, 'mobile' => 1, 'total_count' => 1, 'surplus_count' => 1, 'mobile_auth' => 1, 'img_list' => 1, 'praise_list' => 1, 'share_list' => 1, '_id' => 1]
             );
             foreach ($data['datas'] as &$item) {
             }
             if ($d->is_export) {
                 arrayToCVSPlus('', [
                     'title' => [
-                        'store_code' => '门店编号',
-                        'company_name' => '公司名称',
-                        'province' => '省份',
-                        'city' => '城市',
-                        'region' => '区县',
-                        'store_name' => '门店名称',
-                        'business_type' => '商圈分类',
-                        'address' => '门店地址',
-                        'location' => '坐标'],
+                        'open_id' => 'OpenId',
+                        'nick_name' => '昵称',
+                        'head_img' => '头像',
+                        'mobile' => '手机号码',
+                        'total_count' => '累计抽奖次数',
+                        'surplus_count' => '剩余抽奖次数',
+                        'mobile_auth' => '手机是否认证',
+                        'img_list' => '照片列表',
+                        'praise_list' => '点赞列表',
+                        'share_list' => '分享列表'],
                     'result' => $data['datas']
                 ]);
             }
@@ -118,15 +124,15 @@ class Backend_StoreController extends iWebsite_Controller_Action
             $rules = [
                 'id' => 'required|exists' 
             ];
-            $bs_service = new Backend_Model_Store();
-            $v = new iValidator($_REQUEST, $rules, $bs_service);
+            $fu_service = new Frontend_Model_Users();
+            $v = new iValidator($_REQUEST, $rules, $fu_service);
             if (!$v->validate()) {
-                $this->error(-1,$v->msg());
+                $this->error(-1, $v->msg());
             }
             $d = $v->data();
-            $fields = ['store_code' => 1, 'company_name' => 1, 'province' => 1, 'city' => 1, 'region' => 1, 'store_name' => 1, 'business_type' => 1, 'address' => 1, 'location' => 1, '_id' => 1];
-            $data = $bs_service->getInfo($d->id, $fields);
-            $this->result('',$data);
+            $fields = ['open_id' => 1, 'nick_name' => 1, 'head_img' => 1, 'mobile' => 1, 'total_count' => 1, 'surplus_count' => 1, 'mobile_auth' => 1, 'img_list' => 1, 'praise_list' => 1, 'share_list' => 1, '_id' => 1];
+            $data = $fu_service->getInfo($d->id, $fields);
+            $this->result('', $data);
         } catch (Exception $e) {
             $this->error($e->getCode(), $e->getMessage());
         }
@@ -142,23 +148,24 @@ class Backend_StoreController extends iWebsite_Controller_Action
         try {
             $rules = [
                 'id' => 'exists',
-                'store_code' => 'required|unique',
-                'company_name' => 'required|unique',
-                'province' => 'required|unique',
-                'city' => 'required|unique',
-                'region' => 'required|unique',
-                'store_name' => 'required|unique',
-                'business_type' => 'required|unique',
-                'address' => 'required|unique',
-                'location' => 'required',
+                'open_id' => 'required|unique',
+                'nick_name' => 'required|unique',
+                'head_img' => 'required|unique|url',
+                'mobile' => 'required|unique|mobile',
+                'total_count' => 'required|unique|numeric',
+                'surplus_count' => 'required|unique|numeric',
+                'mobile_auth' => 'required|unique|mobile',
+                'img_list' => 'required|unique',
+                'praise_list' => 'required|unique',
+                'share_list' => 'required|unique',
             ];
-            $bs_service = new Backend_Model_Store();
-            $v = new iValidator($_REQUEST, $rules, $bs_service);
+            $fu_service = new Frontend_Model_Users();
+            $v = new iValidator($_REQUEST, $rules, $fu_service);
             if (!$v->validate()) {
-                $this->error(-1,$v->msg());
+                $this->error(-1, $v->msg());
             }
             $data = $v->data(false);
-            $rst = $bs_service->saveData($data, $data['id']);
+            $rst = $fu_service->saveData($data, $data['id']);
             if ($rst) {
                 $this->result('OK');
             } else {
@@ -181,12 +188,12 @@ class Backend_StoreController extends iWebsite_Controller_Action
             $rules = [
                 'id' => 'required|exists' 
             ];
-            $bs_service = new Backend_Model_Store();
-            $v = new iValidator($_REQUEST, $rules, $bs_service);
+            $fu_service = new Frontend_Model_Users();
+            $v = new iValidator($_REQUEST, $rules, $fu_service);
             if (!$v->validate()) {
-                $this->error(-1,$v->msg());
+                $this->error(-1, $v->msg());
             }
-            $rst = $bs_service->delData($id)['n'];
+            $rst = $fu_service->delData($id)['n'];
             if ($rst) {
                 $this->result();
             } else {
@@ -212,23 +219,24 @@ class Backend_StoreController extends iWebsite_Controller_Action
                 $this->error(-1, $v->msg());
             }
             $d = $v->data();
-            $data = loadExcelData($d->file['tmp_name'], 2, 9);
+            $data = loadExcelData($d->file['tmp_name'], 2, 10);
             $batch_dta = [];
-            foreach ($data as $\item) {
+            foreach ($data as $item) {
                 $batch_dta[] = [
-                    'store_code'=>$item[0],
-                    'company_name'=>$item[1],
-                    'province'=>$item[2],
-                    'city'=>$item[3],
-                    'region'=>$item[4],
-                    'store_name'=>$item[5],
-                    'business_type'=>$item[6],
-                    'address'=>$item[7],
-                    'location'=>$item[8]
+                    'open_id' => (string)$item[0],
+                    'nick_name' => (string)$item[1],
+                    'head_img' => (string)$item[2],
+                    'mobile' => (string)$item[3],
+                    'total_count' => floatval($item[4]),
+                    'surplus_count' => floatval($item[5]),
+                    'mobile_auth' => iboolval($item[6]),
+                    'img_list' => json_decode($item[7]),
+                    'praise_list' => json_decode($item[8]),
+                    'share_list' => json_decode($item[9])
                 ];
             }
-            $bs_service = new Backend_Model_Store();
-            $rst = bs_service->batchInsert($batch_dta);
+            $fu_service = new Frontend_Model_Users();
+            $rst = $fu_service->batchInsert($batch_dta);
             $this->result('OK', $rst);
         } catch (Exception $e) {
             $this->error($e->getCode(), $e->getMessage());

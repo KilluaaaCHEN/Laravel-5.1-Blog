@@ -130,7 +130,7 @@ class CodeController extends Controller
         $keys = '';
         foreach ($this->structure as $item) {
             if ($item['type'] == '数字输入框') {
-                $keys .= "'{$item['key']}'=>\$d->{$item['key']}, \n";
+                $keys .= "'{$item['key']}' => \$d->{$item['key']}, \n";
             }
         }
         $this->keys_int = rtrim($keys, ", \n");
@@ -405,12 +405,12 @@ STR;
             \$$this->model_short = new $this->model_cls();
             \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
             if (!\$v->validate()) {
-                \$this->error(-1,\$v->msg());
+                \$this->error(-1, \$v->msg());
             }
             \$d = \$v->data();
             \$fields = $this->keys;
             \$data = \$$this->model_short->getInfo(\$d->id, \$fields);
-            \$this->result('',\$data);
+            \$this->result('', \$data);
         } catch (Exception \$e) {
             \$this->error(\$e->getCode(), \$e->getMessage());
         }
@@ -424,32 +424,33 @@ STR;
     {
         $data = '';
         foreach ($this->structure as $i => $item) {
+            $format = $i === 0 ? '' : '                    ';
             switch ($item['type']) {
                 case '单行文字输入框':
                 case '多行文本输入框':
-                    $data .= "'{$item['key']}'=>(string)\$item[$i]," . PHP_EOL;
+                    $data .= "$format'{$item['key']}' => (string)\$item[$i]," . PHP_EOL;
                     break;
                 case '数字输入框':
-                    $data .= "'{$item['key']}'=>floatval(\$item[$i])," . PHP_EOL;
+                    $data .= "$format'{$item['key']}' => floatval(\$item[$i])," . PHP_EOL;
                     break;
                 case '是非选择框':
-                    $data .= "'{$item['key']}'=>iboolval(\$item[$i])," . PHP_EOL;
+                    $data .= "$format'{$item['key']}' => iboolval(\$item[$i])," . PHP_EOL;
                     break;
                 case '数组':
                 case '内嵌文档':
-                    $data .= "'{$item['key']}'=>json_decode(\$item[$i])," . PHP_EOL;
+                    $data .= "$format'{$item['key']}' => json_decode(\$item[$i])," . PHP_EOL;
                     break;
                 case '日期控件':
-                    $data .= "'{$item['key']}'=>new MongoDate(\$item[$i])," . PHP_EOL;
+                    $data .= "$format'{$item['key']}' => new MongoDate(\$item[$i])," . PHP_EOL;
                     break;
                 case 'MD5密码输入字段':
-                    $data .= "'{$item['key']}'=>md5(\$item[$i])," . PHP_EOL;
+                    $data .= "$format'{$item['key']}' => md5(\$item[$i])," . PHP_EOL;
                     break;
                 case 'SHA1密码输入字段':
-                    $data .= "'{$item['key']}'=>sha1(\$item[$i])," . PHP_EOL;
+                    $data .= "$format'{$item['key']}' => sha1(\$item[$i])," . PHP_EOL;
                     break;
                 default:
-                    $data .= "'{$item['key']}'=>(string)\$item[$i]," . PHP_EOL;
+                    $data .= "$format'{$item['key']}' => (string)\$item[$i]," . PHP_EOL;
                     break;
             }
         }
@@ -473,13 +474,13 @@ STR;
             \$d = \$v->data();
             \$data = loadExcelData(\$d->file['tmp_name'], 2, $count);
             \$batch_dta = [];
-            foreach (\$data as $\item) {
+            foreach (\$data as \$item) {
                 \$batch_dta[] = [
                     $data
                 ];
             }
             \$$this->model_short = new $this->model_cls();
-            \$rst = $this->model_short->batchInsert(\$batch_dta);
+            \$rst = \$$this->model_short->batchInsert(\$batch_dta);
             \$this->result('OK', \$rst);
         } catch (Exception \$e) {
             \$this->error(\$e->getCode(), \$e->getMessage());
@@ -514,7 +515,7 @@ STR;
             \$$this->model_short = new $this->model_cls();
             \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
             if (!\$v->validate()) {
-                \$this->error(-1,\$v->msg());
+                \$this->error(-1, \$v->msg());
             }
             \$data = \$v->data(false);
             \$rst = \$$this->model_short->saveData(\$data, \$data['id']);
@@ -631,7 +632,7 @@ STR;
             \$$this->model_short = new $this->model_cls();
             \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
             if (!\$v->validate()) {
-                \$this->error(-1,\$v->msg());
+                \$this->error(-1, \$v->msg());
             }
             \$rst = \$$this->model_short->delData(\$id)['n'];
             if (\$rst) {
@@ -691,17 +692,21 @@ T3;
             $slh
             \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
             if (!\$v->validate()) {
-                \$this->error(-1,\$v->msg());
+                \$this->error(-1, \$v->msg());
             }
             \$d = \$v->data();
             
             \$query = [
-                'is_delete' => ['\$ne'=>true],
+                'is_delete' => ['\$ne' => true],
                 'begin_time' => ['\$lte' => new MongoDate()],
                 'end_time' => ['\$gte' => new MongoDate()],
             ];
-            \$this->likeQuery(\$query, [$this->keys_like]);
-            \$this->equalQuery(\$query, [$this->keys_int]);
+            \$this->likeQuery(\$query, [
+                $this->keys_like]
+            );
+            \$this->equalQuery(\$query, [
+                $this->keys_int]
+            );
             
             $t3
             
@@ -748,7 +753,7 @@ STR;
         $keys = '';
         foreach ($this->structure as $item) {
             if ($item['type'] != '数字输入框') {
-                $keys .= "'{$item['key']}'=>\$d->{$item['key']}, \n";
+                $keys .= "'{$item['key']}' => \$d->{$item['key']}, \n";
             }
         }
         $this->keys_like = rtrim($keys, ", \n");
