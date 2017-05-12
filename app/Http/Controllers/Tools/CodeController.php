@@ -358,7 +358,7 @@ STR;
         $delete_str = $this->getDeleteStr();
         $index_str = $this->getIndexStr();
         $import_str = $this->getImportStr();
-        $class = "{$data['module']}_{$data['ctrl']}";
+        $class = "{$data['module']}_{$data['model']}";
         $str = <<<STR
 <?php
 
