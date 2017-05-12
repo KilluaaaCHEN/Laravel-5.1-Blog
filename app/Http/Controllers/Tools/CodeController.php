@@ -358,6 +358,7 @@ STR;
         $delete_str = $this->getDeleteStr();
         $index_str = $this->getIndexStr();
         $import_str = $this->getImportStr();
+        $class = "{$data['module']}_{$data['ctrl']}";
         $str = <<<STR
 <?php
 
@@ -367,8 +368,18 @@ STR;
  * Date: $date
  * Time: $time
  */
-class {$data['module']}_{$data['ctrl']} extends iWebsite_Controller_Action
+class $class extends iWebsite_Controller_Action
 {
+ 
+    /** @var $class */
+    private \$service;
+
+    public function init()
+    {
+        \$this->service = new $class();
+    }
+
+
     $index_str
     
     $edit_str
