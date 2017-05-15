@@ -54,7 +54,7 @@ class Disqus_Comment_Poll extends Command
                     'title' => $item['thread']['title'],
                     'name' => $item['author']['name'],
                     'message' => $item['raw_message'],
-                    'time' => date('m-d H:i', strtotime($item['createdAt']))
+                    'time' => date('m-d H:i', strtotime($item['createdAt']) + 3600 * 8)
                 ];
                 \Log::info('发送数据', $data);
                 dispatch(new SendWechatComment($data, $item['url']));
