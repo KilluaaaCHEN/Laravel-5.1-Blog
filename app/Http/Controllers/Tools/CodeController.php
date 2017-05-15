@@ -234,6 +234,27 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
     
     $delete_str
     
+    
+    /**
+     * 原子修改数据
+     * @param \$operation
+     * @return mixed
+     * @throws Exception
+     * @author Killua Chen
+     */
+    public function modify(\$operation)
+    {
+        if (!isset(\$operation['query']['_id'])) {
+            \$info = \$this->getInfo(\$operation['query'], ['_id' => 1]);
+            if (empty(\$info)) {
+                throw new Exception('数据不存在', 500);
+            }
+            \$operation['query']['_id'] = myMongoId(\$info['_id']);
+        }
+        \$rst = \$this->findAndModify(\$operation);
+        return \$rst;
+    }
+    
     /**
      * 上传照片
      * @param string \$pic Base64
@@ -248,6 +269,8 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
         }
         return \$rst;
     }
+    
+    
 }
 STR;
         return $this->putFile($data, $str, "{$data['model']}.php");
