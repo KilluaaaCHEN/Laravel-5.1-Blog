@@ -233,6 +233,21 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
     }
     
     $delete_str
+    
+    /**
+     * 上传照片
+     * @param string \$pic Base64
+     * @return string
+     */
+    public function uploadPicture(\$pic)
+    {
+        \$picture = \$this->uploadBytes(uniqid(), \$pic);
+        \$rst = false;
+        if (isset(\$picture['file'])) {
+            \$rst = 'http://cloud.umaman.com/file/' . \$picture['file']['_id']['\$id'];
+        }
+        return \$rst;
+    }
 }
 STR;
         return $this->putFile($data, $str, "{$data['model']}.php");
