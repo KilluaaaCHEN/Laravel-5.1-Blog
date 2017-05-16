@@ -206,7 +206,7 @@ STR;
                     $inner_doc = $this->format($list, $attr_list, '', $pre);
                 }
             }
-            if ($key == '_id' || (isset($val['sec']) && isset($val['usec']))) {
+            if (isset($val['sec']) && isset($val['usec'])) {
                 $val = json_encode($val);
                 $val = json_encode(json_decode($val), JSON_UNESCAPED_UNICODE);
             }
