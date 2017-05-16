@@ -109,14 +109,12 @@ STR;
                 }
                 $doc = $this->format($format_res, $attr_list, $doc);
                 //响应示例 只取第一条数据
-                $json_demo = $res;
                 if (isset($res_list['result']['datas'])) {
                     $res_list['result']['datas'] = [$res_list['result']['datas'][0]];
-                    $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
                 } elseif (isset($res_list['result']) && is_array($res_list['result']) && isset($res_list['result'][0])) {
                     $res_list['result'] = [$res_list['result'][0]];
-                    $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
                 }
+                $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
                 $doc .= <<<STR
             
 > 响应示例
