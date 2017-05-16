@@ -188,6 +188,7 @@ STR;
             $res_list[$i] = $item;
         }
         foreach ($res_list as $key => $val) {
+
             $inner_doc = null;
             $type = gettype($val);
             if ($type == 'boolean') {
@@ -195,6 +196,7 @@ STR;
             }
             if (($type == 'array' || $type == 'object') && $key != '_id' && !isset($val['sec']) && !isset($val['usec'])) {
                 $val = json_encode($val, JSON_UNESCAPED_UNICODE);
+
                 if (strstr($val, '{') && strstr($val, '}')) {
                     $list = json_decode($val, true);
                     //数组只取第一个
@@ -207,8 +209,7 @@ STR;
                 }
             }
             if (isset($val['sec']) && isset($val['usec'])) {
-                $val = json_encode($val);
-                $val = json_encode(json_decode($val), JSON_UNESCAPED_UNICODE);
+                $val = json_encode($val, JSON_UNESCAPED_UNICODE);
             }
             $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
             if (isset($inner_doc)) {
@@ -228,6 +229,9 @@ STR;
                 $str = "`{$key}`";
                 if ($prefix) {
                     $str = "`$prefix`.`{$key}`";
+                }
+                if(is_array($val)){
+                    $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                 }
                 $this->appendBr($val);
                 $doc .= " \n|   | $str  | $text | {$val} | {$type} |";
