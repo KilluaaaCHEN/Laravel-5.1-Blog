@@ -453,14 +453,13 @@ STR;
             \$rules = [
                 'id' => 'required|exists' 
             ];
-            \$$this->model_short = new $this->model_cls();
-            \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
+            \$v = new iValidator(\$_REQUEST, \$rules, \$this->service);
             if (!\$v->validate()) {
                 \$this->error(-1, \$v->msg());
             }
             \$d = \$v->data();
             \$fields = $this->keys;
-            \$data = \$$this->model_short->getInfo(\$d->id, \$fields);
+            \$data = \$this->service->getInfo(\$d->id, \$fields);
             \$this->result('', \$data);
         } catch (Exception \$e) {
             \$this->error(\$e->getCode(), \$e->getMessage());
@@ -530,8 +529,7 @@ STR;
                     $data
                 ];
             }
-            \$$this->model_short = new $this->model_cls();
-            \$rst = \$$this->model_short->batchInsert(\$batch_dta);
+            \$rst = \$this->service->batchInsert(\$batch_dta);
             \$this->result('OK', \$rst);
         } catch (Exception \$e) {
             \$this->error(\$e->getCode(), \$e->getMessage());
@@ -563,13 +561,12 @@ STR;
                 'id' => 'exists',
                 $rules
             ];
-            \$$this->model_short = new $this->model_cls();
-            \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
+            \$v = new iValidator(\$_REQUEST, \$rules, \$this->service);
             if (!\$v->validate()) {
                 \$this->error(-1, \$v->msg());
             }
             \$data = \$v->data(false);
-            \$rst = \$$this->model_short->saveData(\$data, \$data['id']);
+            \$rst = \$this->service->saveData(\$data, \$data['id']);
             if (\$rst) {
                 \$this->result('OK');
             } else {
@@ -680,12 +677,11 @@ STR;
             \$rules = [
                 'id' => 'required|exists' 
             ];
-            \$$this->model_short = new $this->model_cls();
-            \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
+            \$v = new iValidator(\$_REQUEST, \$rules, \$this->service);
             if (!\$v->validate()) {
                 \$this->error(-1, \$v->msg());
             }
-            \$rst = \$$this->model_short->delData(\$id)['n'];
+            \$rst = \$this->service->delData(\$id)['n'];
             if (\$rst) {
                 \$this->result();
             } else {
@@ -706,7 +702,6 @@ STR;
      */
     public function getIndexStr()
     {
-        $slh = $this->getSlh();
         $t3 = <<<T3
         
             //按时间精确到秒查询
@@ -740,8 +735,7 @@ T3;
             \$rules = [
                 $rules
             ];
-            $slh
-            \$v = new iValidator(\$_REQUEST, \$rules, \$$this->model_short);
+            \$v = new iValidator(\$_REQUEST, \$rules, \$this->service);
             if (!\$v->validate()) {
                 \$this->error(-1, \$v->msg());
             }
@@ -766,7 +760,7 @@ T3;
                 \$d->page_index = 1;
             }
             
-            \$data = \$$this->model_short->find(
+            \$data = \$this->service->find(
                 \$query, ['sort' => 1],
                 (\$d->page_index - 1) * \$d->page_size, \$d->page_size,
                 $this->keys
@@ -789,15 +783,7 @@ STR;
         return $str;
     }
 
-    /**
-     * 获取实例化
-     * @return string
-     * @author Killua Chen
-     */
-    private function getSlh()
-    {
-        return "\$$this->model_short = new $this->model_cls();";
-    }
+
 
     public function setKeysLike()
     {
