@@ -6,7 +6,7 @@ Homestead.json
 .env.example
 .idea/
 .DS_Store
-/public/tmp/tmp.php
+public/tmp/tmp.php
 
 *.[oa]
 *~
