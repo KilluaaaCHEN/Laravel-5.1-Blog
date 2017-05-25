@@ -188,6 +188,9 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
      */
     public function saveData(\$data, \$id = false)
     {
+        if (is_object(\$data)) {
+            \$data = \$data->get();
+        }
         $pwd_str
         if (\$id) {
             \$rst = \$this->update(['_id' => myMongoId(\$id)], ['\$set' => \$data])['n'];
