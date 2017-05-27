@@ -300,6 +300,9 @@ STR;
     public function validateUnique(\$field, \$val, \$id = false)
     {
         \$condition = ['is_delete' => ['\$ne' => true]];
+        if (\$field == 'id') {
+            return !!\$this->count(['_id' => myMongoId(\$val)], \$condition);
+        }
         if (\$id) {
             return !!\$this->count([\$field => \$val, '_id' => ['\$ne' => myMongoId(\$id)]], \$condition);
         } else {
