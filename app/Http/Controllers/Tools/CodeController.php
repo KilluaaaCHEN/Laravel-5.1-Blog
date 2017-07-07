@@ -461,7 +461,7 @@ STR;
             ];
             \$v = new iValidator(\$_REQUEST, \$rules, \$this->service);
             if (!\$v->validate()) {
-                \$this->error(-1, \$v->msg());
+                abort(-1, \$v->msg());
             }
             \$d = \$v->data();
             \$fields = $this->keys;
@@ -525,7 +525,7 @@ STR;
             ];
             \$v = new iValidator(\$_REQUEST, \$rules);
             if (!\$v->validate()) {
-                \$this->error(-1, \$v->msg());
+                abort(-1, \$v->msg());
             }
             \$d = \$v->data();
             \$data = loadExcelData(\$d->file['tmp_name'], 2, $count);
@@ -569,7 +569,7 @@ STR;
             ];
             \$v = new iValidator(\$_REQUEST, \$rules, \$this->service);
             if (!\$v->validate()) {
-                \$this->error(-1, \$v->msg());
+                abort(-1, \$v->msg());
             }
             \$data = \$v->data(false);
             \$rst = \$this->service->saveData(\$data, \$data['id']);
@@ -685,7 +685,7 @@ STR;
             ];
             \$v = new iValidator(\$_REQUEST, \$rules, \$this->service);
             if (!\$v->validate()) {
-                \$this->error(-1, \$v->msg());
+                abort(-1, \$v->msg());
             }
             \$rst = \$this->service->delData(\$id)['n'];
             if (\$rst) {
@@ -743,7 +743,7 @@ T3;
             ];
             \$v = new iValidator(\$_REQUEST, \$rules, \$this->service);
             if (!\$v->validate()) {
-                \$this->error(-1, \$v->msg());
+                abort(-1, \$v->msg());
             }
             \$d = \$v->data();
             
