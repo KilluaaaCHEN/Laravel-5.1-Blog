@@ -466,9 +466,11 @@ STR;
             \$d = \$v->data();
             \$fields = $this->keys;
             \$data = \$this->service->getInfo(\$d->id, \$fields);
-            \$this->result('', \$data);
+            echo \$this->result('', \$data);
+            return false;
         } catch (Exception \$e) {
-            \$this->error(\$e->getCode(), \$e->getMessage());
+            echo \$this->error(\$e->getCode(), \$e->getMessage());
+            return false;
         }
     }
 STR;
@@ -536,9 +538,13 @@ STR;
                 ];
             }
             \$rst = \$this->service->batchInsert(\$batch_dta);
-            \$this->result('OK', \$rst);
+            echo \$this->result('OK', \$rst);
+            return false;
+
         } catch (Exception \$e) {
-            \$this->error(\$e->getCode(), \$e->getMessage());
+            echo \$this->error(\$e->getCode(), \$e->getMessage());
+            return false;
+
         }
     }
 STR;
@@ -574,12 +580,14 @@ STR;
             \$data = \$v->data(false);
             \$rst = \$this->service->saveData(\$data, \$data['id']);
             if (\$rst) {
-                \$this->result('OK');
+                echo \$this->result('OK');
+                return false;
             } else {
                 abort(-1, '保存失败');
             }
         } catch (Exception \$e) {
-            \$this->error(\$e->getCode(), \$e->getMessage());
+            echo \$this->error(\$e->getCode(), \$e->getMessage());
+            return false;
         } 
     }
 STR;
@@ -689,12 +697,14 @@ STR;
             }
             \$rst = \$this->service->delData(\$id)['n'];
             if (\$rst) {
-                \$this->result();
+                echo \$this->result();
+                return false;
             } else {
                 abort(-1, '删除失败');
             }
          } catch (Exception \$e) {
-            \$this->error(\$e->getCode(), \$e->getMessage());
+            echo \$this->error(\$e->getCode(), \$e->getMessage());
+            return false;
          }
     }
 STR;
@@ -780,9 +790,11 @@ T3;
                 ]);
             }
             calcPager(\$data, \$d->page_size);
-            \$this->result('', \$data);
+            echo \$this->result('', \$data);
+            return false;
         } catch (Exception \$e) {
-            \$this->error(\$e->getCode(), \$e->getMessage());
+            echo \$this->error(\$e->getCode(), \$e->getMessage());
+            return false;
         }
     }
 STR;
