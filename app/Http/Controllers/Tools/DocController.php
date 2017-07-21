@@ -178,8 +178,8 @@ STR;
         $this->filterAttr($res_list);
         //数组牌组,对象放最后
         $after = [];
-        if (empty($res_list)) {
-            return '';
+        if(empty($res_list)){
+            return $doc;
         }
         foreach ($res_list as $i => $item) {
             if (is_array($item) && !isset($item['sec']) && !isset($item['usec']) && $i != '_id') {
