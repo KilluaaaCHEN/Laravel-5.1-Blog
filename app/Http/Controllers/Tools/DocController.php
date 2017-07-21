@@ -230,7 +230,7 @@ STR;
                 if ($prefix) {
                     $str = "`$prefix`.`{$key}`";
                 }
-                if(is_array($val)){
+                if (is_array($val)) {
                     $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                 }
                 $this->appendBr($val);
@@ -244,7 +244,9 @@ STR;
     {
         $unset_arr = ['__REMOVED__', '__MODIFY_TIME__', '__CREATE_TIME__', 'is_delete'];
         foreach ($unset_arr as $item) {
-            unset($list[$item]);
+            if (isset($list[$item])) {
+                unset($list[$item]);
+            }
         }
         if (is_array($list)) {
 
