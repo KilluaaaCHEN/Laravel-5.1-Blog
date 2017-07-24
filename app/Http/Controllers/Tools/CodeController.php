@@ -422,6 +422,8 @@ class $ctrl_class extends iWebsite_Controller_Action
 
     public function init()
     {
+        \$this->disableLayout();
+        \$this->getHelper('viewRenderer')->setNoRender(true);
         \$this->service = new $model_class();
     }
 
