@@ -301,14 +301,19 @@ STR;
     {
         \$condition = ['is_delete' => ['\$ne' => true]];
         if (\$field == 'id') {
-            return !!\$this->count(['_id' => myMongoId(\$val)], \$condition);
+            \$condition['_id'] = myMongoId(\$val);
         }
         if (\$id) {
-            return !!\$this->count([\$field => \$val, '_id' => ['\$ne' => myMongoId(\$id)]], \$condition);
+            \$condition['_id'] = ['\$ne' => myMongoId(\$id)];
+            \$condition[\$field] = \$val;
         } else {
-            return !!\$this->count(array_merge([\$field => \$val], \$condition));
+            \$condition[\$field] = \$val;
         }
+        return !!\$this->count(\$condition);
     }
+    
+    
+    
 
 STR;
         return $str;
