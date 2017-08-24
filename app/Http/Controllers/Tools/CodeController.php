@@ -249,10 +249,11 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
     {
         if (!isset(\$operation['query']['_id'])) {
             \$info = \$this->getInfo(\$operation['query'], ['_id' => 1]);
-            if (empty(\$info)) {
-                throw new Exception('数据不存在', 500);
-            }
-            \$operation['query']['_id'] = myMongoId(\$info['_id']);
+             if (empty(\$info)) {
+                return false;
+             } else {
+                \$operation['query']['_id'] = myMongoId(\$info['_id']);
+             }
         }
         \$rst = \$this->findAndModify(\$operation);
         return \$rst;
