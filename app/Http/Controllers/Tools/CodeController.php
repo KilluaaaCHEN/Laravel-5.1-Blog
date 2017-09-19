@@ -414,6 +414,7 @@ STR;
         $delete_str = $this->getDeleteStr();
         $index_str = $this->getIndexStr();
         $import_str = $this->getImportStr();
+        $upload_str = $this->getUploadStr();
         $ctrl_class = "{$data['module']}_{$data['ctrl']}";
         $model_class = "{$data['module']}_Model_{$data['model']}";
 
@@ -449,9 +450,46 @@ class $ctrl_class extends iWebsite_Controller_Action
     $delete_str
     
     $import_str
+    
+    $upload_str
 }
 STR;
         return $this->putFile($data, $str, "{$data['ctrl']}.php");
+    }
+
+
+    public function getUploadStr()
+    {
+        $str=<<<STR
+    /**
+     * 上传文件
+     * @author Killua Chen
+     */
+    public function uploadFileAction()
+    {
+        try {
+            \$rules = [
+                'file' => 'required'
+            ];
+            \$v = new iValidator(\$_REQUEST, \$rules);
+            if (!\$v->validate()) {
+                abort(-1, \$v->msg());
+            }
+            \$data = \$v->data(false);
+            \$rst = \$this->service->upload(\$data['file']);
+            if (\$rst) {
+                echo \$this->result('OK', ['url' => \$rst]);
+                return false;
+            }
+            abort(-1, '文件上传失败');
+        } catch (Exception \$e) {
+            echo \$this->error(\$e->getCode(), \$e->getMessage());
+            return false;
+        }
+    }
+STR;
+        return $str;
+
     }
 
     /**
