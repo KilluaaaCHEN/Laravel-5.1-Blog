@@ -259,14 +259,20 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
         return \$rst;
     }
     
+    
     /**
-     * 上传照片
-     * @param string \$pic Base64
-     * @return string
+     * 上传文件
+     * @author Killua Chen
+     * @param \$data
+     * @return bool|string
      */
-    public function uploadPicture(\$pic)
+    public function upload(\$data)
     {
-        \$picture = \$this->uploadBytes(uniqid(), \$pic);
+        if (is_array(\$data)) {
+            \$picture = \$this->uploadFile('file');
+        } else {
+            \$picture = \$this->uploadBytes(uniqid(), \$data);
+        }
         \$rst = false;
         if (isset(\$picture['file'])) {
             \$rst = 'http://cloud.umaman.com/file/' . \$picture['file']['_id']['\$id'];
