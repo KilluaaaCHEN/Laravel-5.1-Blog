@@ -518,7 +518,7 @@ STR;
             \$d = \$v->data();
             \$fields = $this->keys;
             \$data = \$this->service->getInfo(\$d->id, \$fields);
-            echo \$this->result('', \$data);
+            echo \$this->result('OK', \$data);
             return false;
         } catch (Exception \$e) {
             echo \$this->error(\$e->getCode(), \$e->getMessage());
@@ -749,7 +749,7 @@ STR;
             }
             \$rst = \$this->service->delData(\$id)['n'];
             if (\$rst) {
-                echo \$this->result();
+                echo \$this->result('OK');
                 return false;
             } else {
                 abort(-1, '删除失败');
@@ -842,7 +842,34 @@ T3;
                 ]);
             }
             calcPager(\$data, \$d->page_size);
-            echo \$this->result('', \$data);
+            echo \$this->result('OK', \$data);
+            return false;
+        } catch (Exception \$e) {
+            echo \$this->error(\$e->getCode(), \$e->getMessage());
+            return false;
+        }
+    }
+    
+    
+    /**
+     * 获取全部数据
+     * @author Killua Chen
+     */
+    public function getAllAction()
+    {
+        try {
+            \$query = [
+                'is_delete' => ['\$ne' => true],
+                'begin_time' => ['\$lte' => new MongoDate()],
+                'end_time' => ['\$gte' => new MongoDate()],
+            ];
+            \$data = \$this->service->findAll(
+                \$query, ['sort' => 1],
+                $this->keys
+            );
+            foreach (\$data['datas'] as &\$item) {
+            }
+            echo \$this->result('OK', \$data);
             return false;
         } catch (Exception \$e) {
             echo \$this->error(\$e->getCode(), \$e->getMessage());
