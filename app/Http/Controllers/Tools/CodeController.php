@@ -517,7 +517,7 @@ STR;
             }
             \$d = \$v->data();
             \$fields = $this->keys;
-            \$data = \$this->service->getInfo(\$d->id, \$fields);
+            \$data = \$this->service->getInfo(\$d->id);
             echo \$this->result('OK', \$data);
             return false;
         } catch (Exception \$e) {
@@ -632,7 +632,7 @@ STR;
             \$data = \$v->data(false);
             \$rst = \$this->service->saveData(\$data, \$data['id']);
             if (\$rst) {
-                echo \$this->result('OK');
+                echo \$this->result('OK',['id' => \$rst);
                 return false;
             } else {
                 abort(-1, '保存失败');
@@ -830,8 +830,7 @@ T3;
             
             \$data = \$this->service->find(
                 \$query, ['sort' => 1],
-                (\$d->page_index - 1) * \$d->page_size, \$d->page_size,
-                $this->keys
+                (\$d->page_index - 1) * \$d->page_size, \$d->page_size
             );
             foreach (\$data['datas'] as &\$item) {
             }
