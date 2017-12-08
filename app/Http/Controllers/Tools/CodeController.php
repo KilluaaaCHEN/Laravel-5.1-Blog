@@ -182,17 +182,15 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
     /**
      * 保存数据
      * @param \$data
-     * @param bool \$id
+     * @param string|MongoId|bool \$id
      * @return string 
      * @author Killua Chen
      */
     public function saveData(\$data, \$id = false)
     {
-        if (is_object(\$data)) {
-            \$data = \$data->get();
-        }
         $pwd_str
         if (\$id) {
+            \$id = \$id instanceof MongoId ? \$id : myMongoId(\$id);
             \$rst = \$this->update(['_id' => myMongoId(\$id)], ['\$set' => \$data])['n'];
             if (!\$rst) \$id = false;
         } else {
@@ -230,8 +228,9 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
      */
     public function isExists(\$id)
     {
+        \$id = \$id instanceof MongoId ? \$id : myMongoId(\$id);
         return !!\$this->count([
-            '_id' => myMongoId(\$id)$t1
+            '_id' => \$id$t1
         ]);
     }
     
@@ -344,7 +343,8 @@ STR;
      */
     public function delData(\$id)
     {
-        return \$this->update(['_id' => myMongoId(\$id)], ['\$set' => ['$this->delete' => true]]);
+        \$id = \$id instanceof MongoId ? \$id : myMongoId(\$id);
+        return \$this->update(['_id' => \$id], ['\$set' => ['$this->delete' => true]]);
     }
 D1;
         } else {
@@ -358,7 +358,8 @@ D1;
      */
     public function delData(\$id)
     {
-        return \$this->remove(['_id' => myMongoId(\$id)])['n'];
+        \$id = \$id instanceof MongoId ? \$id : myMongoId(\$id);
+        return \$this->remove(['_id' => \$id])['n'];
     }
 D2;
         }
