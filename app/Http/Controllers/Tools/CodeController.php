@@ -633,7 +633,7 @@ STR;
             \$data = \$v->data(false);
             \$rst = \$this->service->saveData(\$data, \$data['id']);
             if (\$rst) {
-                echo \$this->result('OK',['id' => \$rst);
+                echo \$this->result('OK',['id' => \$rst]);
                 return false;
             } else {
                 abort(-1, '保存失败');
