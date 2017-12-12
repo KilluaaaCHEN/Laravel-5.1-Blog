@@ -187,7 +187,7 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
      * @author Killua Chen
      */
     public function saveData(\$data, \$id = false)
-    {\$pwd_str
+    {{$pwd_str}
         if (\$id) {
             \$id = \$id instanceof MongoId ? \$id : myMongoId(\$id);
             \$rst = \$this->update(['_id' => myMongoId(\$id)], ['\$set' => \$data])['n'];
