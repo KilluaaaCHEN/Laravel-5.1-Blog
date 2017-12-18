@@ -245,7 +245,7 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
      */
     public function modify(\$operation)
     {
-        if (!isset(\$operation['query']['_id'])) {
+        if (!isset(\$operation['query']['_id']) && !isset(\$operation['upsert'])) {
             \$info = \$this->getInfo(\$operation['query'], ['_id' => 1]);
              if (empty(\$info)) {
                 return false;
