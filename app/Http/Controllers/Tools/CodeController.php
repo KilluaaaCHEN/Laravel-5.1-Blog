@@ -345,7 +345,7 @@ STR;
         if (\$is_real) {
             return \$this->remove(['_id' => \$id])['n'];
         } else {
-            return \$this->update(['_id' => \$id], ['\$set' => ['{$this->delete}' => true]]);
+            return \$this->update(['_id' => \$id], ['\$set' => ['{$this->delete}' => true]])['n'];
         }
     }
 D1;
