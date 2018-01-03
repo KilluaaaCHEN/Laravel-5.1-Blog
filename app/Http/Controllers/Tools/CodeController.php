@@ -331,8 +331,7 @@ STR;
      */
     public function getDelDataStr()
     {
-        if ($this->delete) {
-            return <<<D1
+        return <<<D1
             
     /**
      * 删除数据
@@ -340,28 +339,17 @@ STR;
      * @return bool 
      * @author Killua Chen
      */
-    public function delData(\$id)
+   public function delData(\$id, \$is_real = false)
     {
         \$id = \$id instanceof MongoId ? \$id : myMongoId(\$id);
-        return \$this->update(['_id' => \$id], ['\$set' => ['$this->delete' => true]]);
+        if (\$is_real) {
+            return \$this->remove(['_id' => \$id])['n'];
+        } else {
+            return \$this->update(['_id' => \$id], ['\$set' => ['{$this->delete}' => true]]);
+        }
     }
 D1;
-        } else {
-            return <<<D2
 
-    /**
-     * 删除数据
-     * @param \$id
-     * @return bool 
-     * @author Killua Chen
-     */
-    public function delData(\$id)
-    {
-        \$id = \$id instanceof MongoId ? \$id : myMongoId(\$id);
-        return \$this->remove(['_id' => \$id])['n'];
-    }
-D2;
-        }
     }
 
     /**
