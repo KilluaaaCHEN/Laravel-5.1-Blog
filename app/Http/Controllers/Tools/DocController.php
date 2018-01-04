@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tools;
 
+use App\Helper\Common;
 use App\Http\Controllers\Controller;
 use App\Models\Dict;
 use Illuminate\Http\Request;
@@ -28,13 +29,7 @@ class DocController extends Controller
             $res_list = json_decode($res, true);
 
             //查询字典
-            $cache_key = 'dict';
-            $attr_list = \Cache::get($cache_key);
-            if (!$attr_list) {
-                $attr_list = Dict::pluck('val', 'key')->toArray();
-                \Cache::put($cache_key, $attr_list, 60 * 24);
-            }
-
+            $attr_list = Dict::pluck('val', 'key')->toArray();
             //多个数组合并属性
             $attr_arr = explode('}', $attr);
             $attr_dic = [];
@@ -81,7 +76,7 @@ STR;
                     $req_data[$key] = $val;
                 }
             }
-            //格式化
+            //格式化请求参数
             foreach ($req_data as $key => $val) {
                 $not_null = strstr($key, '//') ? '  n' : '`y`';
                 $key = ltrim($key, '//');
@@ -89,7 +84,12 @@ STR;
                 if (empty($key)) {
                     continue;
                 }
-                $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
+                $key = strtolower($key);
+                if (key_exists($key, $attr_list)) {
+                    $text = $attr_list[$key];
+                } else {
+                    $text = Common::bdTranslateAction($key, $attr_list);
+                }
                 if (is_array($val)) {
                     $val = json_encode($val, JSON_UNESCAPED_UNICODE);
                     $text .= ',数组';
@@ -98,8 +98,8 @@ STR;
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
 
+            //格式化响应数据
             if ($res) {
-                //格式化响应数据
                 $format_res = $res_list;
                 if ($res_list && isset($res_list['result'])) {
                     $format_res = $res_list['result'];
@@ -173,12 +173,12 @@ STR;
         $str = $ss . $is . $ls;
     }
 
-    function format($res_list, $attr_list, $doc, $prefix = '')
+    function format($res_list, &$attr_list, $doc, $prefix = '')
     {
         $this->filterAttr($res_list);
         //数组牌组,对象放最后
         $after = [];
-        if(empty($res_list)){
+        if (empty($res_list)) {
             return $doc;
         }
         foreach ($res_list as $i => $item) {
@@ -191,7 +191,6 @@ STR;
             $res_list[$i] = $item;
         }
         foreach ($res_list as $key => $val) {
-
             $inner_doc = null;
             $type = gettype($val);
             if ($type == 'boolean') {
@@ -214,7 +213,13 @@ STR;
             if (isset($val['sec']) && isset($val['usec'])) {
                 $val = json_encode($val, JSON_UNESCAPED_UNICODE);
             }
-            $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
+//            $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
+            $s_key = strtolower($key);
+            if (key_exists($s_key, $attr_list)) {
+                $text = $attr_list[$s_key];
+            } else {
+                $text = Common::bdTranslateAction($key, $attr_list);
+            }
             if (isset($inner_doc)) {
                 //取消内嵌示例
                 /*$val = json_decode($val, true);

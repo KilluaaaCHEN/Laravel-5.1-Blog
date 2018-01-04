@@ -60,6 +60,7 @@ class DictController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput($data);
         }
+        dd(111,$validator->fails());
         $model = new Dict();
         if ($data['id']) {
             $model = $model->find($data['id']);
