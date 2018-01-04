@@ -18,7 +18,7 @@ class DictController extends Controller
      */
     public function index()
     {
-        $dict = Dict::paginate(50);
+        $dict = Dict::orderBy('id', 'desc')->paginate(50);
         return view('backend.dict.index', [
             'items' => $dict
         ]);
