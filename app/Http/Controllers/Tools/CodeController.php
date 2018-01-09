@@ -164,7 +164,6 @@ class CodeController extends Controller
         $delete_str = $this->getDelDataStr();
         $pwd_str = $this->getPwdStr();
         $str = <<<STR
-        
 <?php
 
 /**
@@ -414,7 +413,6 @@ STR;
 
         $str = <<<STR
 <?php
-
 /**
  * Created by Killua Chen
  * User: killua
