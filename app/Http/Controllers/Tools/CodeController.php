@@ -189,7 +189,7 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
     {{$pwd_str}
         if (\$id) {
             \$id = \$id instanceof MongoId ? \$id : myMongoId(\$id);
-            \$rst = \$this->update(['_id' => myMongoId(\$id)], ['\$set' => \$data])['n'];
+            \$rst = \$this->update(['_id' => \$id], ['\$set' => \$data])['n'];
             if (!\$rst) \$id = false;
         } else {
             \$rst = \$this->insert(\$data);
@@ -249,7 +249,7 @@ class {$data['module']}_Model_{$data['model']} extends iWebsite_Plugin_Mongo
              if (empty(\$info)) {
                 return false;
              } else {
-                \$operation['query']['_id'] = myMongoId(\$info['_id']);
+                \$operation['query'] = ['_id' => \$info['_id']];
              }
         }
         \$rst = \$this->findAndModify(\$operation);
