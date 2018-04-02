@@ -13,7 +13,7 @@
         <div id="blog">
             <h3 class="big-h3">{{$post->title}}</h3>
             <ul class="list-inline blog-desc">
-                {{--<li><i class="icon-calendar"></i> {{$post->created_at->diffForHumans()}}</li>--}}
+                <li><i class="icon-calendar"></i> {{$post->created_at->diffForHumans()}}</li>
                 <li><i class="icon-eye-open"></i> {{$post->read_count}} Browse</li>
                 <li><i class="icon-comment"></i>
                     {{--                <a href="{{route('post.view',['post_id'=>$post->post_id]).'#disqus_thread'}}">Comments</a>--}}

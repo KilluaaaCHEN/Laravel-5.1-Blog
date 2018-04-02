@@ -27,7 +27,7 @@
                                 <a href="{{route('post.view',['post_id'=>$item->post_id])}}">{{$item->title}}</a>
                             </h2>
                             <ul class="list-inline index-desc">
-{{--                                <li><i class="icon-calendar"></i> {{$item->created_at->diffForHumans()}}</li>--}}
+                                <li><i class="icon-calendar"></i> {{$item->created_at->diffForHumans()}}</li>
                                 <li><i class="icon-eye-open"></i> {{$item->read_count}} Browse</li>
                                 <li><i class="icon-comment"></i>
                                     <a href="{{route('post.view',['post_id'=>$item->post_id]).'#comments'}}">
