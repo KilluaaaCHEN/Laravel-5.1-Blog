@@ -37,7 +37,7 @@
                         <tbody>
                         @forelse($posts as $post)
                             <tr>
-                                <td><a href="{{route('post.show',$post->post_id)}}">{{$post->title}}</a>
+                                <td><a href="{{route('post.view',$post->post_id)}}">{{$post->title}}</a>
                                 </td>
                                 <td>{{\Illuminate\Support\Str::limit($post->desc,30)}}</td>
                                 <td>{{$post->getState($post->state_id)}}</td>
