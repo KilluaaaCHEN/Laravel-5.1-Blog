@@ -6,7 +6,7 @@
     <meta name="keywords" content="Killua的博客,陈洲的博客,陈洲,Killua,博客,PHP博客,PHP,程序员的博客,KilluaChen的博客,KilluaChen.com"/>
     <meta name="description" content="Killua的博客专注于PHP技术研究及学习,以网站开发为核心的PHP技术交流博客,希望在今后写博客的道路上能结交很多志同道合的朋友!"/>
     <link href="{{asset('front/site.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="{{asset('plugins/boot/awesome.min.css')}}" rel="stylesheet">
     <script src="{{asset('plugins/common/jquery.min.js')}}"></script>
     <script src="{{asset('plugins/boot/bootstrap.js')}}"></script>
