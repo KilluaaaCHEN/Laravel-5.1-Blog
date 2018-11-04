@@ -39,5 +39,9 @@ Route::any('/generate/code', ['as' => 'generate_code', 'uses' => 'Tools\CodeCont
 
 Route::post('/hooks', 'DeploymentController@deploy');
 
+Route::get('/questionnaire/index', 'QuestionnaireController@index');
+Route::post('questionnaire/save', 'QuestionnaireController@save');
+Route::get('questionnaire/result', 'QuestionnaireController@result');
+
 
 
