@@ -30,14 +30,15 @@ class DocController extends Controller
 
             //查询字典
             $attr_list = Dict::pluck('val', 'key')->toArray();
-            //多个数组合并属性
-            $attr_arr = explode('}', $attr);
-            $attr_dic = [];
-            foreach ($attr_arr as $item) {
-                if (!empty($item)) {
-                    $attr_dic = array_merge($attr_dic, json_decode($item . '}', true));
-                }
-            }
+//            //多个数组合并属性
+//            $attr_arr = explode('}', $attr);
+//            $attr_dic = [];
+//            foreach ($attr_arr as $item) {
+//                if (!empty($item)) {
+//                    $attr_dic = array_merge($attr_dic, json_decode($item . '}', true));
+//                }
+//            }
+            $attr_dic = json_decode($attr, true);
             if ($attr_dic) {
                 $attr_list = array_merge($attr_dic, $attr_list);
             }
