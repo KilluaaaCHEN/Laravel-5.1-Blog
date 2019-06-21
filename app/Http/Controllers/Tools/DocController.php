@@ -40,7 +40,7 @@ class DocController extends Controller
 //            }
             $attr_dic = json_decode($attr, true);
             if ($attr_dic) {
-                $attr_list = array_merge($attr_dic, $attr_list);
+                $attr_list = array_merge($attr_list,$attr_dic);
             }
             $doc = <<<STR
 ###  $title 
