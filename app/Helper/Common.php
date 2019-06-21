@@ -26,7 +26,7 @@ class Common
             $query_list = explode('_', str_replace(' ', '_', str_replace('-', '_', self::humpToLine($query))));
             $result = '';
             foreach ($query_list as $item) {
-                if (key_exists($item, $attr_list)) {
+                if (array_key_exists($item, $attr_list)) {
                     $result .= $attr_list[$item];
                     continue;
                 }

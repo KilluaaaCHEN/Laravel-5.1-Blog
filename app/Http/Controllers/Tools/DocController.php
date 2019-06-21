@@ -220,7 +220,7 @@ STR;
             }
 //            $text = key_exists($key, $attr_list) ? $attr_list[$key] : '&nbsp;';
             $s_key = strtolower($key);
-            if (key_exists($s_key, $attr_list)) {
+            if (array_key_exists($s_key, $attr_list)) {
                 $text = $attr_list[$s_key];
             } else {
                 $text = Common::bdTranslateAction($key, $attr_list);
