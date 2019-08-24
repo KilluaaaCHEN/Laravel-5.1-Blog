@@ -19,15 +19,29 @@ class DocController extends Controller
         $title = $request->get('title');
         $uri = $request->get('uri');
         $method = $request->get('method');
+        $doc_method = $method;
         $req = $request->get('request');
         $res = $request->get('response');
         $attr = $request->get('attr');
         $doc = '';
         if ($request->getMethod() == 'POST') {
             $uri = ltrim($uri, '{{domain}}');
-            $req_list = explode(PHP_EOL, $req);
+            $count = substr_count(PHP_EOL, $req);
             $res_list = json_decode($res, true);
+            $req_demo = '';
+            if ($count) {
+                $req_list = explode(PHP_EOL, $req);
+            } else {
+                $req_list = json_decode($req, true);
+                $req_demo = json_encode($req_list, JSON_UNESCAPED_UNICODE);
+                $req_demo=<<<STR
+> 请求示例
+```
+$req_demo
+```
+STR;
 
+            }
             //查询字典
             $attr_list = Dict::pluck('val', 'key')->toArray();
 //            //多个数组合并属性
@@ -40,33 +54,33 @@ class DocController extends Controller
 //            }
             $attr_dic = json_decode($attr, true);
             if ($attr_dic) {
-                $attr_list = array_merge($attr_list,$attr_dic);
+                $attr_list = array_merge($attr_list, $attr_dic);
             }
-            $doc = <<<STR
-###  $title 
-| URI | $uri  |   |   |   | 
-| :----: | ------------ | ------------ | ------------ |  :----: |
-|  **请求方式** | $method  |  |   |   |
-|  **输入参数** |  **名称** | **含义**  | **示例**  | **必填** |
-
-STR;
 
             //数组格式初始化
-            $req_data = [];
-            foreach ($req_list as $item) {
-                if (empty($item)) {
-                    continue;
+            if ($count) {
+                $content_type = 'application/x-www-form-urlencoded';
+                $req_data = [];
+                foreach ($req_list as $item) {
+                    if (empty($item)) {
+                        continue;
+                    }
+                    $index = strpos($item, ':');
+                    $key = substr($item, 0, $index);
+                    $val = rtrim(substr($item, $index + 1), "\r");
+                    $this->appendBr($val);
+                    if (isset($req_data[$key])) {
+                        $req_data[$key][] = $val;
+                    } elseif (strpos($key, '[]') !== false) {
+                        $req_data[$key][] = $val;
+                    } else {
+                        $req_data[$key] = $val;
+                    }
                 }
-                $index = strpos($item, ':');
-                $key = substr($item, 0, $index);
-                $val = rtrim(substr($item, $index + 1), "\r");
-                $this->appendBr($val);
-                if (isset($req_data[$key])) {
-                    $req_data[$key][] = $val;
-                } elseif (strpos($key, '[]') !== false) {
-                    $req_data[$key][] = $val;
-                } else {
-                    $req_data[$key] = $val;
+            } else {
+                $content_type = 'application/json';
+                foreach ($req_list as $key => $item) {
+                    $req_data[$key] = $item;
                 }
             }
 
@@ -77,25 +91,50 @@ STR;
                     $req_data[$key] = $val;
                 }
             }
+            $doc = <<<STR
+###  $title 
+| URI | $uri  |   |   |   | 
+| :----: | ------------ | ------------ | ------------ |  :----: |
+|  **请求方式** | $method  | **Content-Type** | $content_type  |   |
+|  **输入参数** |  **名称** | **含义**  | **示例**  | **必填** |
+
+STR;
+
             //格式化请求参数
-            foreach ($req_data as $key => $val) {
-                $not_null = strstr($key, '//') ? '  n' : '`y`';
-                $key = ltrim($key, '//');
-                $key = rtrim($key, '[]');
-                if (empty($key)) {
-                    continue;
+            if ($count) {
+                foreach ($req_data as $key => $val) {
+                    $not_null = strstr($key, '//') ? '  n' : '`y`';
+                    $key = ltrim($key, '//');
+                    $key = rtrim($key, '[]');
+                    if (empty($key)) {
+                        continue;
+                    }
+                    $key = strtolower($key);
+                    if (key_exists($key, $attr_list)) {
+                        $text = $attr_list[$key];
+                    } else {
+                        $text = Common::bdTranslateAction($key, $attr_list);
+                    }
+                    if (is_array($val)) {
+                        $val = json_encode($val, JSON_UNESCAPED_UNICODE);
+                        $text .= ',数组';
+                    }
+                    $doc .= "|   | `{$key}`  | $text | $val | $not_null | \n";
                 }
-                $key = strtolower($key);
-                if (key_exists($key, $attr_list)) {
-                    $text = $attr_list[$key];
-                } else {
-                    $text = Common::bdTranslateAction($key, $attr_list);
+            } else {
+                foreach ($req_data as $key => $val) {
+                    $key = strtolower($key);
+                    if (key_exists($key, $attr_list)) {
+                        $text = $attr_list[$key];
+                    } else {
+                        $text = Common::bdTranslateAction($key, $attr_list);
+                    }
+                    if (is_array($val)) {
+                        $val = json_encode($val, JSON_UNESCAPED_UNICODE);
+                        $text .= '数组';
+                    }
+                    $doc .= "|   | `{$key}`  | $text | $val | `y` | \n";
                 }
-                if (is_array($val)) {
-                    $val = json_encode($val, JSON_UNESCAPED_UNICODE);
-                    $text .= ',数组';
-                }
-                $doc .= "|   | `{$key}`  | $text | $val | $not_null | \n";
             }
             $doc .= '|  **输出参数** |  **名称** | **含义**  | **示例**  | **类型**| ';
 
@@ -118,14 +157,11 @@ STR;
                 $json_demo = json_encode($res_list, JSON_UNESCAPED_UNICODE);
                 $doc .= <<<STR
             
+$req_demo
 > 响应示例
 ```
 $json_demo
 ```
-> 错误代码列表
-|  代码  |  含义   |
-| :--: | :---: |
-|  |  |
 STR;
             }
         }
