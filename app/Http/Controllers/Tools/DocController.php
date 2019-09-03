@@ -26,7 +26,7 @@ class DocController extends Controller
         $doc = '';
         if ($request->getMethod() == 'POST') {
             $uri = ltrim($uri, '{{domain}}');
-            $count = substr_count(PHP_EOL, $req);
+            $count = substr_count('{', $req);
             $res_list = json_decode($res, true);
             $req_demo = '';
             if ($count) {
