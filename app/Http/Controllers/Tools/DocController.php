@@ -26,10 +26,10 @@ class DocController extends Controller
         $doc = '';
         if ($request->getMethod() == 'POST') {
             $uri = ltrim($uri, '{{domain}}');
-            $count = substr_count('{', $req);
+            $is_form = !substr_count('{', $req);
             $res_list = json_decode($res, true);
             $req_demo = '';
-            if ($count) {
+            if ($is_form) {
                 $req_list = explode(PHP_EOL, $req);
             } else {
                 $req_list = json_decode($req, true);
@@ -58,7 +58,7 @@ STR;
             }
 
             //数组格式初始化
-            if ($count) {
+            if ($is_form) {
                 $content_type = 'application/x-www-form-urlencoded';
                 $req_data = [];
                 foreach ($req_list as $item) {
@@ -101,7 +101,7 @@ STR;
 STR;
 
             //格式化请求参数
-            if ($count) {
+            if ($is_form) {
                 foreach ($req_data as $key => $val) {
                     $not_null = strstr($key, '//') ? '  n' : '`y`';
                     $key = ltrim($key, '//');
