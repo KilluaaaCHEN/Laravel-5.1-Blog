@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('head')
-    <link rel="stylesheet" href="{{asset('plugins/highlight/highlight.min.css')}}">
-    <script src="{{asset('plugins/highlight/highlight.min.js')}}"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <link href="{{asset('plugins/zoom/zoom.css')}}" rel="stylesheet">
     <script src="{{asset('plugins/zoom/zoom.min.js')}}"></script>
