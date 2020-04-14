@@ -76,7 +76,7 @@ class AdminController extends Controller
         $key = 'blog/' . uniqid();
         $rst = ['success' => 0, 'message' => '图片上传失败,20M以内'];
         if (file_exists($file_path)) {
-            list($ret, $error) = $upManager->putFile($token, $key, $file_path, null, $file->getMimeType());
+            list($ret, $error) = $upManager->putFile($token, $key, $file_path, null, 'image/gif');
             if (is_null($error)) {
                 $host = env('HOST_NAME');
                 $rst = ['success' => 1, 'url' => "http://img.$host/" . $key];
