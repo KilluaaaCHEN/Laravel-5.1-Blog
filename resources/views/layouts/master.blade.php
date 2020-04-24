@@ -15,11 +15,12 @@
         var _hmt = _hmt || [];
         (function() {
             var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?2238665cc2b0cf54d82cffd514e1cb0d";
+            hm.src = "https://hm.baidu.com/hm.js?bf7acde2c58ceca437de84ea27430721";
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
         })();
     </script>
+
     @yield('head')
 </head>
 <body>
